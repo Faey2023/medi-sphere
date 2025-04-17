@@ -1,11 +1,12 @@
 import React from 'react';
 
 const Medicines = () => {
-    return (
-        <div>
-            <h2>This is medicines page</h2>
-        </div>
-    );
+  return (
+    <div>
+      <h1>This is Medicine Management Page</h1>
+      
+    </div>
+  );
 };
 
 export default Medicines;
