@@ -12,6 +12,8 @@ const Home = () => {
     <div className="flex flex-col gap-5">
       <h1>home</h1>
       <Link href={'/about'}>About</Link>
+      <Link href={'/login'}>Login</Link>
+      <Link href={'/register'}>Register</Link>
       <Link href={'/admin/users'}>Admin/users</Link>
       <Button onClick={toastA}>shadcn button</Button>
     </div>

@@ -1,14 +1,14 @@
-'use client';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     agreeTerms: false,
   });
 
@@ -16,21 +16,21 @@ export default function RegisterPage() {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      alert("Passwords do not match!");
       return;
     }
     if (!formData.agreeTerms) {
-      alert('Please agree to the terms.');
+      alert("Please agree to the terms.");
       return;
     }
-    console.log('Registering user:', formData);
+    console.log("Registering user:", formData);
     // Add API logic here
   };
 
@@ -41,9 +41,9 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-tr from-blue-100 to-white px-4">
-      <div className="grid w-full max-w-5xl items-center gap-10 rounded-3xl bg-white p-10 shadow-xl md:grid-cols-2">
+      <div className="w-full max-w-5xl bg-white shadow-xl rounded-3xl p-10 grid md:grid-cols-2 gap-10 items-center">
         {/* Left side - image */}
-        <div className="hidden justify-center md:flex">
+        <div className="hidden md:flex justify-center">
           <Image
             src="/images/medicine_register.svg" // Put a medical-themed SVG/PNG in public/images/
             alt="Medical Register Illustration"
@@ -55,64 +55,56 @@ export default function RegisterPage() {
 
         {/* Right side - form */}
         <div>
-          <h2 className="mb-6 text-center text-4xl font-bold text-blue-700 md:text-left">
+          <h2 className="text-4xl font-bold text-blue-700 mb-6 text-center md:text-left">
             Create Your Account
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Full Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Password</label>
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
               <input
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
 
@@ -122,10 +114,10 @@ export default function RegisterPage() {
                 name="agreeTerms"
                 checked={formData.agreeTerms}
                 onChange={handleChange}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
               <label className="ml-2 text-sm text-gray-600">
-                I agree to the{' '}
+                I agree to the{" "}
                 <a href="#" className="text-blue-600 hover:underline">
                   Terms & Conditions
                 </a>
@@ -134,7 +126,7 @@ export default function RegisterPage() {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-blue-600 py-2 font-semibold text-white transition hover:bg-blue-700"
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold"
             >
               Register
             </button>
@@ -148,10 +140,10 @@ export default function RegisterPage() {
           </div>
 
           {/* Social buttons */}
-          <div className="flex flex-col gap-4 md:flex-row">
+          <div className="flex flex-col md:flex-row gap-4">
             <button
-              onClick={() => handleSocialRegister('Google')}
-              className="flex w-full items-center justify-center rounded-lg border border-gray-300 py-2 transition hover:bg-gray-100"
+              onClick={() => handleSocialRegister("Google")}
+              className="flex items-center justify-center w-full border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition"
             >
               <Image
                 src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
@@ -164,8 +156,8 @@ export default function RegisterPage() {
             </button>
 
             <button
-              onClick={() => handleSocialRegister('GitHub')}
-              className="flex w-full items-center justify-center rounded-lg border border-gray-300 py-2 transition hover:bg-gray-100"
+              onClick={() => handleSocialRegister("GitHub")}
+              className="flex items-center justify-center w-full border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition"
             >
               <Image
                 src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
@@ -178,12 +170,9 @@ export default function RegisterPage() {
             </button>
           </div>
 
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link
-              href="/login"
-              className="font-medium text-blue-600 hover:underline"
-            >
+          <p className="mt-6 text-sm text-center text-gray-600">
+            Already have an account?{" "}
+            <Link href="/login" className="text-blue-600 hover:underline font-medium">
               Log in
             </Link>
           </p>
