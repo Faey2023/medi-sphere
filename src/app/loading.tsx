@@ -1,9 +1,7 @@
-import Spinner from "@/components/shared/spinner"
+import Spinner from '@/components/shared/Spinner';
 
 const loading = () => {
-  return (
-    <Spinner/>
-  )
-}
+  return <Spinner />;
+};
 
-export default loading
+export default loading;
