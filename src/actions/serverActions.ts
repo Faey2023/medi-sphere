@@ -1,23 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// src/actions/serverActions.ts
-
 "use server";
-
-export const registerUser = async (userInfo: any) => {
-  const res = await fetch("http://localhost:5000/api/auth/register", {
+export const registerUser = async (data: any) => {
+  console.log("data", data)
+  const res = await fetch(`${process.env.SERVER_URL}/api/auth/register`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userInfo),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
   });
 
- 
-  if (!res.ok) {
-    const errorText = await res.text(); 
-    throw new Error(`Server Error: ${res.status} - ${errorText}`);
-  }
-
-  const result = await res.json(); 
+  const result = await res.json();
   return result;
 };

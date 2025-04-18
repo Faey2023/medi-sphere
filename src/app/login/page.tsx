@@ -1,45 +1,43 @@
+
 "use client";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "", remember: false });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
 
-    const result = await signIn("credentials", {
+    // Handle authentication logic here
+    await signIn("credentials", {
       email: formData.email,
       password: formData.password,
-      redirect: false,
+      redirect: true,
+      callbackUrl: "http://localhost:3000",
     });
-
-    setLoading(false);
-
-    if (result?.error) {
-      setError("Invalid credentials. Please try again.");
-    } else {
-      router.push("/profile");
-    }
   };
 
   const handleSocialLogin = (provider: string) => {
-    signIn(provider, {
-      callbackUrl: `${window.location.origin}/profile`,
-    });
+    console.log(`Logging in with ${provider}`);
+    
+    if(provider == "github"){
+      signIn("github", {
+        callbackUrl: "http://localhost:3000",
+      })
+    }
+    else if(provider=="google"){
+      signIn("google", {
+        callbackUrl: "http://localhost:3000",
+      })
+    }
   };
 
   return (
@@ -47,11 +45,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-2xl">
         <h2 className="text-2xl font-semibold text-center text-gray-700">Login</h2>
 
-        {error && <p className="text-sm text-red-600 text-center">{error}</p>}
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -64,7 +62,9 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -87,18 +87,17 @@ export default function LoginPage() {
               />
               <span className="ml-2 text-sm text-gray-600">Remember me</span>
             </label>
-            <a href="#" className="text-sm text-indigo-600 hover:underline">Forgot password?</a>
+            <a href="#" className="text-sm text-indigo-600 hover:underline">
+              Forgot password?
+            </a>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-800"
-          >
-            {loading ? "Logging in..." : "Login"}
+          <button type="submit" className="w-full px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-800">
+            Login
           </button>
         </form>
 
+        {/* Social Login Buttons */}
         <div className="flex flex-col space-y-3">
           <button
             onClick={() => handleSocialLogin("github")}
@@ -109,9 +108,9 @@ export default function LoginPage() {
           </button>
           <button
             onClick={() => handleSocialLogin("google")}
-            className="flex items-center justify-center px-4 py-2 text-white bg-slate-800 rounded-lg hover:bg-slate-600"
+            className="flex items-center justify-center px-4 py-2 text-white bg-slate-800  rounded-lg hover:bg-slate-600"
           >
-            <Image src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="Google Logo" width={24} height={24} className="mr-2 rounded-full" />
+           <Image src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="GitHub Logo" width={24} height={24} className="mr-2 rounded-full" />
             Login with Google
           </button>
         </div>
