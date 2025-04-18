@@ -1,9 +1,10 @@
 import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
+import Featured from '@/components/Home/Featured';
 
 const Home = () => {
   return (
     <DefaultLayout>
-      <h1>home</h1>
+      <Featured />
     </DefaultLayout>
   );
 };

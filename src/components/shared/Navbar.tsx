@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="flex justify-between bg-blue-900 px-5 py-2.5 text-sm text-white">
         <div>Free Shipping on Orders Over $50!</div>
         <div className="hidden gap-3 lg:flex">
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/profile">Profile</Link>
           <Link href="/orders">Track Order</Link>
           <Link href="/login">Login</Link>
         </div>
@@ -100,7 +100,7 @@ const Navbar = () => {
               <Link href="/">Contact</Link>
             </li>
             <li>
-              <Link href="/dashboard">Dashboard</Link>
+              <Link href="/profile">Profile</Link>
             </li>
             <li>
               <Link href="/cart">Cart (0)</Link>
