@@ -13,8 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning>{children}
-      <ToastContainer />
+      <body suppressHydrationWarning>
+        {children}
+        <ToastContainer />
       </body>
     </html>
   );

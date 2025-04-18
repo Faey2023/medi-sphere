@@ -28,9 +28,13 @@ const Navbar = () => {
           <Link href="/profile">Profile</Link>
           <Link href="/orders">Track Order</Link>
           <Link href="/login">Login</Link>
-        
-              <button onClick={()=>signOut()} className='bg-red-600 text-white rounded text-center px-5' >Logout</button>
-       
+
+          <button
+            onClick={() => signOut()}
+            className="rounded bg-red-600 px-5 text-center text-white"
+          >
+            Logout
+          </button>
         </div>
       </div>
 
@@ -116,7 +120,9 @@ const Navbar = () => {
               <Link href="/login">Login</Link>
             </li>
             <li>
-              <button className='bg-red-600 text-white rounded text-center px-5' >Logout</button>
+              <button className="rounded bg-red-600 px-5 text-center text-white">
+                Logout
+              </button>
             </li>
           </ul>
         </div>
