@@ -23,7 +23,7 @@ export default function EditProfilePage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("/api/profile")
+        const res = await axios.get("/profile")
         setFormData(res.data)
       } catch (error) {
         console.error("Failed to load user", error)
