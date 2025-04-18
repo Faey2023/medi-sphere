@@ -1,43 +1,35 @@
-
 "use client";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "", remember: false });
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/"; // default to home if not specified
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
   };
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Handle authentication logic here
     await signIn("credentials", {
       email: formData.email,
       password: formData.password,
       redirect: true,
-      callbackUrl: "http://localhost:3000",
+      callbackUrl, // dynamic redirect
     });
   };
 
   const handleSocialLogin = (provider: string) => {
-    console.log(`Logging in with ${provider}`);
-    
-    if(provider == "github"){
-      signIn("github", {
-        callbackUrl: "http://localhost:3000",
-      })
-    }
-    else if(provider=="google"){
-      signIn("google", {
-        callbackUrl: "http://localhost:3000",
-      })
-    }
+    signIn(provider, {
+      callbackUrl, // dynamic redirect
+    });
   };
 
   return (
