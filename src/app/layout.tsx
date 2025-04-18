@@ -2,9 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ToastContainer } from 'react-toastify';
 import Navbar from '@/components/shared/Navbar';
-import DashNavbar from '@/components/shared/DashboardNavbar';
-// import { getServerSession } from 'next-auth';
-// import { authOptions } from '@/utils/authOptions';
 
 export const metadata: Metadata = {
   title: 'Medi Sphere',
@@ -16,15 +13,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <body suppressHydrationWarning>
         <Navbar />
-        {children}
-        <DashNavbar/>
-        <div className="min-h-sccren mx-auto"> {children}</div>
-
+        <div className="mx-auto min-h-screen"> {children}</div>
         <ToastContainer />
       </body>
     </html>
