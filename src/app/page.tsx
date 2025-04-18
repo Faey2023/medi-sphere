@@ -1,8 +1,10 @@
+import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
+
 const Home = () => {
   return (
-    <div className="flex flex-col gap-5">
+    <DefaultLayout>
       <h1>home</h1>
-    </div>
+    </DefaultLayout>
   );
 };
 
