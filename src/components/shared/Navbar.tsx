@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 import logo from '@/assets/logo.png';
 import { MenuIcon, ShoppingBag, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -22,18 +23,26 @@ const Navbar = () => {
 
   return (
     <div>
+      {/* Topbar */}
       <div className="flex justify-between bg-blue-900 px-5 py-2.5 text-sm text-white">
         <div>Free Shipping on Orders Over $50!</div>
         <div className="hidden gap-3 lg:flex">
           <Link href="/profile">Profile</Link>
           <Link href="/orders">Track Order</Link>
-          <Link href="/login">Login</Link>
-        
-              <button onClick={()=>signOut()} className='bg-red-600 text-white rounded text-center px-5' >Logout</button>
-       
+          {session ? (
+            <button
+              onClick={() => signOut()}
+              className="rounded bg-red-600 px-5 text-white"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link href="/login">Login</Link>
+          )}
         </div>
       </div>
 
+      {/* Main Navbar */}
       <div className="flex items-center justify-between border border-[#ddd] bg-white px-5 py-4">
         <div className="flex items-center">
           <Link href="/">
@@ -63,12 +72,11 @@ const Navbar = () => {
         </Link>
       </div>
 
+      {/* Navigation Links */}
       <nav className="hidden justify-center bg-blue-900 text-white lg:flex">
         <ul className="flex justify-center gap-5 py-4">
-          <li className="relative">
-            <Link href="/shop">
-              <button className="cursor-pointer">Shop</button>
-            </Link>
+          <li>
+            <Link href="/shop">Shop</Link>
           </li>
           <li>
             <Link href="/">Deals</Link>
@@ -79,6 +87,7 @@ const Navbar = () => {
         </ul>
       </nav>
 
+      {/* Mobile Menu */}
       <div
         className={`bg-opacity-50 fixed inset-0 z-50 transition-transform lg:hidden ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
@@ -113,10 +122,16 @@ const Navbar = () => {
               <Link href="/orders">Track Order</Link>
             </li>
             <li>
-              <Link href="/login">Login</Link>
-            </li>
-            <li>
-              <button className='bg-red-600 text-white rounded text-center px-5' >Logout</button>
+              {session ? (
+                <button
+                  onClick={() => signOut()}
+                  className="rounded bg-red-600 px-5 text-white"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link href="/login">Login</Link>
+              )}
             </li>
           </ul>
         </div>

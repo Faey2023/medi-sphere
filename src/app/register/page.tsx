@@ -1,20 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
-"use client";
+'use client';
 
-import { registerUser } from "@/actions/serverActions";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { registerUser } from '@/actions/serverActions';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    role: "user",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    role: 'user',
+    password: '',
+    confirmPassword: '',
     agreeTerms: false,
   });
 
@@ -24,21 +26,26 @@ export default function RegisterPage() {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? e.target.checked : value,
+      [name]: type === 'checkbox' ? e.target.checked : value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error('Passwords do not match!');
       return;
     }
-    console.log("Register data:", formData);
-    const data = {...formData}
-    // Handle registration logic here
-    registerUser(data);
-    router.push('/login')
+
+    try {
+      const data = { ...formData };
+      await registerUser(data); // assuming this is async
+      toast.success('Registration successful!');
+      router.push('/login');
+    } catch (err) {
+      toast.error('Registration failed. Try again.');
+    }
   };
 
   const handleSocialRegister = (provider: string) => {
@@ -47,13 +54,18 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-2xl">
-        <h2 className="text-2xl font-semibold text-center text-gray-700">Register</h2>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md space-y-6 rounded-2xl bg-white p-8 shadow-lg">
+        <h2 className="text-center text-2xl font-semibold text-gray-700">
+          Register
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-600"
+            >
               Full Name
             </label>
             <input
@@ -63,12 +75,15 @@ export default function RegisterPage() {
               required
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300 focus:outline-none"
+              className="mt-1 w-full rounded-lg border px-4 py-2 focus:ring focus:ring-indigo-300 focus:outline-none"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-600"
+            >
               Email
             </label>
             <input
@@ -78,30 +93,15 @@ export default function RegisterPage() {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300 focus:outline-none"
+              className="mt-1 w-full rounded-lg border px-4 py-2 focus:ring focus:ring-indigo-300 focus:outline-none"
             />
           </div>
+
           <div>
             <label
-              htmlFor="role"
+              htmlFor="password"
               className="block text-sm font-medium text-gray-600"
             >
-              Role
-            </label>
-            <select
-              id="role"
-              name="role"
-              required
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300 focus:outline-none"
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
               Password
             </label>
             <input
@@ -111,12 +111,15 @@ export default function RegisterPage() {
               required
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300 focus:outline-none"
+              className="mt-1 w-full rounded-lg border px-4 py-2 focus:ring focus:ring-indigo-300 focus:outline-none"
             />
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-gray-600"
+            >
               Confirm Password
             </label>
             <input
@@ -126,7 +129,7 @@ export default function RegisterPage() {
               required
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300 focus:outline-none"
+              className="mt-1 w-full rounded-lg border px-4 py-2 focus:ring focus:ring-indigo-300 focus:outline-none"
             />
           </div>
 
@@ -136,14 +139,20 @@ export default function RegisterPage() {
               name="agreeTerms"
               checked={formData.agreeTerms}
               onChange={handleChange}
-              className="text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
             />
             <span className="ml-2 text-sm text-gray-600">
-              I agree to the <a href="#" className="text-indigo-600 hover:underline">Terms & Conditions</a>
+              I agree to the{' '}
+              <a href="#" className="text-indigo-600 hover:underline">
+                Terms & Conditions
+              </a>
             </span>
           </div>
 
-          <button type="submit" className="w-full px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+          <button
+            type="submit"
+            className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+          >
             Register
           </button>
         </form>
@@ -151,23 +160,38 @@ export default function RegisterPage() {
         {/* Social Register Buttons */}
         <div className="flex flex-col space-y-3">
           <button
-            onClick={() => handleSocialRegister("GitHub")}
-            className="flex items-center justify-center px-4 py-2 text-white bg-gray-900 rounded-lg hover:bg-gray-600"
+            onClick={() => handleSocialRegister('GitHub')}
+            className="flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-600"
           >
-            <Image src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" width={24} height={24} className="mr-2 rounded-full" />
+            <Image
+              src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              alt="GitHub Logo"
+              width={24}
+              height={24}
+              className="mr-2 rounded-full"
+            />
             Sign Up with GitHub
           </button>
           <button
-            onClick={() => handleSocialRegister("Google")}
-            className="flex items-center justify-center px-4 py-2 text-white bg-slate-800 rounded-lg hover:bg-slate-600"
+            onClick={() => handleSocialRegister('Google')}
+            className="flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-white hover:bg-slate-600"
           >
-            <Image src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="GitHub Logo" width={24} height={24} className="mr-2 rounded-full" />
+            <Image
+              src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
+              alt="GitHub Logo"
+              width={24}
+              height={24}
+              className="mr-2 rounded-full"
+            />
             Sign Up with Google
           </button>
         </div>
 
-        <p className="text-sm text-center text-gray-600">
-          Already have an account? <Link href="/login" className="text-indigo-600 hover:underline">Login</Link>
+        <p className="text-center text-sm text-gray-600">
+          Already have an account?{' '}
+          <Link href="/login" className="text-indigo-600 hover:underline">
+            Login
+          </Link>
         </p>
       </div>
     </div>
