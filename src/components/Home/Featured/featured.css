@@ -1,0 +1,56 @@
+.swiper-button-next {
+  width: 2rem;
+  height: 2rem;
+  z-index: 99999;
+
+  background-color: #1e40af;
+  color: white;
+  border-radius: 9999px;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.swiper-button-prev {
+  width: 2rem;
+  height: 2rem;
+  z-index: 99999;
+  background-color: #1e40af;
+  border-radius: 9999px;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.swiper-button-prev {
+  right: 0 !important;
+}
+
+.swiper-button-next:after {
+  content: url('data:image/svg+xml,<svg stroke="currentColor" fill="white" stroke-width="0" viewBox="0 0 24 24" class="text-xl" height="26px" width="26px" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>');
+  font-size: 0%;
+}
+
+.swiper-button-prev:after {
+  content: url('data:image/svg+xml,<svg stroke="white" fill="white" stroke-width="0" viewBox="0 0 24 24" class="text-xl" height="26px" width="26px" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"></path></svg>');
+  font-size: 0%;
+}
+
+.swiper-button-next .swiper-button-next-icon {
+  font-size: 1.25rem;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: #3b82f6;
+}
+
+.swiper-button-next:hover.swiper-button-next:after {
+  content: url('data:image/svg+xml,<svg stroke="white" fill="white" stroke-width="0" viewBox="0 0 24 24" class="text-xl" height="26px" width="26px" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path></svg>');
+  font-size: 0%;
+}
+
+.swiper-button-prev:hover.swiper-button-prev:after {
+  content: url('data:image/svg+xml,<svg stroke="white" fill="white" stroke-width="0" viewBox="0 0 24 24" class="text-xl" height="26px" width="26px" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"></path></svg>');
+  font-size: 0%;
+}
