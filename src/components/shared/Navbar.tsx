@@ -5,6 +5,7 @@ import logo from '@/assets/logo.png';
 import { MenuIcon, ShoppingBag, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -27,6 +28,9 @@ const Navbar = () => {
           <Link href="/dashboard">Dashboard</Link>
           <Link href="/orders">Track Order</Link>
           <Link href="/login">Login</Link>
+        
+              <button onClick={()=>signOut()} className='bg-red-600 text-white rounded text-center px-5' >Logout</button>
+       
         </div>
       </div>
 
@@ -110,6 +114,9 @@ const Navbar = () => {
             </li>
             <li>
               <Link href="/login">Login</Link>
+            </li>
+            <li>
+              <button className='bg-red-600 text-white rounded text-center px-5' >Logout</button>
             </li>
           </ul>
         </div>

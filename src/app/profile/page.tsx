@@ -53,7 +53,7 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-xl space-y-6 p-6">
-          {session?.user && (
+      {session?.user && (
         <div className="text-center">
           <h1 className="mt-6 text-2xl">Welcome {session.user.name}</h1>
           <h2 className="text-md mt-2">
@@ -94,8 +94,6 @@ export default function ProfilePage() {
           </Button>
         </CardContent>
       </Card>
-
-  
     </div>
   );
 }
