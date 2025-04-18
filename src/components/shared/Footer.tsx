@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo-white.png';
 import Image from 'next/image';
 import { Facebook, Linkedin, Twitter } from 'lucide-react';
 
