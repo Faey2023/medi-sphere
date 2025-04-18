@@ -92,7 +92,7 @@ const Testimonial = () => {
             key={index}
             className="swiper-slide my-5 w-auto max-w-[330px] flex-shrink-0 transition-transform duration-300"
           >
-            <div className="relative mx-5 h-full max-w-[330px] cursor-pointer rounded-2xl bg-white p-7 shadow-[0_4px_8px_rgba(0,0,0,0.7)]">
+            <div className="relative mx-5 h-full mb-8 max-w-[330px] cursor-pointer rounded-2xl bg-white p-7 shadow-[0_4px_8px_rgba(0,0,0,0.7)]">
               <div className="flex w-full flex-col items-center text-center">
                 <div className="stars text-2xl text-[#f1b00f]">
                   {'★'.repeat(testimonial.rating)}
