@@ -33,12 +33,12 @@ export const authOptions = {
           role: userRole,
         };
       },
+
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
     }),
     CredentialsProvider({
       name: 'Credentials',
-
       credentials: {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
