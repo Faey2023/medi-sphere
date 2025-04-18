@@ -12,14 +12,20 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    role: "user",
     password: "",
     confirmPassword: "",
     agreeTerms: false,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? e.target.checked : value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -75,7 +81,25 @@ export default function RegisterPage() {
               className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300 focus:outline-none"
             />
           </div>
-
+          <div>
+            <label
+              htmlFor="role"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Role
+            </label>
+            <select
+              id="role"
+              name="role"
+              required
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300 focus:outline-none"
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-600">
               Password
