@@ -1,40 +1,52 @@
+"use client"
 
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import axios from "axios"
 
-import { registerUser } from "@/actions/serverActions";
-import { authOptions } from "@/utils/authOptions";
-import { getServerSession } from "next-auth";
-import Image from "next/image";
+export default function ProfilePage() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
-const profile = async() => {
-    const session = await getServerSession(authOptions);
-    if(session){
-        await registerUser({...session?.user});
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get("/api/profile")
+        setUser(res.data)
+      } catch (error) {
+        console.error("Failed to fetch user", error)
+      } finally {
+        setLoading(false)
+      }
     }
-    return (
-    <div>
-      {session?.user && (
-        <>
-          <h1 className="text-4xl text-center mt-10">
-            Welcome {session?.user?.name}
-          </h1>
-          <h1 className="text-4xl text-center mt-10">
-            Logged-in user email: {session?.user?.email}
-          </h1>
-          <Image
-            src={
-              session?.user?.image ||
-              "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png"
-            }
-            width={100}
-            height={100}
-            alt="user image"
-            className="mx-auto rounded-full mt-5"
-          />
-          
-        </>
-      )}
+
+    fetchUser()
+  }, [])
+
+  if (loading) return <div className="p-6">Loading...</div>
+  if (!user) return <div className="p-6">User not found</div>
+
+  return (
+    <div className="p-6 max-w-xl mx-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle>My Profile</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm">
+          <p><strong>Name:</strong> {user.name}</p>
+          <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Phone:</strong> {user.phone || "N/A"}</p>
+          <p><strong>Address:</strong> {user.address || "N/A"}</p>
+
+          <Button onClick={() => router.push(`/profile/${user._id}/edit`)}>
+            Update Profile
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   )
 }
-
-export default profile
