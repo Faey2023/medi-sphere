@@ -12,6 +12,7 @@ import './featured.css';
 const Featured = () => {
   //fetching all products
   const [products, setProducts] = useState([]);
+  const [slidesPerView, setSlidesPerView] = useState<number>(1);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,18 +37,37 @@ const Featured = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setSlidesPerView(4);
+      } else if (window.innerWidth >= 576) {
+        setSlidesPerView(3);
+      } else if (window.innerWidth >= 400) {
+        setSlidesPerView(2);
+      } else {
+        setSlidesPerView(1);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="my-10 px-12">
       <div className="flex justify-between">
         <div>
-          <h1 className="text-left text-3xl font-extrabold uppercase">
+          <h1 className="text-left text-2xl font-extrabold uppercase lg:text-3xl">
             featured medicines
           </h1>
           <p>Discounts & Offers Up To 25%</p>
         </div>
       </div>
       <Swiper
-        slidesPerView={4}
+        slidesPerView={slidesPerView}
         grid={{
           rows: 1,
         }}

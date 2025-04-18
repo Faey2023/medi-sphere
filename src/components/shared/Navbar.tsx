@@ -43,7 +43,7 @@ const Navbar = () => {
 
         <div className="hidden w-[40%] overflow-hidden rounded-3xl border border-[#ddd] lg:flex">
           <input
-            className="w-full border-none p-2.5"
+            className="w-full border-none p-2.5 pl-4 outline-0"
             type="text"
             placeholder="Search for products..."
           />
