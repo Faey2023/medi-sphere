@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { ToastContainer } from 'react-toastify';
+import Navbar from '@/components/shared/Navbar';
 
 export const metadata: Metadata = {
   title: 'Medi Sphere',
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning>
+        <Navbar />
         {children}
         <ToastContainer />
       </body>
