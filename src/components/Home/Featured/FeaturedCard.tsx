@@ -2,6 +2,9 @@ import { Product } from '@/types/Product';
 import { Heart, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import './featured.css';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/redux/features/cart/cartSlice';
+import { toast } from 'react-toastify';
 
 interface FeaturedCardProps {
   product: Product;
@@ -9,6 +12,12 @@ interface FeaturedCardProps {
 
 const FeaturedCard = ({ product }: FeaturedCardProps) => {
   const { name, imageUrl, price, discount } = product || {};
+
+  const dispatch = useDispatch();
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+    toast.success(`${product.name} added to cart!`);
+  };
 
   // Function to calculate total percentage after discount
   const calculateTotalPrice = ({
@@ -87,7 +96,10 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
               </div>
               {/* Add to cart */}
               <div className="w-[38%] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-                <button className="w-full cursor-pointer rounded-xl bg-blue-600 py-3 text-white transition-all duration-200 ease-linear hover:bg-blue-900">
+                <button
+                  onClick={handleAddToCart}
+                  className="w-full cursor-pointer rounded-xl bg-blue-600 py-3 text-white transition-all duration-200 ease-linear hover:bg-blue-900"
+                >
                   Add To Cart
                 </button>
               </div>
