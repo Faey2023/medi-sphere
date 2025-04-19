@@ -8,34 +8,18 @@ import { Grid, Navigation } from 'swiper/modules';
 import './featured.css';
 import FeaturedCard from './FeaturedCard';
 import { IMedicine } from '@/types';
+import { useGetAllMedicineQuery } from '@/redux/api/productApi';
 
 const Featured = () => {
-  //fetching all products
-  const [products, setProducts] = useState([]);
+  const { data } = useGetAllMedicineQuery(undefined, {
+    pollingInterval: 30000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+  const medicineData: IMedicine[] = data?.data;
+
   const [slidesPerView, setSlidesPerView] = useState<number>(1);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch('http://localhost:5000/api/medicines', {
-          method: 'GET',
-        });
-
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await res.json();
-
-        // console.log('API response:', data?.data);
-
-        setProducts(data?.data);
-      } catch (error) {
-        console.error('There was a problem fetching the data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -77,7 +61,7 @@ const Featured = () => {
         className="mySwiper my-10"
       >
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product: IMedicine) => (
+          {medicineData?.map((product: IMedicine) => (
             <SwiperSlide key={product._id}>
               <FeaturedCard product={product} />
             </SwiperSlide>
