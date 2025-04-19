@@ -3,6 +3,7 @@
 import { IMedicine } from '@/types';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Props {
   medicine: IMedicine;
@@ -29,7 +30,13 @@ export default function MedicineCard({ medicine }: Props) {
           fill
           className="object-cover"
         /> */}
-        <img src={imageUrl} alt="image from web" />
+
+        <Image
+          src={imageUrl || '/src/assets/placeholder.png'}
+          alt="image from web"
+          width={100}
+          height={100}
+        />
       </div>
 
       <h3 className="truncate text-lg font-semibold text-gray-800">{name}</h3>

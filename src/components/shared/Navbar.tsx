@@ -85,6 +85,9 @@ const Navbar = () => {
       <nav className="hidden justify-center bg-blue-900 text-white lg:flex">
         <ul className="flex justify-center gap-5 py-4">
           <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>
             <Link href="/shop">Shop</Link>
           </li>
           <li>

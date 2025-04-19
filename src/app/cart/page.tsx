@@ -15,6 +15,7 @@ import { Separator } from '@/components/ui/separator';
 import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -80,6 +81,7 @@ const CartPage = () => {
   };
 
   return (
+    <DefaultLayout>
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-3xl font-bold">Your Cart</h1>
 
@@ -210,7 +212,7 @@ const CartPage = () => {
           </div>
         </div>
       )}
-    </div>
+    </div></DefaultLayout>
   );
 };
 
