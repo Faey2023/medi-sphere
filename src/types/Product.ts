@@ -4,6 +4,7 @@ export interface Product {
   description: string;
   price: number;
   quantity: number;
+  prescriptionFile: string | null;
   requiredPrescription: boolean;
   manufacturer: string;
   expiryDate: string;

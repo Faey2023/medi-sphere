@@ -10,6 +10,7 @@ module.exports = {
       'lh3.googleusercontent.com', // if using Google provider
       'avatars.githubusercontent.com', // if using GitHub provider
       'demo2.themelexus.com', //for image
+      'localhost',
     ],
   },
 };

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -25,12 +26,23 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await signIn('credentials', {
+    const res = await signIn('credentials', {
       email: formData.email,
       password: formData.password,
-      redirect: true,
-      callbackUrl, // dynamic redirect
+      redirect: false, // don't redirect immediately
+      callbackUrl,
     });
+
+    if (res?.ok) {
+      toast.success('Login successful!');
+
+      // Delay redirection a bit to show toast
+      setTimeout(() => {
+        window.location.href = callbackUrl;
+      }, 1500);
+    } else {
+      toast.error('Invalid credentials. Please try again.');
+    }
   };
 
   const handleSocialLogin = (provider: string) => {

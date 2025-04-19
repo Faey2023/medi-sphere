@@ -1,5 +1,7 @@
 import { ToastContainer } from 'react-toastify';
 import './globals.css';
+import { Providers } from './providers';
+import ReduxProvider from '@/redux/ReduxProvider';
 
 export const metadata = {
   title: 'Medi Sphere',
@@ -14,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning>
-        {children}
-        <ToastContainer />
+        <ReduxProvider>
+          <Providers>{children}</Providers>
+          <ToastContainer />
+        </ReduxProvider>
       </body>
     </html>
   );

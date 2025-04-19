@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 
 import { registerUser } from '@/actions/serverActions';
@@ -5,15 +7,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    role: "user",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    role: 'user',
+    password: '',
+    confirmPassword: '',
     agreeTerms: false,
   });
 
@@ -23,21 +26,26 @@ export default function RegisterPage() {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? e.target.checked : value,
+      [name]: type === 'checkbox' ? e.target.checked : value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      toast.error('Passwords do not match!');
       return;
     }
-    console.log('Register data:', formData);
-    const data = { ...formData };
-    // Handle registration logic here
-    registerUser(data);
-    router.push('/login');
+
+    try {
+      const data = { ...formData };
+      await registerUser(data); // assuming this is async
+      toast.success('Registration successful!');
+      router.push('/login');
+    } catch (err) {
+      toast.error('Registration failed. Try again.');
+    }
   };
 
   const handleSocialRegister = (provider: string) => {
@@ -88,25 +96,7 @@ export default function RegisterPage() {
               className="mt-1 w-full rounded-lg border px-4 py-2 focus:ring focus:ring-indigo-300 focus:outline-none"
             />
           </div>
-          <div>
-            <label
-              htmlFor="role"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Role
-            </label>
-            <select
-              id="role"
-              name="role"
-              required
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-indigo-300 focus:outline-none"
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
+
           <div>
             <label
               htmlFor="password"
