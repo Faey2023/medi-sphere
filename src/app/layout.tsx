@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'MediSphere',
   description: 'Your trusted online medicine shop',
   icons: {
-    icon: '/favicon.png',
+    icon: '/icon.png',
   },
 };
 

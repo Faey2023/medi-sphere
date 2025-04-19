@@ -1,20 +1,15 @@
 import MedicineDetails from '@/components/Medicine/MedicineDetails';
 
-interface MedicineDetailsPageProps {
-  params: {
-    id: string;
-  };
-}
-
 export default async function MedicineDetailsPage({
   params,
-}: MedicineDetailsPageProps) {
-  const { id } = params;
-  console.log(id);
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
   return (
     <div>
-      <MedicineDetails id={id}></MedicineDetails>
+      <MedicineDetails id={id} />
     </div>
   );
 }
