@@ -26,6 +26,9 @@ import {
 } from '@/redux/api/productApi';
 import Image from 'next/image';
 import DefaultLayout from '../DefaultLayout/DefaultLayout';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/redux/features/cart/cartSlice';
+import { toast } from 'react-toastify';
 
 export default function MedicineDetails({ id }: { id: string }) {
   //   const { id } = useParams<{ id: string }>()
@@ -36,7 +39,7 @@ export default function MedicineDetails({ id }: { id: string }) {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
-
+  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
 
   console.log('this is medicine data from medicine details page', medicines);
@@ -98,6 +101,11 @@ export default function MedicineDetails({ id }: { id: string }) {
 
   const medicine: IMedicine = data.data;
   console.log('hi this is data from details page ', medicine);
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(medicine));
+    toast.success(`${medicine.name} added to cart!`);
+  };
 
   return (
     <DefaultLayout>
@@ -286,11 +294,14 @@ export default function MedicineDetails({ id }: { id: string }) {
 
               {/* Add to Cart--> important */}
               <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-                <Button className="flex-1">
+                <Button
+                  className="flex-1 cursor-pointer"
+                  onClick={handleAddToCart}
+                >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Add to Cart
                 </Button>
-                <Button className="flex-1" variant="outline">
+                <Button className="flex-1 cursor-pointer" variant="outline">
                   Buy Now
                 </Button>
               </div>

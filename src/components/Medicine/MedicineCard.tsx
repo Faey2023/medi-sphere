@@ -34,7 +34,7 @@ export default function MedicineCard({ medicine }: Props) {
         <Image
           src={imageUrl || '/src/assets/placeholder.png'}
           alt="image from web"
-          width={100}
+          width={300}
           height={100}
         />
       </div>

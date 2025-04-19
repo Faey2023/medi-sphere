@@ -5,13 +5,14 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '@/redux/features/cart/cartSlice';
 import { toast } from 'react-toastify';
 import { IMedicine } from '@/types';
+import Link from 'next/link';
 
 interface FeaturedCardProps {
   product: IMedicine;
 }
 
 const FeaturedCard = ({ product }: FeaturedCardProps) => {
-  const { name, imageUrl, price, discount } = product || {};
+  const { _id, name, imageUrl, price, discount } = product || {};
 
   const dispatch = useDispatch();
   const handleAddToCart = () => {
@@ -42,8 +43,8 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
 
   return (
     <>
-      <div>
-        <div className="group max-w-[377px]">
+      <Link href={`/shop/${_id}`}>
+        <div className="group max-w-[377px] cursor-pointer">
           <div className="relative">
             <div>
               <Image
@@ -107,7 +108,7 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
             </div>
           </div>
         </div>
-      </div>
+      </Link>
     </>
   );
 };

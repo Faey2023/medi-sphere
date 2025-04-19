@@ -79,7 +79,7 @@ const Featured = () => {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4">
           {products.map((product: IMedicine) => (
             <SwiperSlide key={product._id}>
-              <FeaturedCard product={product}/>
+              <FeaturedCard product={product} />
             </SwiperSlide>
           ))}
         </div>
