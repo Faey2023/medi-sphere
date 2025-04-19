@@ -1,55 +1,44 @@
-// export { default } from "next-auth/middleware"
-
-// export const config = { matcher: [
-//     "/orders(/.*)?",
-//     "/profile",
-//     "/dashboard",
-//   ], }
-
-// export { default } from "next-auth/middleware"
-
 import { getToken } from 'next-auth/jwt';
-// import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from 'next/server';
 
-// export const config = { matcher: [
-//     "/orders(/.*)?", // Matches /orders, /orders/add, /orders/update, /orders/delete
-//     "/profile",
-//   ], }
-
 const roleBasedRoutes = {
-  user: ['/orders', '/profile'],
-  admin: ['/orders', '/orders/add', '/orders/delete', '/profile'],
+  user: ['/orders', '/orders/add', '/profile'],
+  admin: ['/admin', '/profile'],
 };
 
 export default async function middleware(req: NextRequest) {
   try {
     const { pathname } = req.nextUrl;
-
     const token = await getToken({ req });
 
     if (!token) {
-      return NextResponse.redirect('/login');
+      return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    const userRole = token.role;
+    const userRole = token.role as keyof typeof roleBasedRoutes;
 
-    const allowedRoutes =
-      roleBasedRoutes[userRole as keyof typeof roleBasedRoutes];
-
-    if (userRole && allowedRoutes) {
-      const hasAccess = allowedRoutes.includes(pathname);
-
-      if (hasAccess) {
-        return NextResponse.next();
-      }
+    if (!userRole || !(userRole in roleBasedRoutes)) {
+      return NextResponse.redirect(new URL('/unauthorized', req.url));
     }
 
+    const allowedRoutes = roleBasedRoutes[userRole as keyof typeof roleBasedRoutes];
+
+    const isAllowed = allowedRoutes.some((route) =>
+      pathname === route || pathname.startsWith(`${route}/`)
+    );
+
+    if (isAllowed) {
+      return NextResponse.next();
+    }
+
+    // Redirect unauthorized access
     return NextResponse.redirect(new URL('/', req.url));
   } catch (error) {
-    console.error(error);
+    console.error('Middleware error:', error);
     return NextResponse.redirect(new URL('/login', req.url));
   }
 }
 
-export const config = { matcher: ['/orders(/.*)?', '/profile'] };
+export const config = {
+  matcher: ['/orders(/.*)?', '/admin(/.*)?', '/profile'],
+};
