@@ -3,7 +3,13 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ['demo2.themelexus.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'demo2.themelexus.com',
+        pathname: '**',
+      },
+    ],
   },
 };
 

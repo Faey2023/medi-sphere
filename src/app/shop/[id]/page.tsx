@@ -6,7 +6,7 @@ interface MedicineDetailsPageProps {
   };
 }
 
-export default function MedicineDetailsPage({
+export default async function MedicineDetailsPage({
   params,
 }: MedicineDetailsPageProps) {
   const { id } = params;
