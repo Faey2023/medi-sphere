@@ -43,12 +43,12 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
 
   return (
     <>
-      <Link href={`/shop/${_id}`}>
-        <div className="group max-w-[377px] cursor-pointer">
+      <div className="group max-w-[377px] cursor-pointer">
+        <Link href={`/shop/${_id}`}>
           <div className="relative">
             <div>
               <Image
-                src={imageUrl || '/placeholder.png'}
+                src={imageUrl || '/src/assets/placeholder.png'}
                 alt=""
                 width={280}
                 height={280}
@@ -73,42 +73,41 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
               </button>
             </div>
           </div>
-
-          <div>
-            <h3 className="font-jost mt-2 mb-1 ml-1 line-clamp-1 text-xl font-bold">
-              {name}
-            </h3>
-            <div className="flex items-center justify-between">
-              <div>
-                {/* Price */}
-                <div className="ml-1">
-                  {discount ? (
-                    <div className="flex flex-row-reverse items-center gap-2">
-                      <del className="text-gray-500">${price}</del>
-                      <p className="text-[22px] font-bold text-blue-600">
-                        ${result.discountedPrice.toFixed(2)}
-                      </p>
-                    </div>
-                  ) : (
+        </Link>
+        <div>
+          <h3 className="font-jost mt-2 mb-1 ml-1 line-clamp-1 text-xl font-bold">
+            {name}
+          </h3>
+          <div className="flex items-center justify-between">
+            <div>
+              {/* Price */}
+              <div className="ml-1">
+                {discount ? (
+                  <div className="flex flex-row-reverse items-center gap-2">
+                    <del className="text-gray-500">${price}</del>
                     <p className="text-[22px] font-bold text-blue-600">
-                      ${price}
+                      ${result.discountedPrice.toFixed(2)}
                     </p>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <p className="text-[22px] font-bold text-blue-600">
+                    ${price}
+                  </p>
+                )}
               </div>
-              {/* Add to cart */}
-              <div className="w-[38%] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full cursor-pointer rounded-xl bg-blue-600 py-3 text-white transition-all duration-200 ease-linear hover:bg-blue-900"
-                >
-                  Add To Cart
-                </button>
-              </div>
+            </div>
+            {/* Add to cart */}
+            <div className="w-[38%] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
+              <button
+                onClick={handleAddToCart}
+                className="w-full cursor-pointer rounded-xl bg-blue-600 py-3 text-white transition-all duration-200 ease-linear hover:bg-blue-900"
+              >
+                Add To Cart
+              </button>
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </>
   );
 };

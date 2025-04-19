@@ -23,43 +23,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { IMedicine } from '@/types';
 import MedicineCard from './MedicineCard';
-// import { useGetAllMedicineQuery } from "@/redux/api/productApi";
+import { useGetAllMedicineQuery } from '@/redux/api/productApi';
 // import MedicineCard from "@/components/Medicine/MedicineCard";
 
 export default function AllMedicines() {
-  const [medicines, setMedicines] = useState<{ data: IMedicine[] } | null>(
-    null
-  );
-  const [loading, setLoading] = useState(true);
+  // const [medicines, setMedicines] = useState<{ data: IMedicine[] } | null>(
+  //   null
+  // );
+  // const [loading, setLoading] = useState(true);
 
-  // const {data} = useGetAllMedicineQuery(undefined, {
-  //   pollingInterval: 30000,
-  //   refetchOnFocus: true,
-  //   refetchOnMountOrArgChange: true,
-  //   refetchOnReconnect: true,
-  // });
-  // console.log("datta from", data)
-  useEffect(() => {
-    const fetchMedicines = async () => {
-      try {
-        const res = await fetch('http://localhost:5000/api/medicines');
-        const data = await res.json();
-        setMedicines(data);
-      } catch (err) {
-        console.error('Failed to fetch medicines:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data } = useGetAllMedicineQuery(undefined, {
+    pollingInterval: 30000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+  // console.log("data from", data)
+  // useEffect(() => {
+  //   const fetchMedicines = async () => {
+  //     try {
+  //       const res = await fetch('http://localhost:5000/api/medicines');
+  //       const data = await res.json();
+  //       setMedicines(data);
+  //     } catch (err) {
+  //       console.error('Failed to fetch medicines:', err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchMedicines();
-  }, []);
+  //   fetchMedicines();
+  // }, []);
 
-  if (loading) return <p className="text-center">Loading...</p>;
-  const medicineData: IMedicine[] = medicines?.data || [];
+  // if (loading) return <p className="text-center">Loading...</p>;
+  const medicineData: IMedicine[] = data?.data;
 
   return (
     <div className="container mx-auto bg-[#f2f3f5] p-4">
@@ -102,7 +102,7 @@ export default function AllMedicines() {
         {/* Main Content */}
         <div className="w-full md:w-3/4 lg:w-4/5">
           <div className="mb-4 flex flex-col items-center justify-between md:flex-row">
-            <p>Total products: {medicineData.length}</p>
+            <p>Total products: {medicineData?.length}</p>
             <Select>
               <SelectTrigger className="w-[300px]">
                 <SelectValue placeholder="Default Sorting" />

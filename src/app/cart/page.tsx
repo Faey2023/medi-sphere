@@ -16,6 +16,7 @@ import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
+import { toast } from 'react-toastify';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -69,14 +70,14 @@ const CartPage = () => {
       (item) => item.requiredPrescription && !item.prescriptionFile
     );
     if (missing.length) {
-      alert('Please upload prescription for required medicines.');
+      toast.error('Please upload prescription for required medicines.');
       return;
     } else if (cart.length === 0) {
-      alert(
+      toast.error(
         'Your cart is empty. Please add items to your cart before checking out.'
       );
     } else {
-      alert('Proceeding to secure checkout...');
+      toast('Proceeding to secure checkout...');
     }
   };
 
