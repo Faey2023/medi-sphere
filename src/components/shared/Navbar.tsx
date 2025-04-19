@@ -6,10 +6,14 @@ import logo from '@/assets/logo.png';
 import { MenuIcon, ShoppingBag, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { data: session } = useSession();
+  const cart = useSelector((state: RootState) => state.cart.cart);
+  const totalQuantity = cart.length;
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -66,8 +70,13 @@ const Navbar = () => {
         </div>
 
         <Link href="/cart">
-          <div className="hidden justify-center gap-3 lg:flex">
-            <ShoppingBag /> Cart (0)
+          <div className="relative hidden items-center gap-3 lg:flex">
+            <ShoppingBag />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white">
+                {totalQuantity}
+              </span>
+            )}
           </div>
         </Link>
       </div>
@@ -116,7 +125,7 @@ const Navbar = () => {
               <Link href="/profile">Profile</Link>
             </li>
             <li>
-              <Link href="/cart">Cart (0)</Link>
+              <Link href="/cart">Cart ({totalQuantity})</Link>
             </li>
             <li>
               <Link href="/orders">Track Order</Link>
