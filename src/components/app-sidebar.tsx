@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from 'next/link';
 import {
   Sidebar,
   SidebarContent,
@@ -10,38 +10,43 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
-import { BriefcaseMedical, LayoutDashboard, Pill, Stethoscope } from "lucide-react"
+import {
+  BriefcaseMedical,
+  LayoutDashboard,
+  Pill,
+  Stethoscope,
+} from 'lucide-react';
 
 const items = [
   {
-    title: "Dashboard",
-    url: "/admin/",
+    title: 'Dashboard',
+    url: '/admin/',
     icon: LayoutDashboard,
   },
   {
-    title: "Manage Medicines",
-    url: "/admin/medicines",
+    title: 'Manage Medicines',
+    url: '/admin/medicines',
     icon: Pill,
   },
   {
-    title: "Manage Orders",
-    url: "/admin/orders",
+    title: 'Manage Orders',
+    url: '/admin/orders',
     icon: Stethoscope,
   },
   {
-    title: "Manage Users",
-    url: "/admin/users",
+    title: 'Manage Users',
+    url: '/admin/users',
     icon: BriefcaseMedical,
   },
-]
+];
 
 export function AppSidebar() {
   return (
     <Sidebar className="h-screen">
       <SidebarHeader>
-        <div className="text-lg font-bold p-4">Admin Panel</div>
+        <div className="p-4 text-lg font-bold">Admin Panel</div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -65,8 +70,8 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="text-sm p-4">© Habibur Rahman</div>
+        <div className="p-4 text-sm">© Habibur Rahman</div>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
