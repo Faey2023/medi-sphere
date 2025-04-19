@@ -32,7 +32,7 @@ export default function MedicineCard({ medicine }: Props) {
         /> */}
 
         <Image
-          src={imageUrl || '/src/assets/placeholder.png'}
+          src={imageUrl || '/placeholder.png'}
           alt="image from web"
           width={300}
           height={100}

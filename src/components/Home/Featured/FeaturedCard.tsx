@@ -48,7 +48,7 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
           <div className="relative">
             <div>
               <Image
-                src={imageUrl || '/src/assets/placeholder.png'}
+                src={imageUrl || '/placeholder.png'}
                 alt=""
                 width={280}
                 height={280}
