@@ -1,13 +1,13 @@
-import { Product } from '@/types/Product';
 import { Heart, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import './featured.css';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/redux/features/cart/cartSlice';
 import { toast } from 'react-toastify';
+import { IMedicine } from '@/types';
 
 interface FeaturedCardProps {
-  product: Product;
+  product: IMedicine;
 }
 
 const FeaturedCard = ({ product }: FeaturedCardProps) => {
@@ -36,7 +36,8 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
     };
   };
 
-  const result = calculateTotalPrice(product);
+  const result = calculateTotalPrice({ price, discount });
+
   // console.log(result.discountedPrice);
 
   return (
@@ -46,7 +47,7 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
           <div className="relative">
             <div>
               <Image
-                src={imageUrl}
+                src={imageUrl || '/src/assets/placeholder.png'}
                 alt=""
                 width={280}
                 height={280}

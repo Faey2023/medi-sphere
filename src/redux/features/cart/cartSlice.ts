@@ -1,7 +1,8 @@
+import { IMedicine } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product } from '@/types/Product';
+// import { Product } from '@/types/Product';
 
-interface CartItem extends Product {
+interface CartItem extends IMedicine {
   quantity: number;
   prescription?: string | null;
 }
@@ -16,7 +17,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<Product>) => {
+    addToCart: (state, action: PayloadAction<IMedicine>) => {
       const existingProduct = state.cart.find(
         (item) => item._id === action.payload._id
       );
@@ -26,7 +27,7 @@ const cartSlice = createSlice({
         state.cart.push({
           ...action.payload,
           quantity: 1,
-          prescriptionFile: null,
+          // prescriptionFile: null,
         });
       }
     },

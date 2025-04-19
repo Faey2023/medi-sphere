@@ -5,9 +5,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Grid, Navigation } from 'swiper/modules';
-import ProductCard from './FeaturedCard';
-import { Product } from '@/types/Product';
 import './featured.css';
+import FeaturedCard from './FeaturedCard';
+import { IMedicine } from '@/types';
 
 const Featured = () => {
   //fetching all products
@@ -77,9 +77,9 @@ const Featured = () => {
         className="mySwiper my-10"
       >
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product: Product) => (
+          {products.map((product: IMedicine) => (
             <SwiperSlide key={product._id}>
-              <ProductCard product={product} />
+              <FeaturedCard product={product}/>
             </SwiperSlide>
           ))}
         </div>

@@ -1,10 +1,11 @@
-import React from 'react';
+import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
+import AllMedicines from '@/components/Medicine/AllMedicines';
 
 const Shop = () => {
   return (
-    <div>
-      <h1>shop</h1>
-    </div>
+    <DefaultLayout>
+      <AllMedicines />
+    </DefaultLayout>
   );
 };
 
