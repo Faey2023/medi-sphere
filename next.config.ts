@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    SERVER_URL: process.env.SERVER_URL,
+    SERVER_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
   },
   images: {
     domains: [
@@ -10,6 +10,7 @@ module.exports = {
       'lh3.googleusercontent.com', // if using Google provider
       'avatars.githubusercontent.com', // if using GitHub provider
       'localhost',
+      'demo2.themelexus.com',
     ],
     remotePatterns: [
       {
