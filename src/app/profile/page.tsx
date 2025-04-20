@@ -46,6 +46,7 @@ export default function ProfilePage() {
       alert('User ID could not be found.');
       return;
     }
+
     router.push(`/profile/${user._id}/edit`);
   };
 
@@ -55,9 +56,11 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-2xl p-6">
-      <Card className="shadow-lg rounded-2xl border border-gray-200">
+      <Card className="rounded-2xl border border-gray-200 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-center text-3xl font-semibold">Profile</CardTitle>
+          <CardTitle className="text-center text-3xl font-semibold">
+            Profile
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-center">
           <Image
@@ -79,6 +82,30 @@ export default function ProfilePage() {
             {user?._id ? 'Update Profile' : 'Cannot Update'}
           </Button>
           <Button variant="outline" onClick={() => router.push('/')} className="mt-4">
+
+            <h2 className="mt-2 text-xl font-medium">
+              Welcome, {session?.user?.name}
+            </h2>
+            <p className="text-muted-foreground">
+              Email: {session?.user?.email}
+            </p>
+            <p className="text-muted-foreground">
+              Role: {session?.user?.role === 'admin' ? 'Admin' : 'User'}
+            </p>
+          </div>
+
+          {user?._id ? (
+            <Button onClick={handleUpdateProfile}>Update Profile</Button>
+          ) : (
+            <div className="text-sm text-red-500">User ID is missing</div>
+          )}
+
+          <Button
+            variant="outline"
+            onClick={() => router.push('/')}
+            className="mt-4"
+          >
+
             Go to Home
           </Button>
         </CardContent>
