@@ -23,42 +23,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-// import { useEffect, useState } from 'react';
 import { IMedicine } from '@/types';
 import MedicineCard from './MedicineCard';
 import { useGetAllMedicineQuery } from '@/redux/api/productApi';
-// import MedicineCard from "@/components/Medicine/MedicineCard";
 
 export default function AllMedicines() {
-  // const [medicines, setMedicines] = useState<{ data: IMedicine[] } | null>(
-  //   null
-  // );
-  // const [loading, setLoading] = useState(true);
-
-  const { data } = useGetAllMedicineQuery(undefined, {
+  const { data, isLoading } = useGetAllMedicineQuery(undefined, {
     pollingInterval: 30000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
-  // console.log("data from", data)
-  // useEffect(() => {
-  //   const fetchMedicines = async () => {
-  //     try {
-  //       const res = await fetch('http://localhost:5000/api/medicines');
-  //       const data = await res.json();
-  //       setMedicines(data);
-  //     } catch (err) {
-  //       console.error('Failed to fetch medicines:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
 
-  //   fetchMedicines();
-  // }, []);
-
-  // if (loading) return <p className="text-center">Loading...</p>;
+  if (isLoading) return <p className="text-center">Loading...</p>;
   const medicineData: IMedicine[] = data?.data;
 
   return (
@@ -80,7 +57,6 @@ export default function AllMedicines() {
               </DrawerDescription>
             </DrawerHeader>
             <div className="max-h-[60vh] overflow-y-auto px-4 pb-4">
-              {/* <SearchBar /> */}
               <FilterSidebar />
             </div>
             <DrawerFooter>
@@ -95,7 +71,6 @@ export default function AllMedicines() {
       <div className="flex flex-col gap-4 md:flex-row">
         {/* Sidebar */}
         <div className="hidden md:block md:w-1/4 lg:w-1/5">
-          {/* <SearchBar /> */}
           <FilterSidebar />
         </div>
 

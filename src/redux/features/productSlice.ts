@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface IFilter {
   price: [number, number];
   brand?: string;
-  model?: string;
   category?: string;
   availability?: boolean | 'all';
   sortBy?: string;
@@ -20,7 +19,6 @@ const initialState: IInitialState = {
   filters: {
     price: [0, 10000],
     brand: '',
-    model: '',
     category: '',
     availability: 'all',
     sortBy: '',
