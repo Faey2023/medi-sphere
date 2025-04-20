@@ -51,7 +51,10 @@ export const authOptions = {
         }).then((res) => res.json());
 
         if (user) {
-          return user.user;
+          return {
+            ...user.user,
+            access_token: user.token,
+          };
         } else {
           return null;
         }
@@ -73,6 +76,7 @@ export const authOptions = {
         const typesSession = session.user as UserWithRole;
         typesSession.role = token.role as string;
       }
+      session.accessToken = token.accessToken as string;
 
       return session;
     },
