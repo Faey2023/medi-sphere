@@ -76,7 +76,7 @@ export default function EditProfilePage() {
     try {
       // Send PATCH request to update user
       const response = await axios.patch(
-        `http://localhost:5000/api/users/${userId}`,
+        `http://localhost:5000/api/users/${userId}`, 
         formData
       );
 
@@ -85,7 +85,7 @@ export default function EditProfilePage() {
       
       // Redirect after a short delay
       setTimeout(() => {
-        router.push('/profile');
+        router.push(`/profile/`);
       }, 2000);
     } catch (err: any) {
       console.error('Error updating profile:', err);
@@ -169,7 +169,7 @@ export default function EditProfilePage() {
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={() => router.push('/profile')}
+                onClick={() => router.push(`/profile/${userId}`)}
                 disabled={updating}
               >
                 Cancel
