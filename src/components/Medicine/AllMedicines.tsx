@@ -74,9 +74,7 @@ export default function AllMedicines() {
 
       const total = data.data.meta?.total || 0;
       const loadedCount =
-        page === 1
-          ? data.data.length
-          : allMedicines.length + data.data.length;
+        page === 1 ? data.data.length : allMedicines.length + data.data.length;
       setHasMore(loadedCount < total);
       setIsLoadingMore(false);
     }

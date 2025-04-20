@@ -80,13 +80,17 @@ const CreateMedicineForm = () => {
         tags: [],
         isDeleted: false,
       });
-    } catch (error: any) {
-      console.error('Error:', error);
-      console.error('Error:', error.data?.errorSources[0].message);
-      toast.error(
-        'Error adding Medicine: ' +
-          (error.data?.errorSources[0].message || 'Unknown error')
-      );
+    } catch (error) {
+      const err = error as {
+        data?: {
+          errorSources?: { message?: string }[];
+        };
+      };
+
+      const message = err.data?.errorSources?.[0]?.message || 'Unknown error';
+
+      console.error('Error:', err);
+      toast.error(`Error adding Medicine: ${message}`);
     }
   };
 
