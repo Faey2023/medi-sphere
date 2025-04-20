@@ -3,6 +3,7 @@
 'use client';
 
 import { registerUser } from '@/actions/serverActions';
+import { Eye, EyeClosed } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,6 +12,8 @@ import { toast } from 'react-toastify';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [togglePassword, setTogglePassword] = useState(false);
+  const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -97,22 +100,36 @@ export default function RegisterPage() {
             />
           </div>
 
-          <div>
+          <div className="w-full">
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-600"
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-lg border px-4 py-2 focus:ring focus:ring-indigo-300 focus:outline-none"
-            />
+            <div className="relative mt-1">
+              <input
+                type={togglePassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 pr-10 focus:ring focus:ring-indigo-300 focus:outline-none"
+              />
+
+              <button
+                type="button"
+                onClick={() => setTogglePassword(!togglePassword)}
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-600 hover:text-gray-800"
+              >
+                {togglePassword ? (
+                  <Eye className="cursor-pointer" />
+                ) : (
+                  <EyeClosed className="cursor-pointer" />
+                )}
+              </button>
+            </div>
           </div>
 
           <div>
@@ -122,15 +139,29 @@ export default function RegisterPage() {
             >
               Confirm Password
             </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              required
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="mt-1 w-full rounded-lg border px-4 py-2 focus:ring focus:ring-indigo-300 focus:outline-none"
-            />
+            <div className="relative mt-1">
+              <input
+                type={toggleConfirmPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                name="confirmPassword"
+                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 pr-10 focus:ring focus:ring-indigo-300 focus:outline-none"
+              />
+
+              <button
+                type="button"
+                onClick={() => setToggleConfirmPassword(!toggleConfirmPassword)}
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-600 hover:text-gray-800"
+              >
+                {toggleConfirmPassword ? (
+                  <Eye className="cursor-pointer" />
+                ) : (
+                  <EyeClosed className="cursor-pointer" />
+                )}
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center">

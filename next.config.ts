@@ -1,7 +1,4 @@
 module.exports = {
-  env: {
-    SERVER_URL: process.env.SERVER_URL,
-  },
   images: {
     domains: [
       'cdn1.iconfinder.com',
@@ -10,6 +7,7 @@ module.exports = {
       'lh3.googleusercontent.com', // if using Google provider
       'avatars.githubusercontent.com', // if using GitHub provider
       'localhost',
+      'demo2.themelexus.com',
     ],
     remotePatterns: [
       {

@@ -1,96 +1,112 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import axios from 'axios';
 import Image from 'next/image';
 
-import { registerUser } from '@/actions/serverActions';
-
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null);
+  interface User {
+    name?: string;
+    email?: string;
+    role?: string;
+    _id?: string; // MongoDB Object ID
+  }
+
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get('/profile');
-        setUser(res.data);
-      } catch (error) {
-        console.error('Failed to fetch user', error);
+        // Fetch the user profile (assuming your backend endpoint provides this)
+        const profileRes = await axios.get('http://localhost:5000/api/users/6804a6c6616afc90df99a50e');
+        const profileData = profileRes.data;
+
+        setUser(profileData); // Store the user data in state
+      } catch (err) {
+        console.error('Error fetching profile data:', err);
+        setError('Error fetching profile data');
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchSession = async () => {
-      try {
-        const res = await fetch('/api/auth/session');
-        const data = await res.json();
-        setSession(data);
-
-        // Register user from session info
-        if (data?.user) {
-          await registerUser({ ...data.user });
-        }
-      } catch (error) {
-        console.error('Failed to fetch session', error);
-      }
-    };
-
-    fetchUser();
-    fetchSession();
+    fetchData();
   }, []);
 
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (!user) return <div className="p-6">User not found</div>;
+  // Handle Profile Update
+  const handleUpdateProfile = () => {
+    if (!user?._id) {
+      alert('User ID could not be found.');
+      return;
+    }
+
+    router.push(`/profile/${user._id}/edit`);
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!user) return <div>User not found</div>;
 
   return (
-    <div className="mx-auto max-w-xl space-y-6 p-6">
-      {session?.user && (
-        <div className="text-center">
-          <h1 className="mt-6 text-2xl">Welcome {session.user.name}</h1>
-          <h2 className="text-md mt-2">
-            Logged-in Email: {session.user.email}
-          </h2>
-          <Image
-            src={
-              session.user.image ||
-              'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
-            }
-            width={100}
-            height={100}
-            alt="User Image"
-            className="mx-auto mt-4 rounded-full"
-          />
-        </div>
-      )}
-      <Card>
+    <div className="mx-auto max-w-2xl p-6">
+      <Card className="rounded-2xl border border-gray-200 shadow-lg">
         <CardHeader>
-          <CardTitle>My Profile</CardTitle>
+          <CardTitle className="text-center text-3xl font-semibold">
+            Profile
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 text-sm">
-          <p>
-            <strong>Name:</strong> {session.user.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {session.user.email}
-          </p>
-          <p>
-            <strong>Phone:</strong> {user.phone || 'N/A'}
-          </p>
-          <p>
-            <strong>Address:</strong> {user.address || 'N/A'}
-          </p>
+        <CardContent className="space-y-4 text-center">
+          <Image
+            src={user?.image || 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'}
+            width={120}
+            height={120}
+            alt="User Image"
+            className="mx-auto rounded-full border border-gray-300"
+          />
 
-          <Button onClick={() => router.push(`/profile/${user._id}/edit`)}>
-            Update Profile
+          <div>
+            <h2 className="text-xl font-medium mt-2">Welcome, {user?.name}</h2>
+            <p className="text-muted-foreground">Email: {user?.email}</p>
+            <p className="text-muted-foreground">Role: {user?.role}</p>
+            {/* <p className="text-xs text-gray-400 mt-1">ID: {user?._id || 'Not found'}</p> Display ID here */}
+          </div>
+
+          <Button onClick={handleUpdateProfile}>
+            {user?._id ? 'Update Profile' : 'Cannot Update'}
+          </Button>
+          <Button variant="outline" onClick={() => router.push('/')} className="mt-4">
+
+            <h2 className="mt-2 text-xl font-medium">
+              Welcome, {session?.user?.name}
+            </h2>
+            <p className="text-muted-foreground">
+              Email: {session?.user?.email}
+            </p>
+            <p className="text-muted-foreground">
+              Role: {session?.user?.role === 'admin' ? 'Admin' : 'User'}
+            </p>
+          </div>
+
+          {user?._id ? (
+            <Button onClick={handleUpdateProfile}>Update Profile</Button>
+          ) : (
+            <div className="text-sm text-red-500">User ID is missing</div>
+          )}
+
+          <Button
+            variant="outline"
+            onClick={() => router.push('/')}
+            className="mt-4"
+          >
+
+            Go to Home
           </Button>
         </CardContent>
       </Card>
