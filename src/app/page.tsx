@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <DefaultLayout>
       <Featured />
-      <FeaturedBrandsSlider />  
+      <FeaturedBrandsSlider />
       <Testimonial />
     </DefaultLayout>
   );

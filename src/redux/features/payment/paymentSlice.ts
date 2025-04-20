@@ -22,5 +22,8 @@ const paymentApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateOrderMutation, useGetOrdersQuery, useVerifyOrderQuery } =
-  paymentApi;
+export const {
+  useCreateOrderMutation,
+  useGetOrdersQuery,
+  useVerifyOrderQuery,
+} = paymentApi;
