@@ -451,8 +451,8 @@ export default function MedicineDetails({ id }: { id: string }) {
         <div className="mt-16">
           <h2 className="mb-6 text-2xl font-bold">You Might Also Like</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {medicines?.data?.length > 0
-              ? medicines?.data
+            {medicines?.data?.data?.length > 0
+              ? medicines?.data?.data
                   // showing half of the product
                   .filter((item: IMedicine) => item._id !== medicine._id)
                   .slice(0, 4)

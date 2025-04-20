@@ -20,6 +20,7 @@ const baseApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Medicine'],
   endpoints: () => ({}),
 });
 export default baseApi;

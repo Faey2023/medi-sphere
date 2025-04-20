@@ -1,5 +1,5 @@
 export interface Product {
-  _id: string;
+  _id?: string;
   name: string;
   description: string;
   price: number;
@@ -11,7 +11,7 @@ export interface Product {
   type: string;
   categories: string[];
   symptoms: string[];
-  discount: number;
+  discount?: number;
   imageUrl: string;
   supplier: string;
   inStock: boolean;

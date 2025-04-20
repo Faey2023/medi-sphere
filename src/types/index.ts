@@ -38,3 +38,19 @@ export interface IMedicine {
   sku?: string;
   tags?: string[];
 }
+
+export interface GetAllMedicinesParams {
+  searchTerm?: string;
+  tags?: string[];
+  symptoms?: string[];
+  inStock?: boolean;
+  requiredPrescription?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+  type?: MedicineType;
+  categories?: MedicineCategory[];
+  page?: number; // optional now
+  limit?: number;
+  sortBy?: string | 'createdAt';
+  sortOrder?: 'asc' | 'desc';
+}

@@ -1,162 +1,155 @@
-import Link from 'next/link';
-// import { Input } from "@/components/ui/input"
-// import { Button } from "@/components/ui/button"
-import { Facebook, Twitter, Instagram, Heart, ShoppingBag } from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import logo from '@/assets/logo.png';
+import { MenuIcon, ShoppingBag, X } from 'lucide-react';
 import Image from 'next/image';
-import logo from '../../../public/assets/images/logo/logo.png';
-import SearchBar from '../Search/SearchBar';
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-export default function DummyNavbar() {
+const Navbar = () => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const { data: session } = useSession();
+  const cart = useSelector((state: RootState) => state.cart.cart);
+  const totalQuantity = cart.length;
+
+  const toggleMenu = () => {
+    setMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setMenuOpen(false);
+    }
+  };
+
   return (
-    <header className="w-full">
-      {/* Top announcement bar */}
-      <div className="w-full bg-teal-500 px-4 py-2 text-white">
-        <div className="container mx-auto flex items-center justify-between">
-          <p className="text-sm font-medium">
-            Free Shipping for all Order of $99
-          </p>
-          <div className="flex items-center space-x-4">
-            <Link href="#" className="text-white hover:text-teal-100">
-              <Facebook size={16} />
-              <span className="sr-only">Facebook</span>
-            </Link>
-            <Link href="#" className="text-white hover:text-teal-100">
-              <Twitter size={16} />
-              <span className="sr-only">Twitter</span>
-            </Link>
-            <Link href="#" className="text-white hover:text-teal-100">
-              <Instagram size={16} />
-              <span className="sr-only">Instagram</span>
-            </Link>
-            <Link href="#" className="text-white hover:text-teal-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M8 12h8" />
-                <path d="M12 8v8" />
-              </svg>
-              <span className="sr-only">Google Plus</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Main navbar */}
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <div className="relative mr-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-green-500">
-                <Image src={logo} alt="medi-sphere" />
-                {/* <span className="text-white text-xl font-bold">+</span> */}
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-gray-800">
-                mediSphere
-              </span>
-              <span className="text-sm text-gray-500">Online Pharmacy</span>
-            </div>
-          </Link>
-
-          {/* Search bar */}
-          <SearchBar />
-
-          {/* User actions */}
-          <div className="flex items-center space-x-6">
-            <Link
-              href="/auth"
-              className="text-sm font-medium hover:text-teal-500"
+    <div>
+      {/* Topbar */}
+      <div className="flex justify-between bg-blue-900 px-5 py-2.5 text-sm text-white">
+        <div>Free Shipping on Orders Over $50!</div>
+        <div className="hidden gap-3 lg:flex">
+          <Link href="/profile">Profile</Link>
+          <Link href="/orders">Track Order</Link>
+          {session ? (
+            <button
+              onClick={() => signOut()}
+              className="rounded bg-red-600 px-5 text-white"
             >
-              SIGN IN / SIGN UP
-            </Link>
-            <Link href="/wishlist" className="relative">
-              <Heart className="h-6 w-6 text-gray-700" />
-              <span className="sr-only">Wishlist</span>
-            </Link>
-            <div className="flex items-center">
-              <Link href="/cart" className="relative mr-2">
-                <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-teal-500 text-xs font-bold text-white">
-                  4
-                </div>
-                <ShoppingBag className="h-6 w-6 text-gray-700" />
-                <span className="sr-only">Cart</span>
-              </Link>
-              <span className="font-semibold">$460.00</span>
-            </div>
-          </div>
+              Logout
+            </button>
+          ) : (
+            <Link href="/login">Login</Link>
+          )}
         </div>
       </div>
 
-      {/* Navigation menu */}
-      <nav className="border-t border-gray-200">
-        <div className="container mx-auto px-4">
-          <ul className="flex items-center space-x-8 py-4">
+      {/* Main Navbar */}
+      <div className="flex items-center justify-between border border-[#ddd] bg-white px-5 py-4">
+        <div className="flex items-center">
+          <Link href="/">
+            <Image height={300} width={300} src={logo} alt="Logo" />
+          </Link>
+        </div>
+
+        <button className="block text-xl lg:hidden" onClick={toggleMenu}>
+          <MenuIcon />
+        </button>
+
+        <div className="hidden w-[40%] overflow-hidden rounded-3xl border border-[#ddd] lg:flex">
+          <input
+            className="w-full border-none p-2.5 pl-4 outline-0"
+            type="text"
+            placeholder="Search for products..."
+          />
+          <button className="cursor-pointer border-none bg-blue-900 px-5 py-2.5 text-white">
+            Search
+          </button>
+        </div>
+
+        <Link href="/cart">
+          <div className="relative hidden items-center gap-3 lg:flex">
+            <ShoppingBag />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white">
+                {totalQuantity}
+              </span>
+            )}
+          </div>
+        </Link>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className="hidden justify-center bg-blue-900 text-white lg:flex">
+        <ul className="flex justify-center gap-5 py-4">
+          <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>
+            <Link href="/shop">Shop</Link>
+          </li>
+          <li>
+            <Link href="/">Deals</Link>
+          </li>
+          <li>
+            <Link href="/">Contact</Link>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Mobile Menu */}
+      <div
+        className={`bg-opacity-50 fixed inset-0 z-50 transition-transform lg:hidden ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        onClick={closeMenu}
+      >
+        <div
+          className={`absolute right-0 h-full w-64 transform bg-blue-900 p-5 text-white transition-transform ${
+            isMenuOpen ? 'translate-x-0' : 'translate-x-3/4'
+          }`}
+        >
+          <button onClick={toggleMenu} className="mb-5 text-xl">
+            <X />
+          </button>
+          <ul className="space-y-3">
             <li>
-              <Link
-                href="/"
-                className="flex items-center text-gray-700 hover:text-teal-500"
-              >
-                Home
-                {/* <Plus className="ml-1 h-4 w-4" /> */}
-              </Link>
+              <Link href="/shop">Shop</Link>
             </li>
             <li>
-              <Link
-                href="/shop"
-                className="flex items-center text-gray-700 hover:text-teal-500"
-              >
-                Shop
-                {/* <Plus className="ml-1 h-4 w-4" /> */}
-              </Link>
+              <Link href="/">Deals</Link>
             </li>
             <li>
-              <Link
-                href="/page"
-                className="flex items-center text-gray-700 hover:text-teal-500"
-              >
-                Page
-                {/* <Plus className="ml-1 h-4 w-4" /> */}
-              </Link>
+              <Link href="/">Contact</Link>
             </li>
             <li>
-              <Link
-                href="/blog"
-                className="flex items-center text-gray-700 hover:text-teal-500"
-              >
-                Blog
-                {/* <Plus className="ml-1 h-4 w-4" /> */}
-              </Link>
+              <Link href="/profile">Profile</Link>
             </li>
             <li>
-              <Link
-                href="/on-sale"
-                className="text-gray-700 hover:text-teal-500"
-              >
-                On sale
-              </Link>
+              <Link href="/cart">Cart ({totalQuantity})</Link>
             </li>
             <li>
-              <Link
-                href="/contact"
-                className="text-gray-700 hover:text-teal-500"
-              >
-                Contact
-              </Link>
+              <Link href="/orders">Track Order</Link>
+            </li>
+            <li>
+              {session ? (
+                <button
+                  onClick={() => signOut()}
+                  className="rounded bg-red-600 px-5 text-white"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link href="/login">Login</Link>
+              )}
             </li>
           </ul>
         </div>
-      </nav>
-    </header>
+      </div>
+    </div>
   );
-}
+};
+
+export default Navbar;
