@@ -58,8 +58,7 @@ export default function SearchBar() {
         />
         <Button
           onClick={handleSearch}
-          className="absolute top-0 right-0 h-full rounded-l-none rounded-r-full bg-teal-500 hover:bg-teal-600"
-          //cursor-pointer border-none bg-blue-900 px-5 py-2.5 text-white
+          className="absolute top-0 right-0 h-full rounded-l-none rounded-r-full bg-blue-900 hover:bg-blue-700"
         >
           <Search className="h-5 w-5" />
           <span className="sr-only">Search</span>
@@ -68,18 +67,3 @@ export default function SearchBar() {
     </div>
   );
 }
-
-//
-/**
- * 
- * <div className="hidden w-[40%] overflow-hidden rounded-3xl border border-[#ddd] lg:flex">
-      <input
-        className="w-full border-none p-2.5 pl-4 outline-0"
-        type="text"
-        placeholder="Search for products..."
-      />
-      <button className="cursor-pointer border-none bg-blue-900 px-5 py-2.5 text-white">
-        Search
-      </button>
-    </div>
- */
