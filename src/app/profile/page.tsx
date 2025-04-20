@@ -6,10 +6,11 @@ import { getSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
+import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
 
 export default function ProfilePage() {
   interface User {
+    _id?: string;
     name?: string;
     email?: string;
     role?: string;
@@ -21,7 +22,6 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
-  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +33,7 @@ export default function ProfilePage() {
           return;
         }
 
-        setUser(session.user);
+        setUser(session.user as User);
       } catch (err) {
         console.error('Error fetching session data:', err);
         setError('Error fetching session data');
@@ -60,44 +60,46 @@ export default function ProfilePage() {
   if (!user) return <div>User not found</div>;
 
   return (
-    <div className="mx-auto max-w-2xl p-6">
-      <Card className="rounded-2xl border border-gray-200 shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-center text-3xl font-semibold">
-            Profile
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 text-center">
-          <Image
-            src={
-              user.image ||
-              'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
-            }
-            width={120}
-            height={120}
-            alt="User Image"
-            className="mx-auto rounded-full border border-gray-300"
-          />
+    <DefaultLayout>
+      <div className="mx-auto max-w-2xl p-6">
+        <Card className="rounded-2xl border border-gray-200 shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-3xl font-semibold">
+              Profile
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-center">
+            <Image
+              src={
+                user.image ||
+                'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
+              }
+              width={120}
+              height={120}
+              alt="User Image"
+              className="mx-auto rounded-full border border-gray-300"
+            />
 
-          <div>
-            <h2 className="mt-2 text-xl font-medium">Welcome, {user.name}</h2>
-            <p className="text-muted-foreground">Email: {user.email}</p>
-            <p className="text-muted-foreground">Role: {user.role}</p>
-          </div>
+            <div>
+              <h2 className="mt-2 text-xl font-medium">Welcome, {user.name}</h2>
+              <p className="text-muted-foreground">Email: {user.email}</p>
+              <p className="text-muted-foreground">Role: {user.role}</p>
+            </div>
 
-          <Button onClick={handleUpdateProfile} disabled={!user._id}>
-            Update Profile
-          </Button>
+            <Button onClick={handleUpdateProfile} disabled={!user._id}>
+              Update Profile
+            </Button>
 
-          <Button
-            variant="outline"
-            onClick={() => router.push('/')}
-            className="mt-4"
-          >
-            Go to Home
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+            <Button
+              variant="outline"
+              onClick={() => router.push('/')}
+              className="mt-4"
+            >
+              Go to Home
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </DefaultLayout>
   );
 }

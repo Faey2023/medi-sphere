@@ -80,7 +80,7 @@ export default function AllMedicines() {
       setHasMore(loadedCount < total);
       setIsLoadingMore(false);
     }
-  }, [data, page]);
+  }, [data, page, allMedicines.length]);
 
   // intersection observer for infinite scrolling
   const lastMedicineRef = useCallback(
