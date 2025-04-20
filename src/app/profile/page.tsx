@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import Image from 'next/image';
 import { useCallback } from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 // import { registerUser } from '@/actions/serverActions';
 
 export default function ProfilePage() {
@@ -36,6 +36,7 @@ export default function ProfilePage() {
   // Improved helper function to extract MongoDB ObjectId
  
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const extractMongoId = useCallback((data: Record<string, any>): string | null => {
     // Case 1: _id is a string like "ObjectId('...')"
     if (data?._id && typeof data._id === 'string') {
@@ -171,7 +172,7 @@ export default function ProfilePage() {
          
 
           <Button onClick={handleUpdateProfile} disabled={!mongoId}>
-            {mongoId ? 'Update Profile' : 'Cannot Update (No ID)'}
+            {mongoId ? 'Update Profile' : 'Cannot Update'}
           </Button>
           <Button variant="outline" onClick={() => router.push('/')} className="mt-4">
             Go to Home
