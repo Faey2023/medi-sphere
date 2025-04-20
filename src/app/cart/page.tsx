@@ -14,8 +14,8 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
-import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
+import { useEffect, useState } from 'react';
+import { useCreateOrderMutation } from '@/redux/features/payment/paymentSlice';
 import { toast } from 'react-toastify';
 
 const CartPage = () => {
@@ -65,163 +65,166 @@ const CartPage = () => {
     0
   );
 
-  const handleCheckout = () => {
-    const missing = cart.filter(
-      (item) => item.requiredPrescription && !item.prescriptionFile
-    );
-    if (missing.length) {
-      toast.error('Please upload prescription for required medicines.');
-      return;
-    } else if (cart.length === 0) {
-      toast.error(
+  const [createOrder, { isLoading, isSuccess, data, isError, error }] =
+    useCreateOrderMutation();
+  const handleCheckout = async () => {
+    if (cart.length === 0) {
+      alert(
         'Your cart is empty. Please add items to your cart before checking out.'
       );
     } else {
-      toast('Proceeding to secure checkout...');
+      const formattedCart = cart.map((item) => ({
+        product: item._id,
+        quantity: item.quantity,
+      }));
+
+      await createOrder({ products: formattedCart });
     }
   };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data?.message);
+      if (data?.data) {
+        setTimeout(() => {
+          window.location.href = data.data;
+        }, 1000);
+      }
+    }
+    if (isError) toast.error(JSON.stringify(error));
+  }, [data?.data, data?.message, error, isError, isLoading, isSuccess]);
 
   return (
-    <DefaultLayout>
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-6 text-3xl font-bold">Your Cart</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-6 text-3xl font-bold">Your Cart</h1>
 
-        {cart.length === 0 ? (
-          <p className="text-muted-foreground">Your cart is currently empty.</p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-3">
-            <div className="space-y-6 md:col-span-2">
-              {cart.map((item) => (
-                <Card key={item._id} className="rounded-2xl shadow">
-                  <CardContent className="flex gap-4 p-4">
-                    <Image
-                      width={96}
-                      height={96}
-                      src={item.imageUrl || '/placeholder.png'}
-                      alt={item.name}
-                      className="h-24 w-24 rounded-lg border object-cover"
-                    />
-                    <div className="flex w-full flex-col justify-between">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h2 className="text-lg font-semibold">{item.name}</h2>
-                          <p className="text-muted-foreground text-sm">
-                            ${item.price.toFixed(2)} x {item.quantity}
-                          </p>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleRemove(item._id)}
-                        >
-                          <Trash2 className="text-destructive h-5 w-5" />
-                        </Button>
+      {cart.length === 0 ? (
+        <p className="text-muted-foreground">Your cart is currently empty.</p>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="space-y-6 md:col-span-2">
+            {cart.map((item) => (
+              <Card key={item._id} className="rounded-2xl shadow">
+                <CardContent className="flex gap-4 p-4">
+                  <Image
+                    width={96}
+                    height={96}
+                    src={item.imageUrl || '/placeholder.png'}
+                    alt={item.name}
+                    className="h-24 w-24 rounded-lg border object-cover"
+                  />
+                  <div className="flex w-full flex-col justify-between">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold">{item.name}</h2>
+                        <p className="text-muted-foreground text-sm">
+                          ${item.price.toFixed(2)} x {item.quantity}
+                        </p>
                       </div>
-
-                      <div className="mt-2 flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleQuantityChange(item._id, -1)}
-                        >
-                          -
-                        </Button>
-                        <span className="w-8 text-center">{item.quantity}</span>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleQuantityChange(item._id, 1)}
-                        >
-                          +
-                        </Button>
-                      </div>
-
-                      {item.requiredPrescription && (
-                        <div className="mt-4">
-                          <Label className="text-primary mb-1 block text-sm">
-                            Prescription Required
-                          </Label>
-                          <Input
-                            type="file"
-                            accept=".pdf,image/*"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file)
-                                handlePrescriptionUpload(item._id, file);
-                            }}
-                          />
-                          {item.prescriptionFile && (
-                            <p className="mt-1 text-xs text-green-600">
-                              Uploaded: {item.prescriptionFile}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemove(item._id!)}
+                      >
+                        <Trash2 className="text-destructive h-5 w-5" />
+                      </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
 
-              <Card className="p-4">
-                <Label className="mb-2 block font-medium">
-                  Delivery Option
-                </Label>
-                <div className="flex gap-4">
-                  <Button
-                    variant={
-                      deliveryOption === 'standard' ? 'default' : 'outline'
-                    }
-                    onClick={() => setDeliveryOption('standard')}
-                  >
-                    Standard (3-5 days)
-                  </Button>
-                  <Button
-                    variant={
-                      deliveryOption === 'express' ? 'default' : 'outline'
-                    }
-                    onClick={() => setDeliveryOption('express')}
-                  >
-                    Express (1-2 days)
-                  </Button>
-                </div>
+                    <div className="mt-2 flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleQuantityChange(item._id!, -1)}
+                      >
+                        -
+                      </Button>
+                      <span className="w-8 text-center">{item.quantity}</span>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleQuantityChange(item._id!, 1)}
+                      >
+                        +
+                      </Button>
+                    </div>
+
+                    {item.requiredPrescription && (
+                      <div className="mt-4">
+                        <Label className="text-primary mb-1 block text-sm">
+                          Prescription Required
+                        </Label>
+                        <Input
+                          type="file"
+                          accept=".pdf,image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handlePrescriptionUpload(item._id!, file);
+                          }}
+                        />
+                        {item.prescriptionFile && (
+                          <p className="mt-1 text-xs text-green-600">
+                            Uploaded: {item.prescriptionFile}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
               </Card>
-            </div>
+            ))}
 
-            <div className="sticky top-24">
-              <Card className="rounded-2xl p-6 shadow">
-                <h3 className="mb-4 text-xl font-semibold">Order Summary</h3>
-                <div className="mb-2 flex justify-between">
-                  <span>Subtotal</span>
-                  <span>${totalPrice.toFixed(2)}</span>
-                </div>
-                <div className="mb-2 flex justify-between">
-                  <span>Delivery</span>
-                  <span>
-                    {deliveryOption === 'standard' ? '$3.00' : '$6.00'}
-                  </span>
-                </div>
-                <Separator className="my-2" />
-                <div className="flex justify-between text-lg font-semibold">
-                  <span>Total</span>
-                  <span>
-                    $
-                    {(
-                      totalPrice + (deliveryOption === 'standard' ? 3 : 6)
-                    ).toFixed(2)}
-                  </span>
-                </div>
+            <Card className="p-4">
+              <Label className="mb-2 block font-medium">Delivery Option</Label>
+              <div className="flex gap-4">
                 <Button
-                  onClick={handleCheckout}
-                  className="mt-4 w-full bg-green-600 text-white hover:bg-green-700"
+                  variant={
+                    deliveryOption === 'standard' ? 'default' : 'outline'
+                  }
+                  onClick={() => setDeliveryOption('standard')}
                 >
-                  Proceed to Checkout
+                  Standard (3-5 days)
                 </Button>
-              </Card>
-            </div>
+                <Button
+                  variant={deliveryOption === 'express' ? 'default' : 'outline'}
+                  onClick={() => setDeliveryOption('express')}
+                >
+                  Express (1-2 days)
+                </Button>
+              </div>
+            </Card>
           </div>
-        )}
-      </div>
-    </DefaultLayout>
+
+          <div className="sticky top-24">
+            <Card className="rounded-2xl p-6 shadow">
+              <h3 className="mb-4 text-xl font-semibold">Order Summary</h3>
+              <div className="mb-2 flex justify-between">
+                <span>Subtotal</span>
+                <span>${totalPrice.toFixed(2)}</span>
+              </div>
+              <div className="mb-2 flex justify-between">
+                <span>Delivery</span>
+                <span>{deliveryOption === 'standard' ? '$3.00' : '$6.00'}</span>
+              </div>
+              <Separator className="my-2" />
+              <div className="flex justify-between text-lg font-semibold">
+                <span>Total</span>
+                <span>
+                  $
+                  {(
+                    totalPrice + (deliveryOption === 'standard' ? 3 : 6)
+                  ).toFixed(2)}
+                </span>
+              </div>
+              <Button
+                onClick={handleCheckout}
+                className="mt-4 w-full bg-green-600 text-white hover:bg-green-700"
+              >
+                Proceed to Checkout
+              </Button>
+            </Card>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

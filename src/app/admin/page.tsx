@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart3, PackageCheck, ClipboardList } from 'lucide-react';
@@ -24,7 +24,9 @@ export default function AdminDashboard() {
     // Fetch stock data from the backend
     const fetchStockData = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stocks`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stocks`
+        );
         const data = await response.json();
         setStockData(data);
       } catch (error) {
@@ -35,11 +37,11 @@ export default function AdminDashboard() {
     // Fetch order data (for Total Orders and percentage change)
     const fetchOrderData = async () => {
       try {
-        const response = await fetch('/api/orders');  // Assuming you have an API for orders
+        const response = await fetch('/api/orders'); // Assuming you have an API for orders
         const data = await response.json();
         setOrderData({
           totalOrders: data.totalOrders,
-          percentageChange: data.percentageChange,  // Example: +10% from last week
+          percentageChange: data.percentageChange, // Example: +10% from last week
         });
       } catch (error) {
         console.error('Error fetching order data:', error);
@@ -49,7 +51,7 @@ export default function AdminDashboard() {
     // Fetch prescription data (for Pending Prescriptions)
     const fetchPrescriptionData = async () => {
       try {
-        const response = await fetch('/api/prescriptions');  // Assuming you have an API for prescriptions
+        const response = await fetch('/api/prescriptions'); // Assuming you have an API for prescriptions
         const data = await response.json();
         setPrescriptionData({
           pendingPrescriptions: data.pendingPrescriptions,
@@ -91,7 +93,9 @@ export default function AdminDashboard() {
             <PackageCheck className="text-muted-foreground h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stockData.totalStock} Items</div>
+            <div className="text-2xl font-bold">
+              {stockData.totalStock} Items
+            </div>
             <p className="text-muted-foreground text-xs">
               {stockData.lowStockItems} low-stock items
             </p>
@@ -107,7 +111,9 @@ export default function AdminDashboard() {
             <BarChart3 className="text-muted-foreground h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{prescriptionData.pendingPrescriptions}</div>
+            <div className="text-2xl font-bold">
+              {prescriptionData.pendingPrescriptions}
+            </div>
             <p className="text-muted-foreground text-xs">
               {prescriptionData.reviewRequired} review required
             </p>

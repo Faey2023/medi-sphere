@@ -1,6 +1,5 @@
 import { IMedicine } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { Product } from '@/types/Product';
 
 interface CartItem extends IMedicine {
   quantity: number;
@@ -27,7 +26,7 @@ const cartSlice = createSlice({
         state.cart.push({
           ...action.payload,
           quantity: 1,
-          // prescriptionFile: null,
+          prescriptionFile: null,
         });
       }
     },
