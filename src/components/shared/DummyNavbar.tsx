@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-const Navbar = () => {
+const DummyNavbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { data: session } = useSession();
   const cart = useSelector((state: RootState) => state.cart.cart);
@@ -152,4 +152,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default DummyNavbar;
