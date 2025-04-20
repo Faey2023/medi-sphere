@@ -45,9 +45,14 @@ const productSlice = createSlice({
   reducers: {
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
+      state.filters.searchTerm = action.payload;
     },
     setFilters: (state, action: PayloadAction<Partial<IFilter>>) => {
       state.filters = { ...state.filters, ...action.payload };
+
+      if (action.payload.searchTerm !== undefined) {
+        state.search = action.payload.searchTerm;
+      }
     },
     resetFilters: (state) => {
       state.filters = initialState.filters;

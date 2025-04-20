@@ -85,7 +85,7 @@ export default function MedicineCard({ medicine }: Props) {
       )}
 
       <Link href={`/shop/${_id}`}>
-        <Button className="mt-3 w-full" variant="default">
+        <Button className="mt-3 w-full cursor-pointer" variant="default">
           View Details
         </Button>
       </Link>
