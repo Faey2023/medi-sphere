@@ -17,7 +17,9 @@ const Featured = () => {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
-  const medicineData: IMedicine[] = data?.data;
+  const medicineData: IMedicine[] = Array.isArray(data?.data) ? data.data : [];
+
+  console.log(medicineData);
 
   const [slidesPerView, setSlidesPerView] = useState<number>(1);
 

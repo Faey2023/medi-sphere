@@ -24,7 +24,6 @@ const Navbar = () => {
       setMenuOpen(false);
     }
   };
-  
 
   return (
     <div>

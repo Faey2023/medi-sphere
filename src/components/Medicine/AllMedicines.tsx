@@ -45,7 +45,7 @@ export default function AllMedicines() {
   // useEffect(() => {
   //   const fetchMedicines = async () => {
   //     try {
-  //       const res = await fetch('http://localhost:5000/api/medicines');
+  //       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/medicines`);
   //       const data = await res.json();
   //       setMedicines(data);
   //     } catch (err) {
