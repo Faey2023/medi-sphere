@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getSession } from 'next-auth/react';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 const baseApi = createApi({
   reducerPath: 'baseApi',
@@ -12,7 +12,7 @@ const baseApi = createApi({
       const token = session?.accessToken;
 
       if (!token) {
-        toast.error('You are not logged in!');
+        // toast.error('You are not logged in!');
       } else {
         headers.set('authorization', `Bearer ${token}`);
       }

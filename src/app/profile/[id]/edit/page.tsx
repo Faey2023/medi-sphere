@@ -58,9 +58,9 @@ export default function EditProfilePage() {
 
   return (
     <div className="mx-auto max-w-xl p-6">
-      <Card className="shadow-xl border border-gray-200 rounded-2xl">
+      <Card className="rounded-2xl border border-gray-200 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Edit Profile</CardTitle>
+          <CardTitle className="text-center text-2xl">Edit Profile</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-5">
