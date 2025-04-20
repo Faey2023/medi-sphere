@@ -98,10 +98,13 @@ export default function EditProfilePage() {
   if (loading) return <div className="p-6 text-center text-lg">Loading...</div>;
 
   return (
-    <div className="mx-auto max-w-2xl p-6">
-      <Card className="shadow-lg rounded-2xl border border-gray-200">
+
+   
+
+    <div className="mx-auto max-w-xl p-6">
+      <Card className="rounded-2xl border border-gray-200 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-center text-3xl font-semibold">Edit Profile</CardTitle>
+          <CardTitle className="text-center text-2xl">Edit Profile</CardTitle>
         </CardHeader>
         <CardContent>
           {error && (

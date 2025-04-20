@@ -139,18 +139,25 @@ export default function ProfilePage() {
       return;
     }
 
+
     console.log('Using MongoDB ID for update:', mongoId);
     router.push(`/profile/${mongoId}/edit`);
+
+ 
+
   };
 
   if (loading) return <div className="p-6 text-center text-lg">Loading...</div>;
-  if (!user) return <div className="p-6 text-center text-red-500">User not found</div>;
+  if (!user)
+    return <div className="p-6 text-center text-red-500">User not found</div>;
 
   return (
     <div className="mx-auto max-w-2xl p-6">
-      <Card className="shadow-lg rounded-2xl border border-gray-200">
+      <Card className="rounded-2xl border border-gray-200 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-center text-3xl font-semibold">Profile</CardTitle>
+          <CardTitle className="text-center text-3xl font-semibold">
+            Profile
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-center">
           <Image
@@ -162,6 +169,7 @@ export default function ProfilePage() {
           />
 
           <div>
+
             <h2 className="text-xl font-medium mt-2">Welcome, {user?.name || session?.user?.name}</h2>
             <p className="text-muted-foreground">Email: {user?.email || session?.user?.email}</p>
             <p className="text-muted-foreground">Role: {user?.role === 'admin' ? 'Admin' : 'User'}</p>
@@ -174,6 +182,30 @@ export default function ProfilePage() {
             {mongoId ? 'Update Profile' : 'Cannot Update (No ID)'}
           </Button>
           <Button variant="outline" onClick={() => router.push('/')} className="mt-4">
+
+            <h2 className="mt-2 text-xl font-medium">
+              Welcome, {session?.user?.name}
+            </h2>
+            <p className="text-muted-foreground">
+              Email: {session?.user?.email}
+            </p>
+            <p className="text-muted-foreground">
+              Role: {session?.user?.role === 'admin' ? 'Admin' : 'User'}
+            </p>
+          </div>
+
+          {user?._id ? (
+            <Button onClick={handleUpdateProfile}>Update Profile</Button>
+          ) : (
+            <div className="text-sm text-red-500">User ID is missing</div>
+          )}
+
+          <Button
+            variant="outline"
+            onClick={() => router.push('/')}
+            className="mt-4"
+          >
+
             Go to Home
           </Button>
         </CardContent>

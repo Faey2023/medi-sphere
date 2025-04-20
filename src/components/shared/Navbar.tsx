@@ -40,7 +40,7 @@ const Navbar = () => {
           {session ? (
             <button
               onClick={() => signOut()}
-              className="rounded bg-red-600 px-5 text-white"
+              className="cursor-pointer rounded bg-red-600 px-5 text-white"
             >
               Logout
             </button>

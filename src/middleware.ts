@@ -21,10 +21,11 @@ export default async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/unauthorized', req.url));
     }
 
-    const allowedRoutes = roleBasedRoutes[userRole as keyof typeof roleBasedRoutes];
+    const allowedRoutes =
+      roleBasedRoutes[userRole as keyof typeof roleBasedRoutes];
 
-    const isAllowed = allowedRoutes.some((route) =>
-      pathname === route || pathname.startsWith(`${route}/`)
+    const isAllowed = allowedRoutes.some(
+      (route) => pathname === route || pathname.startsWith(`${route}/`)
     );
 
     if (isAllowed) {
