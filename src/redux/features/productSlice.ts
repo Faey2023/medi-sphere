@@ -1,12 +1,19 @@
+import { MedicineCategory, MedicineType } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface IFilter {
+  searchTerm?: string;
+  tags?: string[];
+  symptoms?: string[];
+  inStock?: boolean | 'all';
+  requiredPrescription?: boolean | 'all';
   price: [number, number];
-  brand?: string;
-  category?: string;
-  availability?: boolean | 'all';
+  type?: MedicineType | '';
+  categories?: MedicineCategory[];
   sortBy?: string;
   sortOrder?: 'asc' | 'desc' | '';
+  page?: number;
+  limit?: number;
 }
 
 export interface IInitialState {
@@ -17,12 +24,18 @@ export interface IInitialState {
 const initialState: IInitialState = {
   search: '',
   filters: {
-    price: [0, 10000],
-    brand: '',
-    category: '',
-    availability: 'all',
+    searchTerm: '',
+    tags: [],
+    symptoms: [],
+    inStock: 'all',
+    requiredPrescription: 'all',
+    price: [0, 1000],
+    type: '',
+    categories: [],
     sortBy: '',
     sortOrder: '',
+    page: 1,
+    limit: 10,
   },
 };
 

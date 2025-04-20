@@ -35,7 +35,7 @@ export default function FilterSidebar() {
   if (isLoading) {
     return <span>Loading...</span>;
   }
-  const medicinesData = medicines?.data;
+  const medicinesData = medicines?.data?.data;
 
   // Price slider
   const handleSliderChange = (value: [number, number]) => {
@@ -144,8 +144,8 @@ export default function FilterSidebar() {
           <Separator></Separator>
           <Slider
             min={0}
-            max={10000}
-            step={100}
+            max={1000}
+            step={10}
             value={priceRange}
             onValueChange={handleSliderChange}
           />
@@ -165,7 +165,7 @@ export default function FilterSidebar() {
               value={priceRange[1]}
               min={priceRange[0]}
               onChange={(e) => handleInputChange(1, Number(e.target.value))}
-              max={10000}
+              max={1000}
               placeholder="Max Price"
               className="w-full rounded border p-2"
             />

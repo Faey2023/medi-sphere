@@ -36,7 +36,7 @@ export default function AllMedicines() {
   });
 
   if (isLoading) return <p className="text-center">Loading...</p>;
-  const medicineData: IMedicine[] = data?.data;
+  const medicineData: IMedicine[] = data?.data?.data;
 
   return (
     <div className="container mx-auto bg-[#f2f3f5] p-4">
