@@ -24,6 +24,7 @@ const Navbar = () => {
       setMenuOpen(false);
     }
   };
+  
 
   return (
     <div>
@@ -31,6 +32,9 @@ const Navbar = () => {
       <div className="flex justify-between bg-blue-900 px-5 py-2.5 text-sm text-white">
         <div>Free Shipping on Orders Over $50!</div>
         <div className="hidden gap-3 lg:flex">
+          {session?.user?.role === 'admin' && (
+            <Link href="/admin">Admin Dashboard</Link>
+          )}
           <Link href="/profile">Profile</Link>
           <Link href="/orders">Track Order</Link>
           {session ? (
@@ -124,6 +128,11 @@ const Navbar = () => {
             <li>
               <Link href="/">Contact</Link>
             </li>
+            {session?.user?.role === 'admin' && (
+              <li>
+                <Link href="/admin">Admin Dashboard</Link>
+              </li>
+            )}
             <li>
               <Link href="/profile">Profile</Link>
             </li>
