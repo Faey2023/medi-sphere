@@ -36,9 +36,11 @@ export default function EditProfilePage() {
 
       try {
         // Fetch user data from your backend API
-        const response = await axios.get(`http://localhost:5000/api/users/${userId}`);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${userId}`
+        );
         const userData = response.data;
-        
+
         // Initialize form with user data
         setFormData({
           name: userData.name || '',
@@ -47,7 +49,7 @@ export default function EditProfilePage() {
           address: userData.address || '',
           // Add any other fields you want to update
         });
-        
+
         setLoading(false);
       } catch (err) {
         console.error('Error fetching user data:', err);
@@ -61,9 +63,9 @@ export default function EditProfilePage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -76,13 +78,13 @@ export default function EditProfilePage() {
     try {
       // Send PATCH request to update user
       const response = await axios.patch(
-        `http://localhost:5000/api/users/${userId}`, 
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${userId}`,
         formData
       );
 
       console.log('Update response:', response.data);
       setSuccess('Profile updated successfully!');
-      
+
       // Redirect after a short delay
       setTimeout(() => {
         router.push(`/profile/`);
@@ -98,9 +100,6 @@ export default function EditProfilePage() {
   if (loading) return <div className="p-6 text-center text-lg">Loading...</div>;
 
   return (
-
-   
-
     <div className="mx-auto max-w-xl p-6">
       <Card className="rounded-2xl border border-gray-200 shadow-xl">
         <CardHeader>
@@ -108,13 +107,13 @@ export default function EditProfilePage() {
         </CardHeader>
         <CardContent>
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div className="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
               {error}
             </div>
           )}
-          
+
           {success && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <div className="mb-4 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
               {success}
             </div>
           )}
@@ -166,18 +165,15 @@ export default function EditProfilePage() {
             </div>
 
             <div className="flex justify-between pt-2">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => router.push(`/profile/${userId}`)}
                 disabled={updating}
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
-                disabled={updating}
-              >
+              <Button type="submit" disabled={updating}>
                 {updating ? 'Updating...' : 'Save Changes'}
               </Button>
             </div>

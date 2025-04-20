@@ -24,7 +24,6 @@ const Navbar = () => {
       setMenuOpen(false);
     }
   };
-  
 
   return (
     <div>
@@ -36,7 +35,10 @@ const Navbar = () => {
             <Link href="/admin">Admin Dashboard</Link>
           )}
           <Link href="/profile">Profile</Link>
-          <Link href="/orders">Track Order</Link>
+          {session?.user?.role === 'user' && (
+            <Link href="/orders">Track Order</Link>
+          )}
+
           {session ? (
             <button
               onClick={() => signOut()}

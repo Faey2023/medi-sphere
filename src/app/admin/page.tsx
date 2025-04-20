@@ -24,7 +24,9 @@ export default function AdminDashboard() {
     // Fetch stock data from the backend
     const fetchStockData = async () => {
       try {
-        const response = await fetch(`${process.env.SERVER_URL}/api/stocks`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stocks`
+        );
         const data = await response.json();
         setStockData(data);
       } catch (error) {

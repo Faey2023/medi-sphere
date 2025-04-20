@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 export default function ProfilePage() {
   interface User {
@@ -13,6 +14,7 @@ export default function ProfilePage() {
     email?: string;
     role?: string;
     _id?: string; // MongoDB Object ID
+    image?: string;
   }
 
   const [user, setUser] = useState<User | null>(null);
@@ -20,12 +22,15 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch the user profile (assuming your backend endpoint provides this)
-        const profileRes = await axios.get('http://localhost:5000/api/users/6804a6c6616afc90df99a50e');
+        const profileRes = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/6804a6c6616afc90df99a50e`
+        );
         const profileData = profileRes.data;
 
         setUser(profileData); // Store the user data in state
@@ -64,7 +69,10 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent className="space-y-4 text-center">
           <Image
-            src={user?.image || 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'}
+            src={
+              user?.image ||
+              'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
+            }
             width={120}
             height={120}
             alt="User Image"
@@ -72,7 +80,7 @@ export default function ProfilePage() {
           />
 
           <div>
-            <h2 className="text-xl font-medium mt-2">Welcome, {user?.name}</h2>
+            <h2 className="mt-2 text-xl font-medium">Welcome, {user?.name}</h2>
             <p className="text-muted-foreground">Email: {user?.email}</p>
             <p className="text-muted-foreground">Role: {user?.role}</p>
             {/* <p className="text-xs text-gray-400 mt-1">ID: {user?._id || 'Not found'}</p> Display ID here */}
@@ -81,8 +89,11 @@ export default function ProfilePage() {
           <Button onClick={handleUpdateProfile}>
             {user?._id ? 'Update Profile' : 'Cannot Update'}
           </Button>
-          <Button variant="outline" onClick={() => router.push('/')} className="mt-4">
-
+          <Button
+            variant="outline"
+            onClick={() => router.push('/')}
+            className="mt-4"
+          >
             <h2 className="mt-2 text-xl font-medium">
               Welcome, {session?.user?.name}
             </h2>
@@ -92,7 +103,7 @@ export default function ProfilePage() {
             <p className="text-muted-foreground">
               Role: {session?.user?.role === 'admin' ? 'Admin' : 'User'}
             </p>
-          </div>
+          </Button>
 
           {user?._id ? (
             <Button onClick={handleUpdateProfile}>Update Profile</Button>
@@ -105,7 +116,6 @@ export default function ProfilePage() {
             onClick={() => router.push('/')}
             className="mt-4"
           >
-
             Go to Home
           </Button>
         </CardContent>

@@ -38,3 +38,21 @@ export interface IMedicine {
   sku?: string;
   tags?: string[];
 }
+
+export interface User {
+  email: string;
+  name: string;
+}
+
+export interface GetAllOrderParams {
+  _id: string;
+  user: User;
+  products: {
+    product: string;
+    quantity: number;
+  }[];
+  totalPrice: number;
+  status: 'Pending' | 'Paid' | 'Shipped' | 'Completed' | 'Cancelled';
+  createdAt: string;
+  updatedAt: string;
+}
