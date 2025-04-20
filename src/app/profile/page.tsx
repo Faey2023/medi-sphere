@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import { getSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -13,7 +13,6 @@ export default function ProfilePage() {
     name?: string;
     email?: string;
     role?: string;
-    _id?: string; // MongoDB Object ID
     image?: string;
   }
 
@@ -27,16 +26,17 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch the user profile (assuming your backend endpoint provides this)
-        const profileRes = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/6804a6c6616afc90df99a50e`
-        );
-        const profileData = profileRes.data;
+        const session = await getSession();
+        if (!session) {
+          setError('Not authenticated');
+          setLoading(false);
+          return;
+        }
 
-        setUser(profileData); // Store the user data in state
+        setUser(session.user);
       } catch (err) {
-        console.error('Error fetching profile data:', err);
-        setError('Error fetching profile data');
+        console.error('Error fetching session data:', err);
+        setError('Error fetching session data');
       } finally {
         setLoading(false);
       }
@@ -45,14 +45,14 @@ export default function ProfilePage() {
     fetchData();
   }, []);
 
-  // Handle Profile Update
-  const handleUpdateProfile = () => {
-    if (!user?._id) {
-      alert('User ID could not be found.');
-      return;
-    }
+  console.log('User:', user);
 
-    router.push(`/profile/${user._id}/edit`);
+  const handleUpdateProfile = () => {
+    if (user?._id) {
+      router.push(`/profile/${user._id}/edit`);
+    } else {
+      alert('User ID not found.');
+    }
   };
 
   if (loading) return <div>Loading...</div>;
@@ -70,7 +70,7 @@ export default function ProfilePage() {
         <CardContent className="space-y-4 text-center">
           <Image
             src={
-              user?.image ||
+              user.image ||
               'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
             }
             width={120}
@@ -80,36 +80,14 @@ export default function ProfilePage() {
           />
 
           <div>
-            <h2 className="mt-2 text-xl font-medium">Welcome, {user?.name}</h2>
-            <p className="text-muted-foreground">Email: {user?.email}</p>
-            <p className="text-muted-foreground">Role: {user?.role}</p>
-            {/* <p className="text-xs text-gray-400 mt-1">ID: {user?._id || 'Not found'}</p> Display ID here */}
+            <h2 className="mt-2 text-xl font-medium">Welcome, {user.name}</h2>
+            <p className="text-muted-foreground">Email: {user.email}</p>
+            <p className="text-muted-foreground">Role: {user.role}</p>
           </div>
 
-          <Button onClick={handleUpdateProfile}>
-            {user?._id ? 'Update Profile' : 'Cannot Update'}
+          <Button onClick={handleUpdateProfile} disabled={!user._id}>
+            Update Profile
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => router.push('/')}
-            className="mt-4"
-          >
-            <h2 className="mt-2 text-xl font-medium">
-              Welcome, {session?.user?.name}
-            </h2>
-            <p className="text-muted-foreground">
-              Email: {session?.user?.email}
-            </p>
-            <p className="text-muted-foreground">
-              Role: {session?.user?.role === 'admin' ? 'Admin' : 'User'}
-            </p>
-          </Button>
-
-          {user?._id ? (
-            <Button onClick={handleUpdateProfile}>Update Profile</Button>
-          ) : (
-            <div className="text-sm text-red-500">User ID is missing</div>
-          )}
 
           <Button
             variant="outline"
