@@ -13,8 +13,14 @@ module.exports = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*',
+        hostname: 'res.cloudinary.com',
         port: '',
+        pathname: '**',
+        // pathname: '/dx4vanvsp/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'demo2.themelexus.com',
         pathname: '**',
       },
     ],

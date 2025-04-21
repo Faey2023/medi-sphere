@@ -42,7 +42,7 @@ export default function MedicineDetails({ id }: { id: string }) {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
 
-  console.log('this is medicine data from medicine details page', medicines);
+  // console.log('this is medicine data from medicine details page', medicines);
 
   const incrementQuantity = () => {
     setQuantity(quantity + 1);
@@ -100,11 +100,20 @@ export default function MedicineDetails({ id }: { id: string }) {
   }
 
   const medicine: IMedicine = data.data;
-  console.log('hi this is data from details page ', medicine);
+  // console.log('hi this is data from details page ', medicine);
 
   const handleAddToCart = () => {
     dispatch(addToCart(medicine));
-    toast.success(`${medicine.name} added to cart!`);
+    toast.success(`${medicine.name} added to cart!`, {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   };
 
   return (

@@ -52,7 +52,7 @@ export default function RegisterPage() {
   };
 
   const handleSocialRegister = (provider: string) => {
-    console.log(`Registering with ${provider}`);
+    // console.log(`Registering with ${provider}`);
     // Implement NextAuth or other OAuth logic here
   };
 
@@ -170,7 +170,7 @@ export default function RegisterPage() {
               name="agreeTerms"
               checked={formData.agreeTerms}
               onChange={handleChange}
-              className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              className="cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
             />
             <span className="ml-2 text-sm text-gray-600">
               I agree to the{' '}
@@ -182,7 +182,7 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+            className="w-full cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
           >
             Register
           </button>
@@ -192,7 +192,7 @@ export default function RegisterPage() {
         <div className="flex flex-col space-y-3">
           <button
             onClick={() => handleSocialRegister('GitHub')}
-            className="flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-600"
+            className="flex cursor-pointer items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-600"
           >
             <Image
               src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
@@ -205,7 +205,7 @@ export default function RegisterPage() {
           </button>
           <button
             onClick={() => handleSocialRegister('Google')}
-            className="flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-white hover:bg-slate-600"
+            className="flex cursor-pointer items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-white hover:bg-slate-600"
           >
             <Image
               src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"

@@ -91,11 +91,11 @@ const Navbar = () => {
           <li>
             <Link href="/shop">Shop</Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/">Deals</Link>
-          </li>
+          </li> */}
           <li>
-            <Link href="/">Contact</Link>
+            <Link href="/about">About</Link>
           </li>
         </ul>
       </nav>
@@ -125,11 +125,11 @@ const Navbar = () => {
             <li>
               <Link href="/shop">Shop</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/">Deals</Link>
-            </li>
+            </li> */}
             <li>
-              <Link href="/">Contact</Link>
+              <Link href="/about">About</Link>
             </li>
             {session?.user?.role === 'admin' && (
               <li>
