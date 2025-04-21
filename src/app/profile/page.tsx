@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getSession } from 'next-auth/react';
+import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
+import { useSession } from 'next-auth/react';
+import Spinner from '@/components/shared/Spinner';
 
 export default function ProfilePage() {
   interface User {
@@ -21,85 +22,93 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!session?.user?.email) return;
       try {
-        const session = await getSession();
-        if (!session) {
-          setError('Not authenticated');
-          setLoading(false);
-          return;
-        }
-
-        setUser(session.user as User);
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/email/${session.user.email}`
+        );
+        setUser(res.data);
       } catch (err) {
-        console.error('Error fetching session data:', err);
-        setError('Error fetching session data');
+        console.error('Error fetching profile data:', err);
+        setError('Error fetching profile data');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
-
-  console.log('User:', user);
+    if (status === 'authenticated') {
+      fetchData();
+    } else if (status === 'unauthenticated') {
+      setError('You are not logged in.');
+      setLoading(false);
+    }
+  }, [session, status]);
 
   const handleUpdateProfile = () => {
-    if (user?._id) {
-      router.push(`/profile/${user._id}/edit`);
-    } else {
-      alert('User ID not found.');
+    if (!user?._id) {
+      alert('User ID could not be found.');
+      return;
     }
+    router.push(`/profile/${user._id}/edit`);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
   if (!user) return <div>User not found</div>;
 
   return (
-    <DefaultLayout>
-      <div className="mx-auto max-w-2xl p-6">
-        <Card className="rounded-2xl border border-gray-200 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-center text-3xl font-semibold">
-              Profile
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-center">
-            <Image
-              src={
-                user.image ||
-                'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
-              }
-              width={120}
-              height={120}
-              alt="User Image"
-              className="mx-auto rounded-full border border-gray-300"
-            />
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+      <Card className="w-full max-w-md rounded-2xl p-6 text-center shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-semibold">
+            Profile
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Image
+            src={
+              user?.image ||
+              'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
+            }
+            width={120}
+            height={120}
+            alt="User Image"
+            className="mx-auto rounded-full border border-gray-300"
+          />
 
-            <div>
-              <h2 className="mt-2 text-xl font-medium">Welcome, {user.name}</h2>
-              <p className="text-muted-foreground">Email: {user.email}</p>
-              <p className="text-muted-foreground">Role: {user.role}</p>
-            </div>
+          <div>
+            <h2 className="text-xl font-medium">Welcome, {user?.name}</h2>
+            <p className="text-muted-foreground">Email: {user?.email}</p>
+            <p className="text-muted-foreground">
+              Role: {user?.role || 'User'}
+            </p>
+            <p className="mt-1 text-xs text-gray-400">
+              ID: {user?._id || 'Not found'}
+            </p>
+          </div>
 
-            <Button onClick={handleUpdateProfile} disabled={!user._id}>
-              Update Profile
-            </Button>
-
-            <Button
-              variant="outline"
-              onClick={() => router.push('/')}
-              className="mt-4"
-            >
-              Go to Home
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    </DefaultLayout>
+          <Button onClick={handleUpdateProfile} className="w-full">
+            {user?._id ? 'Update Profile' : 'Cannot Update'}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => router.push('/')}
+            className="mt-2 w-full"
+          >
+            Go to Home
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

@@ -2,7 +2,12 @@
 
 import * as React from 'react';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
+import {
+  CheckIcon,
+  ChevronDown,
+  ChevronRightIcon,
+  CircleIcon,
+} from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -20,14 +25,35 @@ function DropdownMenuPortal({
   );
 }
 
+// function DropdownMenuTrigger({
+//   ...props
+// }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
+//   return (
+//     <DropdownMenuPrimitive.Trigger
+//       data-slot="dropdown-menu-trigger"
+//       {...props}
+//     />
+//   );
+// }
+
 function DropdownMenuTrigger({
+  children,
+  className,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
   return (
-    <DropdownMenuPrimitive.Trigger
-      data-slot="dropdown-menu-trigger"
-      {...props}
-    />
+    <DropdownMenuPrimitive.Trigger asChild {...props}>
+      <button
+        data-slot="dropdown-menu-trigger"
+        className={cn(
+          'flex items-center gap-1 rounded-md border border-gray-300 px-3 py-1 transition hover:bg-gray-100',
+          className
+        )}
+      >
+        {children}
+        <ChevronDown className="h-4 w-4 text-gray-500" />
+      </button>
+    </DropdownMenuPrimitive.Trigger>
   );
 }
 
@@ -74,7 +100,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}

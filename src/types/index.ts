@@ -37,6 +37,8 @@ export interface IMedicine {
   isDeleted: boolean;
   sku?: string;
   tags?: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface GetAllMedicinesParams {

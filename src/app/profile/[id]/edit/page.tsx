@@ -1,59 +1,102 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { Input } from '@/components/ui/input';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useParams } from 'next/navigation';
+import Spinner from '@/components/shared/Spinner';
 
 export default function EditProfilePage() {
-  const { data: session, status } = useSession();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const params = useParams();
+  const [user, setUser] = useState({ _id: '', name: '', email: '' });
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    if (session?.user?.email) {
-      axios
-        .get(`http://localhost:5000/api/users/by-email/${session.user.email}`)
-        .then((res) => {
-          setName(res.data.name || '');
-          setEmail(res.data.email || '');
-        })
-        .catch((err) => {
-          console.error('Failed to fetch user:', err);
-        });
-    }
-  }, [session]);
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${params.id}`
+        );
+        setUser(res.data);
+      } catch (err) {
+        console.error('User load error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleSubmit = async () => {
+    fetchUser();
+  }, [params.id]);
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/api/users/by-email/${session?.user?.email}`, {
-        name,
-        email,
-      });
-      alert('Profile updated!');
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${params.id}`,
+        {
+          name: user.name,
+          email: user.email,
+        }
+      );
+      toast.success('Profile Updated Successfully');
       router.push('/profile');
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Update failed.');
+    } catch (err) {
+      console.error('Update failed:', err);
+      toast.error('Profile Update Failed');
     }
   };
 
-  if (status === 'loading') return <div>Loading...</div>;
-  if (!session) return <div>You must be signed in to edit your profile.</div>;
+  if (loading)
+    return (
+      <div className="text-center">
+        <Spinner />
+      </div>
+    );
 
   return (
-    <div className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Edit Profile</h1>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+      <Card className="w-full max-w-md rounded-2xl p-6 shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-semibold">
+            Profile Update
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleUpdate} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+                required
+              />
+            </div>
 
-      <div className="space-y-4">
-        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-        <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                required
+              />
+            </div>
 
-        <Button onClick={handleSubmit}>Update Profile</Button>
-      </div>
+            <Button type="submit" className="w-full">
+              Update Profile
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
