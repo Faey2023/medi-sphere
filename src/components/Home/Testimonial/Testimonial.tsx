@@ -12,65 +12,71 @@ const testimonials = [
     image: '/user-1.jpeg',
     rating: 5,
     review:
-      'Cycle Sphere made my bike shopping experience effortless! The website is easy to use, the selection is great, and delivery was fast.',
+      'Medi Sphere made ordering my prescriptions so easy! The website is user-friendly, the product range is excellent, and delivery was incredibly fast.',
   },
   {
     name: 'Emil Johnson',
     image: '/user-2.jpeg',
     rating: 4,
     review:
-      'Great service and amazing variety of bikes. Customer support was quick to respond. Totally satisfied with my purchase!',
+      'Great service and wide variety of health products. Customer support was responsive and helpful. Very happy with my experience!',
   },
   {
     name: 'David Lee',
     image: '/user-3.jpeg',
     rating: 5,
     review:
-      'Got my mountain bike within 3 days! High quality and smooth ride. Would definitely recommend Cycle Sphere to others.',
+      'Received my medicine within 2 days! Everything was well-packed and the service was top-notch. Highly recommend Medi Sphere.',
   },
   {
     name: 'Spirit Williams',
     image: '/user-4.jpg',
     rating: 5,
     review:
-      'Fantastic experience from start to finish. Easy checkout process and the bike arrived in perfect condition.',
+      'Fantastic from start to finish. Ordering was smooth, and my order arrived on time and in perfect condition.',
   },
   {
     name: 'John Smith',
     image: '/user-1.jpeg',
     rating: 5,
     review:
-      'Cycle Sphere made my bike shopping experience effortless! The website is easy to use, the selection is great, and delivery was fast.',
+      'Medi Sphere made ordering my prescriptions so easy! The website is user-friendly, the product range is excellent, and delivery was incredibly fast.',
   },
   {
     name: 'Emil Johnson',
     image: '/user-2.jpeg',
     rating: 4,
     review:
-      'Great service and amazing variety of bikes. Customer support was quick to respond. Totally satisfied with my purchase!',
+      'Great service and wide variety of health products. Customer support was responsive and helpful. Very happy with my experience!',
   },
   {
     name: 'David Lee',
     image: '/user-3.jpeg',
     rating: 5,
     review:
-      'Got my mountain bike within 3 days! High quality and smooth ride. Would definitely recommend Cycle Sphere to others.',
+      'Received my medicine within 2 days! Everything was well-packed and the service was top-notch. Highly recommend Medi Sphere.',
   },
   {
     name: 'Spirit Williams',
     image: '/user-4.jpg',
     rating: 5,
     review:
-      'Fantastic experience from start to finish. Easy checkout process and the bike arrived in perfect condition.',
+      'Fantastic from start to finish. Ordering was smooth, and my order arrived on time and in perfect condition.',
   },
 ];
 
+
 const Testimonial = () => {
   return (
-    <div className="relative mx-auto max-w-5xl py-9">
-      <h2 className="mb-4 text-center text-4xl italic">
-        See what our satisfied customers have to say.
+    <div>
+
+<h2 className="mb-4  text-3xl font-bold mx-12 mt-16">
+        Featured Feedback
       </h2>
+
+
+      <div className="relative mx-auto max-w-5xl py-9">
+     
       <Swiper
         modules={[Autoplay, Pagination]}
         autoplay={{
@@ -120,6 +126,7 @@ const Testimonial = () => {
         ))}
         <div className="swiper-pagination" />
       </Swiper>
+    </div>
     </div>
   );
 };

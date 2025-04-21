@@ -1,10 +1,18 @@
-import { ToastContainer } from 'react-toastify';
+// app/layout.tsx
 import './globals.css';
+import { Montserrat } from 'next/font/google';
+import { ToastContainer } from 'react-toastify';
 import { Providers } from './providers';
 import ReduxProvider from '@/redux/ReduxProvider';
-import { Metadata } from 'next';
+import 'react-toastify/dist/ReactToastify.css';
 
-export const metadata: Metadata = {
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-montserrat',
+});
+
+export const metadata = {
   title: 'MediSphere',
   description: 'Your trusted online medicine shop',
   icons: {
@@ -12,13 +20,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={montserrat.variable}>
       <body suppressHydrationWarning>
         <ReduxProvider>
           <Providers>{children}</Providers>

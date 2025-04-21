@@ -13,7 +13,8 @@ module.exports = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'demo2.themelexus.com',
+        hostname: '*',
+        port: '',
         pathname: '**',
       },
     ],
