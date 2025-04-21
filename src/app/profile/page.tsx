@@ -112,5 +112,3 @@ export default function ProfilePage() {
     </div>
   );
 };
-
-export default page;
