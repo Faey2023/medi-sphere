@@ -24,7 +24,7 @@ const Orders = () => {
     email ? { email } : skipToken
   );
   const orderData: GetAllOrderParams[] = order?.data;
-  // console.log(orderData);
+  console.log(orderData);
 
   return isLoading ? (
     <Skeleton />
@@ -34,7 +34,7 @@ const Orders = () => {
         <h2 className="mb-4 text-2xl font-bold">All Orders</h2>
 
         {/* Check if no orders found */}
-        {orderData && orderData.length === 0 ? (
+        {!orderData || orderData.length === 0 ? (
           <p>No orders found</p>
         ) : (
           <Table>

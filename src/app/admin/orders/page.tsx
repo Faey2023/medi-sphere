@@ -74,7 +74,7 @@ const AdminOrders = () => {
                 <TableCell>
                   {format(new Date(order.createdAt), 'MM/dd/yyyy hh:mm a')}
                 </TableCell>
-                <TableCell className="max-w-[150px] truncate overflow-hidden whitespace-nowrap capitalize">
+                <TableCell className="max-w-[130px] truncate overflow-hidden whitespace-nowrap capitalize">
                   {order.products.map((product) => product.name).join(', ')}
                 </TableCell>
                 <TableCell>
