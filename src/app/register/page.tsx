@@ -52,7 +52,7 @@ export default function RegisterPage() {
   };
 
   const handleSocialRegister = (provider: string) => {
-    console.log(`Registering with ${provider}`);
+    // console.log(`Registering with ${provider}`);
     // Implement NextAuth or other OAuth logic here
   };
 
