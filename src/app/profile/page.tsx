@@ -111,4 +111,6 @@ export default function ProfilePage() {
       </Card>
     </div>
   );
-}
+};
+
+export default page;

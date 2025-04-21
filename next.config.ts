@@ -9,12 +9,13 @@ module.exports = {
       'localhost',
       'demo2.themelexus.com',
       'www.squarepharma.com.bd',
-      'res.cloudinary.com',
+      // 'res.cloudinary.com',
     ],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'demo2.themelexus.com',
+        hostname: '*',
+        port: '',
         pathname: '**',
       },
     ],

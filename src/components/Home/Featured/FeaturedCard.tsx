@@ -48,8 +48,6 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
 
   const result = calculateTotalPrice({ price, discount });
 
-  // console.log(result.discountedPrice);
-
   return (
     <>
       <div className="group max-w-[377px] cursor-pointer">

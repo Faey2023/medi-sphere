@@ -15,7 +15,7 @@ export default function LoginPage() {
   });
   const [togglePassword, setTogglePassword] = useState(false);
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/'; // default to home if not specified
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -31,13 +31,11 @@ export default function LoginPage() {
     const res = await signIn('credentials', {
       email: formData.email,
       password: formData.password,
-      redirect: false, // don't redirect immediately
+      redirect: false,
       callbackUrl,
     });
-
     if (res?.ok) {
       toast.success('Login successful!');
-
       // Delay redirection a bit to show toast
       setTimeout(() => {
         window.location.href = callbackUrl;
