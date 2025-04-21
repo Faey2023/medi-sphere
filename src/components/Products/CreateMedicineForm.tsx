@@ -43,6 +43,10 @@ const CreateMedicineForm = () => {
     isDeleted: false,
   });
 
+  // file input
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -53,10 +57,55 @@ const CreateMedicineForm = () => {
     setFormData({ ...formData, [e.target.name]: value });
   };
 
+  // image file handler
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(file);
+
+      // preview URL
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        if (fileReader.readyState === 2) {
+          setPreviewUrl(fileReader.result as string);
+        }
+      };
+      fileReader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      const response = await addMedicine(formData).unwrap();
+      // create FormData object to send file
+      const medicineData = new FormData();
+
+      // add all text fields
+      Object.keys(formData).forEach((key) => {
+        const typedKey = key as keyof IMedicine;
+
+        const value = formData[typedKey];
+
+        if (typedKey !== 'imageUrl' && value !== null && value !== undefined) {
+          if (Array.isArray(value)) {
+            value.forEach((item: string) => {
+              medicineData.append(`${typedKey}[]`, item);
+            });
+          } else if (typedKey === 'expiryDate' && value instanceof Date) {
+            medicineData.append(typedKey, value.toISOString());
+          } else {
+            medicineData.append(typedKey, String(value));
+          }
+        }
+      });
+
+      // add image file if exists
+      if (selectedImage) {
+        medicineData.append('image', selectedImage);
+      }
+
+      const response = await addMedicine(medicineData).unwrap();
       console.log('Success:', response);
       toast.success('Medicine added successfully!');
 
@@ -81,13 +130,26 @@ const CreateMedicineForm = () => {
         tags: [],
         isDeleted: false,
       });
-    } catch (error: any) {
+      setSelectedImage(null);
+      setPreviewUrl(null);
+    } catch (error: unknown) {
       console.error('Error:', error);
-      console.error('Error:', error.data?.errorSources[0].message);
-      toast.error(
-        'Error adding Medicine: ' +
-          (error.data?.errorSources[0].message || 'Unknown error')
-      );
+
+      let message = 'Unknown error';
+
+      if (typeof error === 'object' && error !== null) {
+        const maybeErr = error as {
+          data?: { errorSources?: { message?: string }[] };
+          message?: string;
+        };
+
+        message =
+          maybeErr.data?.errorSources?.[0]?.message ||
+          maybeErr.message ||
+          message;
+      }
+
+      toast.error(`Error adding Medicine: ${message}`);
     }
   };
 
@@ -321,28 +383,32 @@ const CreateMedicineForm = () => {
           ))}
         </select>
       </div>
+
       <div className="space-y-2">
-        <Label htmlFor="imageUrl">Image URL</Label>
+        <Label htmlFor="image">Medicine Image</Label>
         <Input
-          id="imageUrl"
-          name="imageUrl"
-          value={formData.imageUrl}
-          onChange={handleChange}
-          placeholder="https://example.com/image.jpg"
-          required
+          id="image"
+          name="image"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
           className="w-full"
         />
       </div>
-      {formData.imageUrl && (
+
+      {/* Image preview */}
+      {previewUrl && (
         <div className="space-y-2">
-          <Label htmlFor="imageUrl">Image Preview</Label>
-          <Image
-            src={formData.imageUrl || '/placeholder.png'}
-            alt="image preview"
-            width={400}
-            height={300}
-            className="h-auto w-full rounded-lg border"
-          />
+          <Label htmlFor="preview">Image Preview</Label>
+          <div className="relative h-64 w-full overflow-hidden rounded-lg border">
+            <Image
+              src={previewUrl}
+              alt="Medicine Preview"
+              fill
+              style={{ objectFit: 'contain' }}
+              className="p-2"
+            />
+          </div>
         </div>
       )}
 
