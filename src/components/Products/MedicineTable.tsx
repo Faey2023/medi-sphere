@@ -162,8 +162,8 @@ export default function ProductsTable() {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This will remove the product "{product.name}". This
-                        action cannot be undone.
+                        This will remove the product &quot;{product.name}&quot;.
+                        This action cannot be undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -263,8 +263,8 @@ export default function ProductsTable() {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                           <AlertDialogDescription>
-                            This will remove the product "{product.name}". This
-                            action cannot be undone.
+                            This will remove the product &quot;{product.name}
+                            &quot;. This action cannot be undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

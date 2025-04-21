@@ -189,7 +189,9 @@ export default function FilterSidebar() {
         <CardContent className="space-y-4">
           <h3 className="text-xl font-bold">Sort by Price</h3>
           <DropdownMenu>
-            <DropdownMenuTrigger>Sort</DropdownMenuTrigger>
+            <DropdownMenuTrigger className="cursor-pointer">
+              Sort
+            </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem
                 onClick={() =>

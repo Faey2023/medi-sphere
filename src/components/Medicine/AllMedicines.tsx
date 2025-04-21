@@ -65,16 +65,18 @@ export default function AllMedicines() {
 
   // update medicine list when data changes
   useEffect(() => {
-    if (data?.data) {
+    if (data?.data?.data) {
       if (page === 1) {
-        setAllMedicines(data.data);
+        setAllMedicines(data.data.data);
       } else {
-        setAllMedicines((prev) => [...prev, ...data.data]);
+        setAllMedicines((prev) => [...prev, ...data.data.data]);
       }
 
-      const total = data.data.meta?.total || 0;
+      const total = data.data.data.meta?.total || 0;
       const loadedCount =
-        page === 1 ? data.data.length : allMedicines.length + data.data.length;
+        page === 1
+          ? data.data.data.length
+          : allMedicines.length + data.data.data.length;
       setHasMore(loadedCount < total);
       setIsLoadingMore(false);
     }

@@ -100,11 +100,17 @@ const UpdateMedicineForm = () => {
       setTimeout(() => {
         router.back();
       }, 1500);
-    } catch (error: any) {
-      console.error('Error:', error);
+    } catch (error) {
+      const err = error as {
+        data?: {
+          errorSources?: { message?: string }[];
+        };
+      };
+
+      console.error('Error:', err);
       toast.error(
         'Error updating medicine: ' +
-          (error.data?.errorSources?.[0]?.message || 'Unknown error')
+          (err.data?.errorSources?.[0]?.message || 'Unknown error')
       );
     }
   };
@@ -133,7 +139,9 @@ const UpdateMedicineForm = () => {
               Error Loading Medicine
             </h2>
             <p>
-              {(error as any)?.data?.message || 'Failed to load medicine data'}
+              {/* {(error as any)?.data?.message || 'Failed to load medicine data'} */}
+              {(error as { data?: { message?: string } })?.data?.message ||
+                'Failed to load medicine data'}
             </p>
             <Button onClick={() => router.back()}>Go Back</Button>
           </div>

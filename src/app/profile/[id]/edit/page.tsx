@@ -11,7 +11,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useParams } from 'next/navigation';
 import Spinner from '@/components/shared/Spinner';
-import DefaultLayout from '@/components/DefaultLayout/DefaultLayout';
 
 export default function EditProfilePage() {
   const params = useParams();
@@ -23,7 +22,7 @@ export default function EditProfilePage() {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/users/${params.id}`
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${params.id}`
         );
         setUser(res.data);
       } catch (err) {
@@ -39,10 +38,13 @@ export default function EditProfilePage() {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/users/${params.id}`, {
-        name: user.name,
-        email: user.email,
-      });
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${params.id}`,
+        {
+          name: user.name,
+          email: user.email,
+        }
+      );
       toast.success('Profile Updated Successfully');
       router.push('/profile');
     } catch (err) {
@@ -59,44 +61,42 @@ export default function EditProfilePage() {
     );
 
   return (
-    <DefaultLayout>
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <Card className="w-full max-w-md rounded-2xl p-6 shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-center text-2xl font-semibold">
-              Profile Update
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleUpdate} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  value={user.name}
-                  onChange={(e) => setUser({ ...user, name: e.target.value })}
-                  required
-                />
-              </div>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+      <Card className="w-full max-w-md rounded-2xl p-6 shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-semibold">
+            Profile Update
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleUpdate} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+                required
+              />
+            </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={user.email}
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  required
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                required
+              />
+            </div>
 
-              <Button type="submit" className="w-full">
-                Update Profile
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </DefaultLayout>
+            <Button type="submit" className="w-full">
+              Update Profile
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

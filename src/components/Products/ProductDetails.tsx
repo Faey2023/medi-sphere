@@ -34,11 +34,10 @@ const ProductDetails = () => {
 
   // medicine data
   //   const { data, isLoading, isError, error } = useGetSingleMedicineQuery(id)
-  const { data, isLoading, isError, error, refetch } =
-    useGetSingleMedicineQuery(id, {
-      refetchOnMountOrArgChange: true,
-      refetchOnFocus: true,
-    });
+  const { data, isLoading, isError, error } = useGetSingleMedicineQuery(id, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
 
   const medicine: IMedicine | undefined = data?.data;
 
@@ -66,7 +65,9 @@ const ProductDetails = () => {
               Error Loading Medicine
             </h2>
             <p>
-              {(error as any)?.data?.message || 'Failed to load medicine data'}
+              {/* {(error as any)?.data?.message || 'Failed to load medicine data'} */}
+              {(error as { data?: { message?: string } })?.data?.message ||
+                'Failed to load medicine data'}
             </p>
             <Button onClick={() => router.back()}>Go Back</Button>
           </div>
