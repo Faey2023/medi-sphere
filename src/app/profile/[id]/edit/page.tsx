@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useParams } from 'next/navigation';
+import Spinner from '@/components/shared/Spinner';
 
 export default function EditProfilePage() {
   const params = useParams();
@@ -39,28 +42,28 @@ export default function EditProfilePage() {
         name: user.name,
         email: user.email,
       });
-      alert('প্রোফাইল সফলভাবে আপডেট হয়েছে।');
+      toast.success('Profile Updated Successfully');
       router.push('/profile');
     } catch (err) {
       console.error('Update failed:', err);
-      alert('প্রোফাইল আপডেট করতে সমস্যা হয়েছে।');
+      toast.error('Profile Update Failed');
     }
   };
 
-  if (loading) return <div className="text-center">লোড হচ্ছে...</div>;
+  if (loading) return <div className="text-center"><Spinner /></div>;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-md rounded-2xl p-6 shadow-xl">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-semibold">
-            প্রোফাইল এডিট করুন
+            Profile Update
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleUpdate} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">নাম</Label>
+              <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
                 value={user.name}
@@ -70,7 +73,7 @@ export default function EditProfilePage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">ইমেইল</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -81,7 +84,7 @@ export default function EditProfilePage() {
             </div>
 
             <Button type="submit" className="w-full">
-              আপডেট করুন
+              Update Profile
             </Button>
           </form>
         </CardContent>

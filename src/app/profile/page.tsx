@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import Spinner from '@/components/shared/Spinner';
 
 export default function ProfilePage() {
   interface User {
@@ -56,7 +57,7 @@ export default function ProfilePage() {
     router.push(`/profile/${user._id}/edit`);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><Spinner /></div>;
   if (error) return <div>Error: {error}</div>;
   if (!user) return <div>User not found</div>;
 
