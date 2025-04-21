@@ -17,6 +17,7 @@ import { Label } from '../ui/label';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 const CreateMedicineForm = () => {
   const navigate = useRouter();
@@ -150,19 +151,6 @@ const CreateMedicineForm = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="imageUrl">Image URL</Label>
-          <Input
-            id="imageUrl"
-            name="imageUrl"
-            value={formData.imageUrl}
-            onChange={handleChange}
-            placeholder="https://example.com/image.jpg"
-            required
-            className="w-full"
-          />
-        </div>
-
-        <div className="space-y-2">
           <Label htmlFor="price">Price ($)</Label>
           <Input
             id="price"
@@ -259,41 +247,126 @@ const CreateMedicineForm = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="categories">Categories (multi)</Label>
+          <Label htmlFor="expiryDate">Expiry Date</Label>
+          <Input
+            id="expiryDate"
+            name="expiryDate"
+            type="date"
+            value={formData.expiryDate?.toISOString().split('T')[0] || ''}
+            onChange={(e) =>
+              setFormData({ ...formData, expiryDate: new Date(e.target.value) })
+            }
+            required
+            className="w-full"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="supplier">Supplier</Label>
+          <Input
+            id="supplier"
+            name="supplier"
+            value={formData.supplier || ''}
+            onChange={handleChange}
+            placeholder="Global Pharma Supplier"
+            className="w-full"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>In Stock</Label>
           <select
-            multiple
-            id="categories"
-            name="categories"
-            value={formData.categories}
+            name="inStock"
+            value={formData.inStock ? 'yes' : 'no'}
             onChange={(e) =>
               setFormData({
                 ...formData,
-                categories: Array.from(
-                  e.target.selectedOptions,
-                  (option) => option.value as MedicineCategory
-                ),
+                inStock: e.target.value === 'yes',
               })
             }
             className="w-full rounded border px-3 py-2"
           >
-            {[
-              'Pain Relief',
-              'Antibiotic',
-              'Antiviral',
-              'Antifungal',
-              'Allergy',
-              'Digestive',
-              'Supplement',
-              'Chronic Disease',
-              'Emergency',
-            ].map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
           </select>
         </div>
       </div>
+      <div className="space-y-2">
+        <Label htmlFor="categories">Categories (multi)</Label>
+        <select
+          multiple
+          id="categories"
+          name="categories"
+          value={formData.categories}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              categories: Array.from(
+                e.target.selectedOptions,
+                (option) => option.value as MedicineCategory
+              ),
+            })
+          }
+          className="w-full rounded border px-3 py-2"
+        >
+          {[
+            'Pain Relief',
+            'Antibiotic',
+            'Antiviral',
+            'Antifungal',
+            'Allergy',
+            'Digestive',
+            'Supplement',
+            'Chronic Disease',
+            'Emergency',
+          ].map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="imageUrl">Image URL</Label>
+        <Input
+          id="imageUrl"
+          name="imageUrl"
+          value={formData.imageUrl}
+          onChange={handleChange}
+          placeholder="https://example.com/image.jpg"
+          required
+          className="w-full"
+        />
+      </div>
+      {formData.imageUrl && (
+        <div className="space-y-2">
+          <Label htmlFor="imageUrl">Image Preview</Label>
+          <Image
+            src={formData.imageUrl || '/placeholder.png'}
+            alt="image preview"
+            width={400}
+            height={300}
+            className="h-auto w-full rounded-lg border"
+          />
+        </div>
+      )}
+
+      <div className="space-y-2 md:col-span-2">
+        <Label htmlFor="symptoms">Symptoms (comma-separated)</Label>
+        <Input
+          id="symptoms"
+          name="symptoms"
+          value={formData.symptoms?.join(', ') || ''}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              symptoms: e.target.value.split(',').map((s) => s.trim()),
+            })
+          }
+          placeholder="headache, fever, sore throat"
+          className="w-full"
+        />
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2"></div>
 
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
