@@ -38,3 +38,36 @@ export interface IMedicine {
   sku?: string;
   tags?: string[];
 }
+
+export interface GetAllMedicinesParams {
+  searchTerm?: string;
+  tags?: string[];
+  symptoms?: string[];
+  inStock?: boolean;
+  requiredPrescription?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+  type?: MedicineType;
+  categories?: MedicineCategory[];
+  page?: number; // optional now
+  limit?: number;
+  sortBy?: string | 'createdAt';
+  sortOrder?: 'asc' | 'desc';
+}
+export interface User {
+  email: string;
+  name: string;
+}
+
+export interface GetAllOrderParams {
+  _id: string;
+  user: User;
+  products: {
+    product: string;
+    quantity: number;
+  }[];
+  totalPrice: number;
+  status: 'Pending' | 'Paid' | 'Shipped' | 'Completed' | 'Cancelled';
+  createdAt: string;
+  updatedAt: string;
+}

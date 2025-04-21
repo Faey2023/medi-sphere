@@ -5,6 +5,7 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 const testimonials = [
   {
@@ -66,10 +67,17 @@ const testimonials = [
 ];
 
 const Testimonial = () => {
+  const { data: session, status } = useSession();
   return (
     <div className="relative mx-auto max-w-5xl py-9">
       <h2 className="mb-4 text-center text-4xl italic">
         See what our satisfied customers have to say.
+        <p>status:{status}</p>
+        {session ? (
+          <p>Logged in as {session.user?.email}</p>
+        ) : (
+          <p>Not logged in</p>
+        )}
       </h2>
       <Swiper
         modules={[Autoplay, Pagination]}

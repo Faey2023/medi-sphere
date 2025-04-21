@@ -56,6 +56,7 @@ export const authOptions = {
         if (user) {
           return {
             ...user.user,
+            role: user.user.role,
             access_token: user.token,
           };
         } else {
@@ -86,6 +87,7 @@ export const authOptions = {
   },
   pages: {
     signIn: '/login',
+     error: "/error",
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

@@ -8,11 +8,13 @@ module.exports = {
       'avatars.githubusercontent.com', // if using GitHub provider
       'localhost',
       'demo2.themelexus.com',
+      'www.squarepharma.com.bd',
     ],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'demo2.themelexus.com',
+        hostname: '*',
+        port: '',
         pathname: '**',
       },
     ],

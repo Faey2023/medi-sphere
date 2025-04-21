@@ -1,186 +1,72 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default function EditProfilePage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    // Add any other fields you want to update
-  });
-  const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
+  const { data: session, status } = useSession();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const router = useRouter();
-  const params = useParams();
-  const userId = params?.id;
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (!userId) {
-        setError('User ID not found');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // Fetch user data from your backend API
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${userId}`
-        );
-        const userData = response.data;
-
-        // Initialize form with user data
-        setFormData({
-          name: userData.name || '',
-          email: userData.email || '',
-          phone: userData.phone || '',
-          address: userData.address || '',
-          // Add any other fields you want to update
+    if (session?.user?.email) {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/by-email/${session.user.email}`
+        )
+        .then((res) => {
+          setName(res.data.name || '');
+          setEmail(res.data.email || '');
+        })
+        .catch((err) => {
+          console.error('Failed to fetch user:', err);
         });
+    }
+  }, [session]);
 
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching user data:', err);
-        setError('Failed to load user data');
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [userId]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setUpdating(true);
-    setError(null);
-    setSuccess(null);
-
+  const handleSubmit = async () => {
     try {
-      // Send PATCH request to update user
-      const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${userId}`,
-        formData
+      await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/by-email/${session?.user?.email}`,
+        {
+          name,
+          email,
+        }
       );
-
-      console.log('Update response:', response.data);
-      setSuccess('Profile updated successfully!');
-
-      // Redirect after a short delay
-      setTimeout(() => {
-        router.push(`/profile/`);
-      }, 2000);
-    } catch (err: any) {
-      console.error('Error updating profile:', err);
-      setError(err.response?.data?.message || 'Failed to update profile');
-    } finally {
-      setUpdating(false);
+      alert('Profile updated!');
+      router.push('/profile');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Update failed.');
     }
   };
 
-  if (loading) return <div className="p-6 text-center text-lg">Loading...</div>;
+  if (status === 'loading') return <div>Loading...</div>;
+  if (!session) return <div>You must be signed in to edit your profile.</div>;
 
   return (
-    <div className="mx-auto max-w-xl p-6">
-      <Card className="rounded-2xl border border-gray-200 shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl">Edit Profile</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {error && (
-            <div className="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-              {error}
-            </div>
-          )}
+    <div className="mx-auto max-w-md p-6">
+      <h1 className="mb-4 text-2xl font-bold">Edit Profile</h1>
 
-          {success && (
-            <div className="mb-4 rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700">
-              {success}
-            </div>
-          )}
+      <div className="space-y-4">
+        <Input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name"
+        />
+        <Input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Your name"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Your email"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              <Input
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Your phone number"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="address">Address</Label>
-              <Input
-                id="address"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="Your address"
-              />
-            </div>
-
-            <div className="flex justify-between pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push(`/profile/${userId}`)}
-                disabled={updating}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={updating}>
-                {updating ? 'Updating...' : 'Save Changes'}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+        <Button onClick={handleSubmit}>Update Profile</Button>
+      </div>
     </div>
   );
 }

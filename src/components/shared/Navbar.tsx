@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import SearchBar from '../Search/SearchBar';
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -27,7 +28,7 @@ const Navbar = () => {
 
   return (
     <div>
-      {/* Topbar */}
+      {/* top bar */}
       <div className="flex justify-between bg-blue-900 px-5 py-2.5 text-sm text-white">
         <div>Free Shipping on Orders Over $50!</div>
         <div className="hidden gap-3 lg:flex">
@@ -35,7 +36,10 @@ const Navbar = () => {
             <Link href="/admin">Admin Dashboard</Link>
           )}
           <Link href="/profile">Profile</Link>
-          <Link href="/orders">Track Order</Link>
+          {session?.user?.role === 'user' && (
+            <Link href="/orders">Track Order</Link>
+          )}
+
           {session ? (
             <button
               onClick={() => signOut()}
@@ -49,7 +53,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Main Navbar */}
+      {/* main navbar */}
       <div className="flex items-center justify-between border border-[#ddd] bg-white px-5 py-4">
         <div className="flex items-center">
           <Link href="/">
@@ -61,15 +65,9 @@ const Navbar = () => {
           <MenuIcon />
         </button>
 
-        <div className="hidden w-[40%] overflow-hidden rounded-3xl border border-[#ddd] lg:flex">
-          <input
-            className="w-full border-none p-2.5 pl-4 outline-0"
-            type="text"
-            placeholder="Search for products..."
-          />
-          <button className="cursor-pointer border-none bg-blue-900 px-5 py-2.5 text-white">
-            Search
-          </button>
+        {/* searchBar */}
+        <div className="hidden w-[40%] lg:block">
+          <SearchBar />
         </div>
 
         <Link href="/cart">
@@ -84,7 +82,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Navigation Links */}
+      {/* nav Links */}
       <nav className="hidden justify-center bg-blue-900 text-white lg:flex">
         <ul className="flex justify-center gap-5 py-4">
           <li>
@@ -102,7 +100,7 @@ const Navbar = () => {
         </ul>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* mbl Menu */}
       <div
         className={`bg-opacity-50 fixed inset-0 z-50 transition-transform lg:hidden ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
@@ -117,6 +115,12 @@ const Navbar = () => {
           <button onClick={toggleMenu} className="mb-5 text-xl">
             <X />
           </button>
+
+          {/* mbl search */}
+          <div className="mb-4">
+            <SearchBar />
+          </div>
+
           <ul className="space-y-3">
             <li>
               <Link href="/shop">Shop</Link>
