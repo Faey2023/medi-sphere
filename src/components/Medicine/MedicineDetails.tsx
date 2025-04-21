@@ -104,7 +104,16 @@ export default function MedicineDetails({ id }: { id: string }) {
 
   const handleAddToCart = () => {
     dispatch(addToCart(medicine));
-    toast.success(`${medicine.name} added to cart!`);
+    toast.success(`${medicine.name} added to cart!`, {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   };
 
   return (

@@ -9,6 +9,7 @@ module.exports = {
       'localhost',
       'demo2.themelexus.com',
       'www.squarepharma.com.bd',
+      'res.cloudinary.com',
     ],
     remotePatterns: [
       {

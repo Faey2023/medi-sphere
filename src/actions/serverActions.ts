@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use server';
 export const registerUser = async (data: any) => {
-  console.log('data', data);
+  // console.log('data', data);
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/register`,
     {
@@ -12,6 +12,6 @@ export const registerUser = async (data: any) => {
   );
 
   const result = await res.json();
-  console.log(result);
+  // console.log(result);
   return result;
 };
