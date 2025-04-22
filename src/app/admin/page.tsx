@@ -37,7 +37,7 @@ export default function AdminDashboard() {
     // Fetch order data (for Total Orders and percentage change)
     const fetchOrderData = async () => {
       try {
-        const response = await fetch('/api/orders'); // Assuming you have an API for orders
+        const response = await fetch('/api/orders'); 
         const data = await response.json();
         setOrderData({
           totalOrders: data.totalOrders,
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     // Fetch prescription data (for Pending Prescriptions)
     const fetchPrescriptionData = async () => {
       try {
-        const response = await fetch('/api/prescriptions'); // Assuming you have an API for prescriptions
+        const response = await fetch('/api/prescriptions');
         const data = await response.json();
         setPrescriptionData({
           pendingPrescriptions: data.pendingPrescriptions,

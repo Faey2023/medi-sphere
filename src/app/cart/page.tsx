@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { useCreateOrderMutation } from '@/redux/features/payment/paymentSlice';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import { ErrorResponse } from '@/types';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -92,7 +93,16 @@ const CartPage = () => {
         }, 1000);
       }
     }
-    if (isError) toast.error(JSON.stringify(error));
+    
+    if (isError && 'data' in error) {
+      const errData = error.data as ErrorResponse;
+      toast.error(errData.message);
+      console.log('error:', error, errData.message);
+    }
+    // if (isError) {
+    //   toast.error(JSON.stringify(error.data.message));
+    // console.log('error:', error, error.data.message );
+    // }
   }, [data?.data, data?.message, error, isError, isLoading, isSuccess]);
 
   return (
