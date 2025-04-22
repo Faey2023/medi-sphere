@@ -36,7 +36,7 @@ const HeroSlider = () => {
         slidesPerView={1}
         spaceBetween={30}
         loop={true}
-        mousewheel={true}
+        mousewheel={false}
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,

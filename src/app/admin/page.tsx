@@ -1,18 +1,18 @@
 'use client';
 
+import { useGetAllOrderQuery } from '@/redux/features/orders/orderApi'; 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart3, PackageCheck, ClipboardList } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Spinner from '@/components/shared/Spinner';
 
 export default function AdminDashboard() {
+  const { data: order = [], isLoading } = useGetAllOrderQuery({});  // Fetch all orders
+  const orderData = order?.data;
+
   const [stockData, setStockData] = useState({
     totalStock: 0,
     lowStockItems: 0,
-  });
-
-  const [orderData, setOrderData] = useState({
-    totalOrders: 0,
-    percentageChange: 0,
   });
 
   const [prescriptionData, setPrescriptionData] = useState({
@@ -20,55 +20,50 @@ export default function AdminDashboard() {
     reviewRequired: 0,
   });
 
+  // Function to fetch stock data
+  const fetchStockData = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stocks`
+      );
+      const data = await response.json();
+      setStockData(data);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      // console.error('Error fetching stock data:', error);
+    }
+  };
+
+  // Function to fetch prescription data
+  const fetchPrescriptionData = async () => {
+    try {
+      const response = await fetch('/api/prescriptions');
+      const data = await response.json();
+      setPrescriptionData({
+        pendingPrescriptions: data.pendingPrescriptions,
+        reviewRequired: data.reviewRequired,
+      });
+    } catch (error) {
+      // console.error('Error fetching prescription data:', error);
+    }
+  };
+
+  // Poll data every 5 seconds
   useEffect(() => {
-    // Fetch stock data from the backend
-    const fetchStockData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stocks`
-        );
-        const data = await response.json();
-        setStockData(data);
-      } catch (error) {
-        console.error('Error fetching stock data:', error);
-      }
-    };
-
-    // Fetch order data (for Total Orders and percentage change)
-    const fetchOrderData = async () => {
-      try {
-        const response = await fetch('/api/orders'); 
-        const data = await response.json();
-        setOrderData({
-          totalOrders: data.totalOrders,
-          percentageChange: data.percentageChange, // Example: +10% from last week
-        });
-      } catch (error) {
-        console.error('Error fetching order data:', error);
-      }
-    };
-
-    // Fetch prescription data (for Pending Prescriptions)
-    const fetchPrescriptionData = async () => {
-      try {
-        const response = await fetch('/api/prescriptions');
-        const data = await response.json();
-        setPrescriptionData({
-          pendingPrescriptions: data.pendingPrescriptions,
-          reviewRequired: data.reviewRequired,
-        });
-      } catch (error) {
-        console.error('Error fetching prescription data:', error);
-      }
-    };
-
-    // Call the fetch functions
     fetchStockData();
-    fetchOrderData();
     fetchPrescriptionData();
+
+    const interval = setInterval(() => {
+      fetchStockData();
+      fetchPrescriptionData();
+    }, 5000); // Re-fetch every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
-  return (
+  return isLoading ? (
+    <div><Spinner /></div>  // Show loading if the data is being fetched
+  ) : (
     <div className="space-y-6 p-6">
       {/* Overview Cards */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -79,9 +74,10 @@ export default function AdminDashboard() {
             <ClipboardList className="text-muted-foreground h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{orderData.totalOrders}</div>
+            <div className="text-2xl font-bold">{orderData?.length}</div>  {/* Total Orders */}
             <p className="text-muted-foreground text-xs">
-              {orderData.percentageChange}% from last week
+              {/* Example: You can calculate the percentage change here if needed */}
+              {/* {orderData.percentageChange}% from last week */}
             </p>
           </CardContent>
         </Card>
