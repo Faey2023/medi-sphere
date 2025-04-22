@@ -45,7 +45,7 @@ const Featured = () => {
     <div className="my-14 px-12">
       <div className="flex justify-between">
         <div>
-          <h2 className="text-3xl font-bold">Health Products</h2>
+          <h2 className="text-3xl font-bold">Featured Products</h2>
         </div>
       </div>
       <Swiper

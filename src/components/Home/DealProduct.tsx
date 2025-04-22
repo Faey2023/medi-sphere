@@ -13,7 +13,38 @@ const DealProduct = () => {
     refetchOnReconnect: true,
   });
 
-  const medicineData: IMedicine[] = data?.data?.data?.slice(0, 2); // Only 2 products
+  // const medicineData: IMedicine[] = data?.data?.data?.slice(0, 2); // Only 2 products
+
+  const calculateTotalPrice = ({
+    price,
+    discount,
+  }: {
+    price: number;
+    discount: number;
+  }) => {
+    const discountedAmount = price * (discount / 100);
+    const discountedPrice = price - discountedAmount;
+
+    return {
+      discountedPrice,
+    };
+  };
+
+  const medicineData: (IMedicine & { discountedPrice: number })[] =
+    data?.data?.data
+      ?.filter((item: IMedicine) => item.discount && item.discount > 0)
+      .slice(0, 2)
+      .map((item: IMedicine) => {
+        const { discountedPrice } = calculateTotalPrice({
+          price: item.price,
+          discount: item.discount || 0,
+        });
+
+        return {
+          ...item,
+          discountedPrice,
+        };
+      });
 
   return (
     <div className="my-14 px-6 md:px-12">
@@ -41,9 +72,20 @@ const DealProduct = () => {
               <div>
                 <h3 className="mb-2 text-2xl font-semibold">{product.name}</h3>
                 <p className="mb-4 text-gray-600">{product.description}</p>
-                <p className="mb-4 text-xl font-bold text-green-600">
+                {/* <p className="mb-4 text-xl font-bold text-green-600">
                   ${product.price}
-                </p>
+                </p> */}
+                <div className="flex gap-2 text-xl">
+                  <del className="text-gray-500">
+                    ${product.price.toFixed(2)}
+                  </del>
+                  <p className="mb-4 font-bold text-green-600">
+                    $
+                    {(
+                      product as IMedicine & { discountedPrice: number }
+                    ).discountedPrice.toFixed(2)}
+                  </p>
+                </div>
               </div>
               <div className="flex gap-4">
                 <Link
