@@ -22,10 +22,10 @@ const MediCard = () => {
   ];
 
   return (
-    <div className="my-10 flex gap-3 items-center justify-center">
+    <div className="my-10 flex items-center justify-center gap-3">
       {cardData.map((card, index) => (
         <Link href="/shop" key={index} className="group">
-          <div className="relative h-[250px] w-[400px] rounded overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-105">
+          <div className="relative h-[250px] w-[400px] cursor-pointer overflow-hidden rounded transition-transform duration-300 hover:scale-105">
             <Image
               src={card.img}
               alt={card.title}
@@ -33,11 +33,13 @@ const MediCard = () => {
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300">
-              <h2 className="text-white text-2xl font-bold text-left p-8">
+            <div className="absolute inset-0 bg-black/30 transition-colors duration-300 group-hover:bg-black/40">
+              <h2 className="p-8 text-left text-2xl font-bold text-white">
                 {card.title}
               </h2>
-              <h3 className="pl-8 text-white text-xl font-medium">{card.subtitle}</h3>
+              <h3 className="pl-8 text-xl font-medium text-white">
+                {card.subtitle}
+              </h3>
             </div>
           </div>
         </Link>

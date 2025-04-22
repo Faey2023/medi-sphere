@@ -10,14 +10,14 @@ const Home = () => {
   return (
     <DefaultLayout>
       <HeroSlider />
-      <div className='max-w-7xl mx-auto'>
+      <div className="mx-auto max-w-7xl">
         <MediCard />
         <FeaturedBrandsSlider />
-        
-      <Featured />
-      <DealProduct />
-      
-      <Testimonial />
+
+        <Featured />
+        <DealProduct />
+
+        <Testimonial />
       </div>
     </DefaultLayout>
   );

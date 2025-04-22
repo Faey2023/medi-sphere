@@ -1,5 +1,3 @@
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-
 export type MedicineType =
   | 'Tablet'
   | 'Syrup'
@@ -20,7 +18,6 @@ export type MedicineCategory =
   | 'Emergency';
 
 export interface IMedicine {
-  image: string | StaticImport;
   _id?: string;
   name: string;
   description?: string;
