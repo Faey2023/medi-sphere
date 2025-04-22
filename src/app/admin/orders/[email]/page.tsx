@@ -56,7 +56,9 @@ const ManageOrdersPage = ({
           <TableBody>
             {orders?.map((order: GetAllOrderParams) => (
               <TableRow key={order._id}>
-                <TableCell className="font-medium">{order._id}</TableCell>
+                <TableCell className="max-w-[30px] truncate overflow-hidden font-medium whitespace-nowrap capitalize">
+                  {order._id}
+                </TableCell>
                 <TableCell>{order.user.email}</TableCell>
                 <TableCell>{order.user.name}</TableCell>
                 <TableCell className="capitalize">

@@ -11,14 +11,14 @@ const Home = () => {
     <DefaultLayout>
       <HeroSlider />
       {/* <div className="mx-auto max-w-7xl"> */}
-        <MediCard />
-        <FeaturedBrandsSlider />
+      <MediCard />
+      <FeaturedBrandsSlider />
 
-        <Featured />
-        <DealProduct />
+      <Featured />
+      <DealProduct />
 
-        <Testimonial />
-    {/* </div> */}
+      <Testimonial />
+      {/* </div> */}
     </DefaultLayout>
   );
 };
