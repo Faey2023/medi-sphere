@@ -19,7 +19,7 @@ import {
 const Orders = () => {
   const { data: session } = useSession();
   const email = session?.user?.email;
-  // console.log(email);
+  console.log(email);
   const { data: order = [], isLoading } = useGetOrdersByEmailQuery(
     email ? { email } : skipToken
   );
