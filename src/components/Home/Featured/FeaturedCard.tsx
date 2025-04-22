@@ -82,7 +82,7 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
           </div>
         </Link>
         <div>
-          <h3 className="font-jost mt-2 mb-1 ml-1 line-clamp-1 text-xl font-bold">
+          <h3 className="mt-2 mb-1 ml-1 line-clamp-1 text-xl font-bold">
             {name}
           </h3>
           <div className="flex items-center justify-between">

@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <DefaultLayout>
       <HeroSlider />
-      <div className="mx-auto max-w-7xl">
+      {/* <div className="mx-auto max-w-7xl"> */}
         <MediCard />
         <FeaturedBrandsSlider />
 
@@ -18,7 +18,7 @@ const Home = () => {
         <DealProduct />
 
         <Testimonial />
-      </div>
+    {/* </div> */}
     </DefaultLayout>
   );
 };

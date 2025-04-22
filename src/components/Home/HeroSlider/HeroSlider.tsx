@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Mousewheel } from 'swiper/modules';
+// import { Mousewheel } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/mousewheel';
 import Image from 'next/image';
@@ -13,11 +13,11 @@ const HeroSlider = () => {
   return (
     <div className="h-[500px] w-full">
       <Swiper
-        direction={'horizontal'}
+        // direction={'horizontal'}
         slidesPerView={1}
         spaceBetween={30}
         mousewheel={true}
-        modules={[Mousewheel]}
+        // modules={[Mousewheel]}
         className="mySwiper"
       >
         {images.map((src, index) => (
