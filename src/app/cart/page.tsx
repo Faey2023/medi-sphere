@@ -93,16 +93,8 @@ const CartPage = () => {
         }, 1000);
       }
     }
-    
-    if (isError && 'data' in error) {
-      const errData = error.data as ErrorResponse;
-      toast.error(errData.message);
-      console.log('error:', error, errData.message);
-    }
-    // if (isError) {
-    //   toast.error(JSON.stringify(error.data.message));
-    // console.log('error:', error, error.data.message );
-    // }
+    if (isError) toast.error(JSON.stringify(error));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, data?.message, error, isError, isLoading, isSuccess]);
 
   return (
