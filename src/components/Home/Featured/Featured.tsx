@@ -18,7 +18,7 @@ const Featured = () => {
     refetchOnReconnect: true,
   });
   const medicineData: IMedicine[] = data?.data?.data;
-  console.log(medicineData);
+  // console.log(medicineData);
 
   const [slidesPerView, setSlidesPerView] = useState<number>(1);
 
@@ -42,13 +42,10 @@ const Featured = () => {
   }, []);
 
   return (
-    <div className="my-10 px-12">
+    <div className="my-14 px-12">
       <div className="flex justify-between">
         <div>
-          <h1 className="text-left text-2xl font-extrabold uppercase lg:text-3xl">
-            featured medicines
-          </h1>
-          <p>Discounts & Offers Up To 25%</p>
+          <h2 className="text-3xl font-bold">Health Products</h2>
         </div>
       </div>
       <Swiper

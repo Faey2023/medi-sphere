@@ -38,7 +38,7 @@ export default function EditProfilePage() {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(
+      await axios.patch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${params.id}`,
         {
           name: user.name,
@@ -83,6 +83,7 @@ export default function EditProfilePage() {
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
+                disabled={true}
                 id="email"
                 type="email"
                 value={user.email}

@@ -49,7 +49,7 @@ export default function ProductsTable() {
   }
 
   const products = data?.data?.data || [];
-  console.log(products);
+  // console.log(products);
 
   // if No products founds
   if (products.length === 0) {
@@ -85,7 +85,7 @@ export default function ProductsTable() {
             <CardContent className="p-0">
               <div className="flex items-center p-4">
                 <Image
-                  src={product.imageUrl || '/placeholder.svg'}
+                  src={product.imageUrl || '/placeholder.png'}
                   alt={product.description ? product.name : 'product image'}
                   className="mr-4 h-16 w-16 rounded-md object-cover"
                   width={64}
@@ -203,7 +203,7 @@ export default function ProductsTable() {
               <TableRow key={product._id}>
                 <TableCell>
                   <Image
-                    src={product.imageUrl || '/placeholder.svg'}
+                    src={product.imageUrl || '/placeholder.png'}
                     alt={product.description ? product.name : 'product image'}
                     className="h-12 w-12 rounded-md object-cover"
                     width={48}

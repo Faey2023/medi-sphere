@@ -3,6 +3,7 @@ import baseApi from './baseApi';
 
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // get all medicines
     getAllMedicine: builder.query({
       query: (params: GetAllMedicinesParams | string = {}) => {
         if (typeof params === 'string') {
@@ -56,25 +57,49 @@ const productApi = baseApi.injectEndpoints({
       },
       providesTags: ['Medicine'],
     }),
+    // get single medicine
     getSingleMedicine: builder.query({
       query: (medicineId?: string) => `/medicines/${medicineId}`,
     }),
-    addMedicine: builder.mutation({
-      query: (data?: IMedicine) => ({
-        url: `/medicines/create-medicine`,
+    // add medicine
+    addMedicine: builder.mutation<IMedicine, FormData>({
+      query: (data) => ({
+        url: '/medicines/create-medicine',
         method: 'POST',
         body: data,
+        formData: true,
       }),
       invalidatesTags: ['Medicine'],
     }),
-    updateMedicine: builder.mutation({
-      query: ({ id, data }: { id: string; data: IMedicine }) => ({
-        url: `/medicines/${id}`,
-        method: 'PATCH',
-        body: data,
-      }),
-      invalidatesTags: ['Medicine'],
-    }),
+    // addMedicine: builder.mutation({
+    //   query: (data?: IMedicine) => ({
+    //     url: `/medicines/create-medicine`,
+    //     method: 'POST',
+    //     body: data,
+    //   }),
+    //   invalidatesTags: ['Medicine'],
+    // }),
+    // update medicine
+    updateMedicine: builder.mutation<IMedicine, { id: string; data: FormData }>(
+      {
+        query: ({ id, data }) => ({
+          url: `/medicines/${id}`,
+          method: 'PATCH',
+          body: data,
+          formData: true,
+        }),
+        invalidatesTags: ['Medicine'],
+      }
+    ),
+    // updateMedicine: builder.mutation({
+    //   query: ({ id, data }: { id: string; data: IMedicine }) => ({
+    //     url: `/medicines/${id}`,
+    //     method: 'PATCH',
+    //     body: data,
+    //   }),
+    //   invalidatesTags: ['Medicine'],
+    // }),
+    // delete medicine
     deleteMedicine: builder.mutation({
       query: (id: string) => ({
         url: `/medicines/${id}`,

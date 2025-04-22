@@ -18,6 +18,13 @@ const orderApi = baseApi.injectEndpoints({
     getOrdersByEmail: builder.query({
       query: ({ email }: { email: string }) => `/orders?email=${email}`,
     }),
+    updateOrderStatus: builder.mutation({
+      query: ({ id, status }: { id: string; status: string }) => ({
+        url: `/orders/${id}`,
+        method: 'PUT',
+        body: { status },
+      }),
+    }),
   }),
 });
 
@@ -25,5 +32,6 @@ export const {
   usePlaceOrderMutation,
   useGetAllOrderQuery,
   useGetOrdersByEmailQuery,
+  useUpdateOrderStatusMutation,
 } = orderApi;
 export default orderApi;

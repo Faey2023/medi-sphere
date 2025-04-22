@@ -28,7 +28,7 @@ const UpdateMedicineForm = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
-  // Fetch medicine data
+  // fetch medicine
   const {
     data: singleMedicineData,
     isLoading: isLoadingMedicine,
@@ -37,11 +37,11 @@ const UpdateMedicineForm = () => {
   } = useGetSingleMedicineQuery(id);
   const singleMedicine: IMedicine = singleMedicineData?.data;
 
-  // Update mutation
+  // update
   const [updateMedicine, { isLoading: isUpdating }] =
     useUpdateMedicineMutation();
 
-  // Form state
+  // form state
   const [formData, setFormData] = useState<IMedicine>({
     name: '',
     description: '',
@@ -63,6 +63,10 @@ const UpdateMedicineForm = () => {
     isDeleted: false,
   });
 
+  // file input
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   // populate form when data is loaded
   useEffect(() => {
     if (singleMedicine) {
@@ -70,6 +74,11 @@ const UpdateMedicineForm = () => {
         ...singleMedicine,
         expiryDate: new Date(singleMedicine.expiryDate),
       });
+
+      // set preview URL from existing image if available
+      if (singleMedicine.imageUrl) {
+        setPreviewUrl(singleMedicine.imageUrl);
+      }
     }
   }, [singleMedicine]);
 
@@ -83,6 +92,23 @@ const UpdateMedicineForm = () => {
     setFormData({ ...formData, [e.target.name]: value });
   };
 
+  // image file handler
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(file);
+
+      // preview URL
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        if (fileReader.readyState === 2) {
+          setPreviewUrl(fileReader.result as string);
+        }
+      };
+      fileReader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -92,7 +118,37 @@ const UpdateMedicineForm = () => {
     }
 
     try {
-      const response = await updateMedicine({ id, data: formData }).unwrap();
+      // create FormData object to send file
+      const medicineData = new FormData();
+
+      // add all text fields
+      Object.keys(formData).forEach((key) => {
+        const typedKey = key as keyof IMedicine;
+
+        const value = formData[typedKey];
+
+        if (typedKey !== 'imageUrl' && value !== null && value !== undefined) {
+          if (Array.isArray(value)) {
+            value.forEach((item: string) => {
+              medicineData.append(`${typedKey}[]`, item);
+            });
+          } else if (typedKey === 'expiryDate' && value instanceof Date) {
+            medicineData.append(typedKey, value.toISOString());
+          } else {
+            medicineData.append(typedKey, String(value));
+          }
+        }
+      });
+
+      // add image file if exists
+      if (selectedImage) {
+        medicineData.append('image', selectedImage);
+      }
+
+      const response = await updateMedicine({
+        id,
+        data: medicineData,
+      }).unwrap();
       console.log('Success:', response);
       toast.success('Medicine updated successfully!');
 
@@ -100,22 +156,28 @@ const UpdateMedicineForm = () => {
       setTimeout(() => {
         router.back();
       }, 1500);
-    } catch (error) {
-      const err = error as {
-        data?: {
-          errorSources?: { message?: string }[];
-        };
-      };
+    } catch (error: unknown) {
+      console.error('Error:', error);
 
-      console.error('Error:', err);
-      toast.error(
-        'Error updating medicine: ' +
-          (err.data?.errorSources?.[0]?.message || 'Unknown error')
-      );
+      let message = 'Unknown error';
+
+      if (typeof error === 'object' && error !== null) {
+        const maybeErr = error as {
+          data?: { errorSources?: { message?: string }[] };
+          message?: string;
+        };
+
+        message =
+          maybeErr.data?.errorSources?.[0]?.message ||
+          maybeErr.message ||
+          message;
+      }
+
+      toast.error(`Error updating Medicine: ${message}`);
     }
   };
 
-  // Loading state
+  // loading
   if (isLoadingMedicine) {
     return (
       <Card className="mx-auto max-w-2xl">
@@ -129,8 +191,15 @@ const UpdateMedicineForm = () => {
     );
   }
 
-  // Error state
+  type CustomError = {
+    data?: {
+      message?: string;
+    };
+  };
+
   if (isError) {
+    const customError = error as CustomError;
+
     return (
       <Card className="mx-auto max-w-2xl">
         <CardContent className="p-6">
@@ -139,9 +208,7 @@ const UpdateMedicineForm = () => {
               Error Loading Medicine
             </h2>
             <p>
-              {/* {(error as any)?.data?.message || 'Failed to load medicine data'} */}
-              {(error as { data?: { message?: string } })?.data?.message ||
-                'Failed to load medicine data'}
+              {customError?.data?.message || 'Failed to load medicine data'}
             </p>
             <Button onClick={() => router.back()}>Go Back</Button>
           </div>
@@ -382,28 +449,37 @@ const UpdateMedicineForm = () => {
           ))}
         </select>
       </div>
+
       <div className="space-y-2">
-        <Label htmlFor="imageUrl">Image URL</Label>
+        <Label htmlFor="image">Medicine Image</Label>
         <Input
-          id="imageUrl"
-          name="imageUrl"
-          value={formData.imageUrl}
-          onChange={handleChange}
-          placeholder="https://example.com/image.jpg"
-          required
+          id="image"
+          name="image"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
           className="w-full"
         />
+        <p className="text-muted-foreground text-xs">
+          {formData.imageUrl
+            ? 'Current image will be used if no new image is selected'
+            : ''}
+        </p>
       </div>
-      {formData.imageUrl && (
+
+      {/* Image preview */}
+      {previewUrl && (
         <div className="space-y-2">
-          <Label htmlFor="imagePreview">Image Preview</Label>
-          <Image
-            src={formData.imageUrl || '/placeholder.png'}
-            alt="image preview"
-            width={400}
-            height={300}
-            className="h-auto w-full rounded-lg border"
-          />
+          <Label htmlFor="preview">Image Preview</Label>
+          <div className="relative h-64 w-full overflow-hidden rounded-lg border">
+            <Image
+              src={previewUrl || '/placeholder.svg'}
+              alt="Medicine Preview"
+              fill
+              style={{ objectFit: 'contain' }}
+              className="p-2"
+            />
+          </div>
         </div>
       )}
 

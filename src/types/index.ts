@@ -57,17 +57,20 @@ export interface GetAllMedicinesParams {
   sortOrder?: 'asc' | 'desc';
 }
 export interface User {
-  email: string;
+  _id: string;
   name: string;
+  email: string;
+  createdAt: Date;
 }
-
 export interface GetAllOrderParams {
   _id: string;
   user: User;
   products: {
     product: string;
     quantity: number;
+    name: string;
   }[];
+  deliveryType: string;
   totalPrice: number;
   status: 'Pending' | 'Paid' | 'Shipped' | 'Completed' | 'Cancelled';
   createdAt: string;
