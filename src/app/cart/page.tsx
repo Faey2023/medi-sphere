@@ -19,7 +19,6 @@ import { useEffect, useState } from 'react';
 import { useCreateOrderMutation } from '@/redux/features/payment/paymentSlice';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
-import { ErrorResponse } from '@/types';
 
 const CartPage = () => {
   const dispatch = useDispatch();
