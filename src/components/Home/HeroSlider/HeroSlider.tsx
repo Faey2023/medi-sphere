@@ -33,13 +33,12 @@ const slides = [
 
 const HeroSlider = () => {
   return (
-    <div className="relative h-[500px] w-full overflow-hidden">
+    <div className="relative min-h-[500px] w-full overflow-hidden pb-12">
       <Swiper
         direction="horizontal"
         slidesPerView={1}
         spaceBetween={30}
         loop={true}
-        // mousewheel={true}
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,
@@ -56,10 +55,11 @@ const HeroSlider = () => {
             className="flex flex-row-reverse items-center justify-center"
             style={{ backgroundColor: '#129ead' }}
           >
-            <div className="mx-auto flex h-[500px] w-full max-w-7xl flex-col items-center justify-between px-4 lg:flex-row">
-              {/* Animated Image */}
+            <div className="flex flex-col lg:flex-row w-full max-w-7xl mx-auto h-full items-center gap-10 justify-between py-8">
+              
+              {/* Image Section */}
               <motion.div
-                className="relative h-full w-1/2"
+                className="relative w-full lg:w-1/2 h-64 md:h-80 lg:h-[500px]"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -73,17 +73,17 @@ const HeroSlider = () => {
                 />
               </motion.div>
 
-              {/* Animated Text Section */}
+              {/* Text Section */}
               <motion.div
-                className="w-1/2 px-8 text-white"
+                className="w-full lg:w-1/2 text-white text-center lg:text-left px-4 sm:px-6"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
               >
-                <h2 className="mb-4 lg:text-5xl leading-tight font-extrabold drop-shadow">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-snug drop-shadow">
                   {slide.title}
                 </h2>
-                <p className="mb-6 text-lg opacity-90">{slide.subtitle}</p>
+                <p className="text-base sm:text-lg mb-6 opacity-90">{slide.subtitle}</p>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
