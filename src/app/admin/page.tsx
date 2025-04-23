@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetAllOrderQuery } from '@/redux/features/orders/orderApi'; 
+import { useGetAllOrderQuery } from '@/redux/features/orders/orderApi';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart3, PackageCheck, ClipboardList } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -44,7 +44,7 @@ export default function AdminDashboard() {
         reviewRequired: data.reviewRequired,
       });
     } catch (error) {
-      // console.error('Error fetching prescription data:', error);
+      console.error('Error fetching prescription data:', error);
     }
   };
 
