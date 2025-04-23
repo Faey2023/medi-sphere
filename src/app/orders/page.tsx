@@ -16,6 +16,7 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const Orders = () => {
   const { data: session } = useSession();
@@ -24,11 +25,12 @@ const Orders = () => {
     email ? { email } : skipToken
   );
   const orderData: GetAllOrderParams[] = order?.data;
+
   return isLoading ? (
     <Skeleton />
   ) : (
     <DefaultLayout>
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6 min-h-screen">
         <h2 className="mb-4 text-2xl font-bold">All Orders</h2>
 
         {/* Check if no orders found */}
@@ -63,28 +65,18 @@ const Orders = () => {
                   <TableCell className="max-w-[200px] truncate overflow-hidden whitespace-nowrap capitalize">
                     {order.products.map((product) => product?.name).join(', ')}
                   </TableCell>
-
                   <TableCell className="text-right">
                     {order.totalPrice}
                   </TableCell>
                   <TableCell className="text-center">
-                    {order.status === 'Paid' ||
-                    order.status === 'Processing' ||
-                    order.status === 'Pending' ? (
-                      <Button disabled={order.status !== 'Processing'}>
-                        {order.status === 'Paid'
-                          ? 'Paid'
-                          : order.status === 'Processing'
-                            ? 'Pay Now'
-                            : order.status === 'Pending'
-                              ? 'Pending'
-                              : order.products.some(
-                                    (product) =>
-                                      product.prescriptionFile === 'notRequired'
-                                  )
-                                ? 'Pending'
-                                : 'Checking'}
-                      </Button>
+                    {order.status === 'Paid' ? (
+                      <Button disabled>Paid</Button>
+                    ) : order.status === 'Processing' ? (
+                      <Button>Pay Now</Button>
+                    ) : order.status === 'Pending' ? (
+                      <Link href={`/cart/${order._id}`}>
+                        <Button variant="outline">Pending</Button>
+                      </Link>
                     ) : null}
                   </TableCell>
                 </TableRow>
