@@ -70,6 +70,20 @@ const Navbar = () => {
           <SearchBar />
         </div>
 
+        <nav className="hidden justify-center lg:flex">
+          <ul className="flex justify-center gap-5 py-4">
+            <li className="hover:text-blue-900 hover:underline">
+              <Link href="/">Home</Link>
+            </li>
+            <li className="hover:text-blue-900 hover:underline">
+              <Link href="/shop">Shop</Link>
+            </li>
+            <li className="hover:text-blue-900 hover:underline">
+              <Link href="/about">About</Link>
+            </li>
+          </ul>
+        </nav>
+
         <Link href="/cart">
           <div className="relative hidden items-center gap-3 lg:flex">
             <ShoppingBag />
@@ -83,7 +97,7 @@ const Navbar = () => {
       </div>
 
       {/* nav Links */}
-      <nav className="hidden justify-center bg-blue-900 text-white lg:flex">
+      {/* <nav className="hidden justify-center bg-blue-900 text-white lg:flex">
         <ul className="flex justify-center gap-5 py-4">
           <li>
             <Link href="/">Home</Link>
@@ -91,14 +105,14 @@ const Navbar = () => {
           <li>
             <Link href="/shop">Shop</Link>
           </li>
-          {/* <li>
+          <li>
             <Link href="/">Deals</Link>
-          </li> */}
+          </li>
           <li>
             <Link href="/about">About</Link>
           </li>
         </ul>
-      </nav>
+      </nav> */}
 
       {/* mbl Menu */}
       <div

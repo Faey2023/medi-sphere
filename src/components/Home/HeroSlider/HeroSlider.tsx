@@ -55,11 +55,10 @@ const HeroSlider = () => {
             className="flex flex-row-reverse items-center justify-center"
             style={{ backgroundColor: '#129ead' }}
           >
-            <div className="flex flex-col lg:flex-row w-full max-w-7xl mx-auto h-full items-center gap-10 justify-between py-8">
-              
+            <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-between gap-10 py-8 lg:flex-row">
               {/* Image Section */}
               <motion.div
-                className="relative w-full lg:w-1/2 h-64 md:h-80 lg:h-[500px]"
+                className="relative h-64 w-full md:h-80 lg:h-[500px] lg:w-1/2"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -75,15 +74,17 @@ const HeroSlider = () => {
 
               {/* Text Section */}
               <motion.div
-                className="w-full lg:w-1/2 text-white text-center lg:text-left px-4 sm:px-6"
+                className="w-full px-4 text-center text-white sm:px-6 lg:w-1/2 lg:text-left"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
               >
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-snug drop-shadow">
+                <h2 className="mb-4 text-3xl leading-snug font-extrabold drop-shadow sm:text-4xl lg:text-5xl">
                   {slide.title}
                 </h2>
-                <p className="text-base sm:text-lg mb-6 opacity-90">{slide.subtitle}</p>
+                <p className="mb-6 text-base opacity-90 sm:text-lg">
+                  {slide.subtitle}
+                </p>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}

@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { useGetAllOrderQuery } from '@/redux/features/orders/orderApi'; 
+import { useGetAllOrderQuery } from '@/redux/features/orders/orderApi';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart3, PackageCheck, ClipboardList } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Spinner from '@/components/shared/Spinner';
 
 export default function AdminDashboard() {
-  const { data: order = [], isLoading } = useGetAllOrderQuery({});  // Fetch all orders
+  const { data: order = [], isLoading } = useGetAllOrderQuery({}); // Fetch all orders
   const orderData = order?.data;
 
   const [stockData, setStockData] = useState({
@@ -28,7 +29,7 @@ export default function AdminDashboard() {
       );
       const data = await response.json();
       setStockData(data);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // console.error('Error fetching stock data:', error);
     }
@@ -62,7 +63,9 @@ export default function AdminDashboard() {
   }, []);
 
   return isLoading ? (
-    <div><Spinner /></div>  // Show loading if the data is being fetched
+    <div>
+      <Spinner />
+    </div> // Show loading if the data is being fetched
   ) : (
     <div className="space-y-6 p-6">
       {/* Overview Cards */}
@@ -74,7 +77,8 @@ export default function AdminDashboard() {
             <ClipboardList className="text-muted-foreground h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{orderData?.length}</div>  {/* Total Orders */}
+            <div className="text-2xl font-bold">{orderData?.length}</div>{' '}
+            {/* Total Orders */}
             <p className="text-muted-foreground text-xs">
               {/* Example: You can calculate the percentage change here if needed */}
               {/* {orderData.percentageChange}% from last week */}

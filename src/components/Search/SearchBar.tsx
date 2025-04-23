@@ -53,8 +53,8 @@ export default function SearchBar() {
           value={input}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          placeholder="Search by name or category"
-          className="w-full rounded-full border-gray-200 pr-12"
+          placeholder="Search by name"
+          className="w-full rounded-full border-gray-200 pr-12 placeholder:text-[10px] lg:placeholder:text-base"
         />
         <Button
           onClick={handleSearch}

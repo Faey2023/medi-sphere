@@ -61,16 +61,19 @@ export interface User {
   name: string;
   email: string;
   createdAt: Date;
+  products: OrderProducts[];
+}
+
+export interface OrderProducts {
+  product: string;
+  quantity: number;
+  name: string;
+  prescriptionFile: string;
 }
 export interface GetAllOrderParams {
   _id: string;
   user: User;
-  products: {
-    product: string;
-    quantity: number;
-    name: string;
-    prescriptionFile: string;
-  }[];
+  products: OrderProducts[];
   deliveryType: string;
   totalPrice: number;
   status:
@@ -83,7 +86,6 @@ export interface GetAllOrderParams {
   createdAt: string;
   updatedAt: string;
 }
-
 
 export type ErrorResponse = {
   message: string;

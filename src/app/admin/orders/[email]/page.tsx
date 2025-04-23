@@ -11,9 +11,10 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { format } from 'date-fns';
-import { GetAllOrderParams } from '@/types';
+import { GetAllOrderParams, OrderProducts } from '@/types';
 import { skipToken } from '@reduxjs/toolkit/query';
 import React from 'react';
+import Link from 'next/link';
 
 const ManageOrdersPage = ({
   params,
@@ -28,12 +29,10 @@ const ManageOrdersPage = ({
   );
 
   const orders: GetAllOrderParams[] = order?.data;
-
-  if (isLoading) return <Skeleton />;
-  // if (error) return <p>Error loading orders. Please try again later.</p>;
-
-  return (
-    <div className="container mx-auto p-6">
+  return isLoading ? (
+    <Skeleton />
+  ) : (
+    <div className="container mx-auto pt-4">
       <h2 className="mb-4 text-2xl font-bold">
         Order History for {decodedEmail}
       </h2>
@@ -49,8 +48,9 @@ const ManageOrdersPage = ({
               <TableHead>Name</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Ordered Product</TableHead>
-              <TableHead>Shipping Method</TableHead>
-              <TableHead>Total Price</TableHead>
+              <TableHead>Prescription</TableHead>
+              <TableHead>Delivery</TableHead>
+              <TableHead>Price</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -61,17 +61,37 @@ const ManageOrdersPage = ({
                 </TableCell>
                 <TableCell>{order.user.email}</TableCell>
                 <TableCell>{order.user.name}</TableCell>
-                <TableCell className="capitalize">
-                  {order.deliveryType}
-                </TableCell>
                 <TableCell>
                   {format(new Date(order.createdAt), 'MM/dd/yyyy hh:mm a')}
                 </TableCell>
                 <TableCell className="max-w-[200px] truncate overflow-hidden whitespace-nowrap capitalize">
                   {order.products.map((product) => product.name).join(', ')}
                 </TableCell>
-
-                <TableCell className="text-right">{order.totalPrice}</TableCell>
+                <TableCell>
+                  {order.products.map(
+                    (product: OrderProducts, index: number) =>
+                      product?.prescriptionFile === 'notRequired' ? (
+                        <p key={index} className="text-gray-500 italic">
+                          Prescription not required
+                        </p>
+                      ) : (
+                        <Link
+                          key={index}
+                          href={`${product.prescriptionFile}`}
+                          download={`prescription-${index + 1}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2 block text-blue-600 hover:underline"
+                        >
+                          View Prescription
+                        </Link>
+                      )
+                  )}
+                </TableCell>
+                <TableCell className="capitalize">
+                  {order.deliveryType}
+                </TableCell>
+                <TableCell>${order.totalPrice}</TableCell>
               </TableRow>
             ))}
           </TableBody>
