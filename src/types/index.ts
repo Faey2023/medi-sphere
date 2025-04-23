@@ -69,10 +69,17 @@ export interface GetAllOrderParams {
     product: string;
     quantity: number;
     name: string;
+    prescriptionFile: string;
   }[];
   deliveryType: string;
   totalPrice: number;
-  status: 'Pending' | 'Paid' | 'Shipped' | 'Completed' | 'Cancelled';
+  status:
+    | 'Pending'
+    | 'Processing'
+    | 'Paid'
+    | 'Shipped'
+    | 'Completed'
+    | 'Cancelled';
   createdAt: string;
   updatedAt: string;
 }
