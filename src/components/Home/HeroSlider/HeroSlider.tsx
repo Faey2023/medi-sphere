@@ -12,17 +12,20 @@ import { motion } from 'framer-motion';
 
 const slides = [
   {
-    image: 'https://demo2.themelexus.com/medilazar/wp-content/uploads/2020/12/h1-new02.png',
+    image:
+      'https://demo2.themelexus.com/medilazar/wp-content/uploads/2020/12/h1-new02.png',
     title: 'Healthy Living Essentials',
     subtitle: 'Shop Now for Wellness Products',
   },
   {
-    image: 'https://demo2.themelexus.com/medilazar/wp-content/uploads/2020/12/h1-new03.png',
+    image:
+      'https://demo2.themelexus.com/medilazar/wp-content/uploads/2020/12/h1-new03.png',
     title: 'Stay Fit & Energized',
     subtitle: 'Best Supplements for You',
   },
   {
-    image: 'https://demo2.themelexus.com/medilazar/wp-content/uploads/2020/12/h1-news01.png',
+    image:
+      'https://demo2.themelexus.com/medilazar/wp-content/uploads/2020/12/h1-news01.png',
     title: 'Your Daily Health Partner',
     subtitle: 'Discover Natural Remedies',
   },
@@ -36,7 +39,7 @@ const HeroSlider = () => {
         slidesPerView={1}
         spaceBetween={30}
         loop={true}
-        mousewheel={true}
+        // mousewheel={true}
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,
@@ -50,13 +53,13 @@ const HeroSlider = () => {
         {slides.map((slide, index) => (
           <SwiperSlide
             key={index}
-            className="flex items-center justify-center"
+            className="flex flex-row-reverse items-center justify-center"
             style={{ backgroundColor: '#129ead' }}
           >
-            <div className="flex w-full max-w-7xl px-4 mx-auto h-[500px] items-center justify-between">
+            <div className="mx-auto flex h-[500px] w-full max-w-7xl flex-col items-center justify-between px-4 lg:flex-row">
               {/* Animated Image */}
               <motion.div
-                className="relative w-1/2 h-full"
+                className="relative h-full w-1/2"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -72,15 +75,15 @@ const HeroSlider = () => {
 
               {/* Animated Text Section */}
               <motion.div
-                className="w-1/2 text-white px-8"
+                className="w-1/2 px-8 text-white"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
               >
-                <h2 className="text-5xl font-extrabold mb-4 leading-tight drop-shadow">
+                <h2 className="mb-4 lg:text-5xl leading-tight font-extrabold drop-shadow">
                   {slide.title}
                 </h2>
-                <p className="text-lg mb-6 opacity-90">{slide.subtitle}</p>
+                <p className="mb-6 text-lg opacity-90">{slide.subtitle}</p>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -88,7 +91,7 @@ const HeroSlider = () => {
                 >
                   <Link
                     href="/shop"
-                    className="inline-block bg-white text-[#129ead] font-semibold py-2 px-6 rounded-full shadow-md transition hover:bg-gray-100 hover:scale-105"
+                    className="inline-block rounded-full bg-white px-6 py-2 font-semibold text-[#129ead] shadow-md transition hover:scale-105 hover:bg-gray-100"
                   >
                     Visit Shop
                   </Link>
