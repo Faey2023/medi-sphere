@@ -45,7 +45,7 @@ export default function AdminDashboard() {
         reviewRequired: data.reviewRequired,
       });
     } catch (error) {
-      // console.error('Error fetching prescription data:', error);
+      console.error('Error fetching prescription data:', error);
     }
   };
 
