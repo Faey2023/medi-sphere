@@ -4,7 +4,7 @@ const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Navbar />
-      {children}
+      <div >{children}</div>
       <Footer />
     </>
   );

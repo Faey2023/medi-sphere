@@ -190,7 +190,7 @@ export default function ProductsTable() {
             <TableRow>
               <TableHead>Image</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Brand</TableHead>
+              <TableHead>Manufacturer</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Quantity</TableHead>

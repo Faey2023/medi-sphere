@@ -6,7 +6,7 @@ import {
   updateQuantity,
   removeFromCart,
   uploadPrescription,
-  clearCart,
+  setCart,
 } from '@/redux/features/cart/cartSlice';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,10 +26,9 @@ const CartPage = () => {
   const [deliveryOption, setDeliveryOption] = useState<'standard' | 'express'>(
     'standard'
   );
-
-  const calculateDiscountedPrice = (price: number, discount: number) => {
-    return price - discount;
-  };
+  const [createOrder, { isLoading, isError, error }] = useCreateOrderMutation();
+  const calculateDiscountedPrice = (price: number, discount: number) =>
+    price - discount;
   const handleQuantityChange = (id: string, delta: number) => {
     const currentItem = cart.find((item) => item._id === id);
     if (!currentItem) return;
@@ -40,6 +39,7 @@ const CartPage = () => {
     const formData = new FormData();
     formData.append('image', file);
     const apiKey = process.env.NEXT_PUBLIC_IMAGEBB_KEY;
+
     try {
       const response = await fetch(
         `https://api.imgbb.com/1/upload?key=${apiKey}`,
@@ -62,38 +62,78 @@ const CartPage = () => {
   const handleRemove = (id: string) => {
     dispatch(removeFromCart(id));
   };
-  const [createOrder, { isLoading, isSuccess, data, isError, error }] =
-    useCreateOrderMutation();
   const handleCheckout = async () => {
-    if (cart.length === 0) {
-      alert(
-        'Your cart is empty. Please add items to your cart before checking out.'
-      );
-    } else {
-      const formattedCart = cart.map((item) => ({
-        product: item._id,
-        name: item.name,
-        quantity: item.quantity,
-      }));
+    const nonPrescriptionItems = cart.filter(
+      (item) => !item.requiredPrescription
+    );
+    const uploadedPrescriptionItems = cart.filter(
+      (item) => item.requiredPrescription && item.prescription
+    );
+    const missingPrescriptionItems = cart.filter(
+      (item) => item.requiredPrescription && !item.prescription
+    );
+    const itemsToProceed = [
+      ...nonPrescriptionItems,
+      ...uploadedPrescriptionItems,
+    ];
 
-      await createOrder({
-        products: formattedCart,
+    if (itemsToProceed.length === 0) {
+      toast.error(
+        'Please upload prescription for the required items before checkout.'
+      );
+      return;
+    }
+
+    const formattedItems = itemsToProceed.map((item) => ({
+      product: item._id,
+      name: item.name,
+      quantity: item.quantity,
+      prescriptionFile: item.prescription || 'notRequired',
+    }));
+
+    try {
+      const res = await createOrder({
+        products: formattedItems,
         deliveryType: deliveryOption,
+        pendingPrescriptions: missingPrescriptionItems.map((item) => ({
+          product: item._id,
+          name: item.name,
+          quantity: item.quantity,
+        })),
       });
+
+      if ('data' in res && res?.data?.data) {
+        toast.success(res?.data?.message);
+        if (res?.data?.data) {
+          setTimeout(() => {
+            window.location.href = res?.data?.data;
+          }, 1000);
+        }
+        const remainingItems = cart.filter(
+          (item) => item.requiredPrescription && !item.prescription
+        );
+        dispatch(setCart(remainingItems));
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error('Failed to Process!');
     }
   };
   useEffect(() => {
-    if (isSuccess) {
-      toast.success(data?.message);
-      dispatch(clearCart());
-      if (data?.data) {
-        setTimeout(() => {
-          window.location.href = data.data;
-        }, 1000);
-      }
+    if (isError) {
+      toast.error(JSON.stringify(error));
     }
-    if (isError) toast.error(JSON.stringify(error));
-  }, [data?.data, data?.message, error, isError, isLoading, isSuccess]);
+  }, [isError, error]);
+  const payableItems = cart.filter(
+    (item) => !item.requiredPrescription || item.prescription
+  );
+  const subtotal = payableItems.reduce(
+    (sum, item) =>
+      sum +
+      calculateDiscountedPrice(item.price, item.discount || 0) * item.quantity,
+    0
+  );
+  const total = subtotal + (deliveryOption === 'standard' ? 3 : 6);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -187,9 +227,14 @@ const CartPage = () => {
                                 handlePrescriptionUpload(item._id!, file);
                             }}
                           />
-                          {item.prescriptionFile && (
+                          {item.prescription && (
                             <p className="mt-1 text-xs text-green-600">
-                              Uploaded: {item.prescriptionFile}
+                              Uploaded: {item.prescription}
+                            </p>
+                          )}
+                          {!item.prescription && (
+                            <p className="mt-1 text-xs text-red-600">
+                              Note: Need Prescription to order this Item.
                             </p>
                           )}
                         </div>
@@ -199,49 +244,25 @@ const CartPage = () => {
                 </Card>
               );
             })}
-
-            <Card className="p-4">
-              <Label className="mb-2 block font-medium">Delivery Option</Label>
-              <div className="flex gap-4">
-                <Button
-                  variant={
-                    deliveryOption === 'standard' ? 'default' : 'outline'
-                  }
-                  onClick={() => setDeliveryOption('standard')}
-                >
-                  Standard (3-5 days)
-                </Button>
-                <Button
-                  variant={deliveryOption === 'express' ? 'default' : 'outline'}
-                  onClick={() => setDeliveryOption('express')}
-                >
-                  Express (1-2 days)
-                </Button>
-              </div>
-            </Card>
           </div>
 
           <div className="sticky top-24">
             <Card className="rounded-2xl p-6 shadow">
               <h3 className="mb-4 text-xl font-semibold">Order Summary</h3>
               <div className="mb-2 flex justify-between">
-                <span>Subtotal</span>
-                <span>
-                  $
-                  {cart
-                    .reduce(
-                      (sum, item) =>
-                        sum +
-                        calculateDiscountedPrice(
-                          item.price,
-                          item.discount || 0
-                        ) *
-                          item.quantity,
-                      0
-                    )
-                    .toFixed(2)}
-                </span>
+                <span>Subtotal (Payable Items)</span>
+                <span>${subtotal.toFixed(2)}</span>
               </div>
+
+              <div className="mb-2">
+                <span className="font-semibold">Payable Products:</span>
+                <ul className="list-disc pl-4">
+                  {payableItems.map((item) => (
+                    <li key={item._id}>{item.name}</li>
+                  ))}
+                </ul>
+              </div>
+
               <div className="mb-2 flex justify-between">
                 <span>Delivery</span>
                 <span>{deliveryOption === 'standard' ? '$3.00' : '$6.00'}</span>
@@ -249,27 +270,37 @@ const CartPage = () => {
               <Separator className="my-2" />
               <div className="flex justify-between text-lg font-semibold">
                 <span>Total</span>
-                <span>
-                  $
-                  {(
-                    cart.reduce(
-                      (sum, item) =>
-                        sum +
-                        calculateDiscountedPrice(
-                          item.price,
-                          item.discount || 0
-                        ) *
-                          item.quantity,
-                      0
-                    ) + (deliveryOption === 'standard' ? 3 : 6)
-                  ).toFixed(2)}
-                </span>
+                <span>${total.toFixed(2)}</span>
+              </div>
+              <div className="mt-4">
+                <Label className="mb-2 block font-medium">
+                  Delivery Option
+                </Label>
+                <div className="flex gap-4">
+                  <Button
+                    variant={
+                      deliveryOption === 'standard' ? 'default' : 'outline'
+                    }
+                    onClick={() => setDeliveryOption('standard')}
+                  >
+                    Standard (3-5 days)
+                  </Button>
+                  <Button
+                    variant={
+                      deliveryOption === 'express' ? 'default' : 'outline'
+                    }
+                    onClick={() => setDeliveryOption('express')}
+                  >
+                    Express (1-2 days)
+                  </Button>
+                </div>
               </div>
               <Button
                 onClick={handleCheckout}
                 className="mt-4 w-full bg-green-600 text-white hover:bg-green-700"
+                disabled={isLoading}
               >
-                Proceed to Checkout
+                {isLoading ? 'Processing...' : 'Proceed to Checkout'}
               </Button>
             </Card>
           </div>

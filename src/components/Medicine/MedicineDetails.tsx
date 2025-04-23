@@ -246,7 +246,7 @@ export default function MedicineDetails({ id }: { id: string }) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <p className="text-sm font-medium">Brand</p>
+                  <p className="text-sm font-medium">Manufacturer</p>
                   <p>{medicine.manufacturer}</p>
                 </div>
                 <div className="space-y-1">

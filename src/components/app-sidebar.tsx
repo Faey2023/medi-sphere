@@ -14,6 +14,7 @@ import {
 
 import {
   BriefcaseMedical,
+  Home,
   LayoutDashboard,
   Pill,
   Stethoscope,
@@ -39,6 +40,11 @@ const items = [
     title: 'Manage Users',
     url: '/admin/users',
     icon: BriefcaseMedical,
+  },
+  {
+    title: 'Goto Home',
+    url: '/',
+    icon: Home,
   },
 ];
 

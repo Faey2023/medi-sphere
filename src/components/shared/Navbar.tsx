@@ -108,7 +108,7 @@ const Navbar = () => {
         onClick={closeMenu}
       >
         <div
-          className={`absolute right-0 h-full w-64 transform bg-blue-900 p-5 text-white transition-transform ${
+          className={`absolute right-0 h-full w-64 transform bg-white p-5 text-blue-900 transition-transform ${
             isMenuOpen ? 'translate-x-0' : 'translate-x-3/4'
           }`}
         >

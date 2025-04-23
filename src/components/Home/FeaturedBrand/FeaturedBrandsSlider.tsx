@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -19,12 +19,36 @@ const brands = [
 ];
 
 const FeaturedBrandsSlider = () => {
+  const [slidesPerView, setSlidesPerView] = useState<number>(1);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1000) {
+        setSlidesPerView(5);
+      } else if (window.innerWidth >= 768) {
+        setSlidesPerView(4);
+      } else if (window.innerWidth >= 576) {
+        setSlidesPerView(3);
+      } else if (window.innerWidth >= 400) {
+        setSlidesPerView(2);
+      } else {
+        setSlidesPerView(1);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <section className="mx-12 my-12">
       <h2 className="mb-10 text-3xl font-bold">Featured Brands</h2>
       <Swiper
         modules={[Navigation, Autoplay]}
-        slidesPerView={5}
+        slidesPerView={slidesPerView}
+        // slidesPerView={5}
         spaceBetween={10}
         loop={true}
         autoplay={{
