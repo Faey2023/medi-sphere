@@ -3,8 +3,8 @@
 'use client';
 
 import { registerUser } from '@/actions/serverActions';
+import SocialLogin from '@/components/shared/SocialLogin';
 import { Eye, EyeClosed } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -49,11 +49,6 @@ export default function RegisterPage() {
     } catch (err) {
       toast.error('Registration failed. Try again.');
     }
-  };
-
-  const handleSocialRegister = (provider: string) => {
-    // console.log(`Registering with ${provider}`);
-    // Implement NextAuth or other OAuth logic here
   };
 
   return (
@@ -189,34 +184,7 @@ export default function RegisterPage() {
         </form>
 
         {/* Social Register Buttons */}
-        <div className="flex flex-col space-y-3">
-          <button
-            onClick={() => handleSocialRegister('GitHub')}
-            className="flex cursor-pointer items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-600"
-          >
-            <Image
-              src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              alt="GitHub Logo"
-              width={24}
-              height={24}
-              className="mr-2 rounded-full"
-            />
-            Sign Up with GitHub
-          </button>
-          <button
-            onClick={() => handleSocialRegister('Google')}
-            className="flex cursor-pointer items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-white hover:bg-slate-600"
-          >
-            <Image
-              src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
-              alt="GitHub Logo"
-              width={24}
-              height={24}
-              className="mr-2 rounded-full"
-            />
-            Sign Up with Google
-          </button>
-        </div>
+        {/* <SocialLogin /> */}
 
         <p className="text-center text-sm text-gray-600">
           Already have an account?{' '}

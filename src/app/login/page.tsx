@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 import { signIn } from 'next-auth/react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { Eye, EyeClosed } from 'lucide-react';
+import SocialLogin from '@/components/shared/SocialLogin';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -43,12 +45,6 @@ export default function LoginPage() {
     } else {
       toast.error('Invalid credentials. Please try again.');
     }
-  };
-
-  const handleSocialLogin = (provider: string) => {
-    signIn(provider, {
-      callbackUrl, // dynamic redirect
-    });
   };
 
   return (
@@ -134,35 +130,7 @@ export default function LoginPage() {
         </form>
 
         {/* Social Login Buttons */}
-        <div className="flex flex-col space-y-3">
-          <button
-            onClick={() => handleSocialLogin('github')}
-            className="flex cursor-pointer items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-600"
-          >
-            <Image
-              src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              alt="GitHub Logo"
-              width={24}
-              height={24}
-              className="mr-2 rounded-full"
-            />
-            Login with GitHub
-          </button>
-          <button
-            onClick={() => handleSocialLogin('google')}
-            className="flex cursor-pointer items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-white hover:bg-slate-600"
-          >
-            <Image
-              src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
-              alt="GitHub Logo"
-              width={24}
-              height={24}
-              className="mr-2 rounded-full"
-            />
-            Login with Google
-          </button>
-        </div>
-
+        {/* <SocialLogin /> */}
         <p className="text-center text-sm text-gray-600">
           Don&rsquo;t have an account?{' '}
           <Link href="/register" className="text-indigo-600 hover:underline">

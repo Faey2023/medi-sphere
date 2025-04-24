@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useGetAllOrderQuery } from '@/redux/features/orders/orderApi'; 
@@ -28,7 +29,6 @@ export default function AdminDashboard() {
       );
       const data = await response.json();
       setStockData(data);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // console.error('Error fetching stock data:', error);
     }
