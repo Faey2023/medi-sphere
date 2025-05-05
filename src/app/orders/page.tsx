@@ -28,7 +28,7 @@ const Orders = () => {
     <Skeleton />
   ) : (
     <DefaultLayout>
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto pt-4">
         <h2 className="mb-4 text-2xl font-bold">All Orders</h2>
 
         {/* Check if no orders found */}
@@ -65,7 +65,7 @@ const Orders = () => {
                   </TableCell>
 
                   <TableCell className="text-right">
-                    {order.totalPrice}
+                    ${order.totalPrice}
                   </TableCell>
                   <TableCell className="text-center">
                     {order.status === 'Paid' ||

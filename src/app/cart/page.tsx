@@ -19,9 +19,11 @@ import { useEffect, useState } from 'react';
 import { useCreateOrderMutation } from '@/redux/features/payment/paymentSlice';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import { signIn, useSession } from 'next-auth/react';
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const { data: session } = useSession();
   const cart = useSelector((state: RootState) => state.cart.cart);
   const [deliveryOption, setDeliveryOption] = useState<'standard' | 'express'>(
     'standard'
@@ -63,6 +65,11 @@ const CartPage = () => {
     dispatch(removeFromCart(id));
   };
   const handleCheckout = async () => {
+    if (!session?.user) {
+      toast.error('Please login to proceed with checkout.');
+      signIn(undefined, { callbackUrl: '/cart' });
+      return;
+    }
     const nonPrescriptionItems = cart.filter(
       (item) => !item.requiredPrescription
     );
@@ -137,6 +144,18 @@ const CartPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {cart.length > 0 && (
+        <div className="mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-800"
+          >
+            <Undo className="h-4 w-4" />
+            Back to Shop
+          </Link>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold">Your Cart</h1>
 
       {cart.length === 0 ? (
@@ -295,13 +314,15 @@ const CartPage = () => {
                   </Button>
                 </div>
               </div>
-              <Button
-                onClick={handleCheckout}
-                className="mt-4 w-full bg-green-600 text-white hover:bg-green-700"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Processing...' : 'Proceed to Checkout'}
-              </Button>
+              {session?.user?.role !== 'admin' && (
+                <Button
+                  onClick={handleCheckout}
+                  className="mt-6 w-full bg-green-600 text-white hover:bg-green-700"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Processing...' : 'Proceed to Checkout'}
+                </Button>
+              )}
             </Card>
           </div>
         </div>

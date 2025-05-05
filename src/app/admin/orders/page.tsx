@@ -26,7 +26,6 @@ import { toast } from 'react-toastify';
 const AdminOrders = () => {
   const { data: order = [], isLoading, refetch } = useGetAllOrderQuery({});
   const orderData: GetAllOrderParams[] = order?.data;
-  // console.log(orderData);
 
   const [updateStatus] = useUpdateOrderStatusMutation();
   const statuses = ['Processing', 'Shipped', 'Completed', 'Cancelled'];
@@ -44,7 +43,7 @@ const AdminOrders = () => {
   return isLoading ? (
     <Skeleton />
   ) : (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto pt-4">
       <h2 className="mb-4 text-2xl font-bold">All Orders</h2>
       {orderData && orderData.length === 0 ? (
         <p>No orders found</p>
@@ -101,7 +100,9 @@ const AdminOrders = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
-                <TableCell className="text-right">{order.totalPrice}</TableCell>
+                <TableCell className="text-right">
+                  ${order.totalPrice}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
