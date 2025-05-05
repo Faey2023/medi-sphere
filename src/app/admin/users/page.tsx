@@ -17,7 +17,7 @@ const ManageUsers = () => {
   const { data: users, isLoading: usersLoading } = useGetAllUsersQuery();
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto pt-4">
       <h2 className="mb-4 text-2xl font-bold">Manage Users</h2>
 
       {usersLoading ? (

@@ -310,9 +310,7 @@ export default function MedicineDetails({ id }: { id: string }) {
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Add to Cart
                 </Button>
-                <Button className="flex-1 cursor-pointer" variant="outline">
-                  Buy Now
-                </Button>
+
               </div>
             </div>
 

@@ -6,8 +6,6 @@ module.exports = {
       'cdn.pixabay.com', // fallback image
       'lh3.googleusercontent.com', // if using Google provider
       'avatars.githubusercontent.com', // if using GitHub provider
-      'localhost',
-      'demo2.themelexus.com',
       'www.squarepharma.com.bd',
     ],
     remotePatterns: [
@@ -21,6 +19,16 @@ module.exports = {
       {
         protocol: 'https',
         hostname: 'demo2.themelexus.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co.com',
         pathname: '**',
       },
     ],
