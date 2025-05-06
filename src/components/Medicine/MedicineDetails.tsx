@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 import { Button } from '@/components/ui/button';
 import {
@@ -129,6 +131,31 @@ export default function MedicineDetails({ id }: { id: string }) {
     });
   };
 
+  const handleShare = async ({
+    title,
+    text,
+    url,
+  }: {
+    title: string;
+    text: string;
+    url: string;
+  }) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+      } catch (err) {
+        console.error('Share failed:', err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        toast('Link copied to clipboard!');
+      } catch (err) {
+        toast.error('Failed to copy link.');
+      }
+    }
+  };
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-6xl p-6">
@@ -225,6 +252,13 @@ export default function MedicineDetails({ id }: { id: string }) {
                     variant="outline"
                     size="icon"
                     className="rounded-full"
+                    onClick={() =>
+                      handleShare({
+                        title:  medicine.name,
+                        text: `Check out this medicine: ${medicine.name}`,
+                        url: `{shop/${medicine._id}`,
+                      })
+                    }
                   >
                     <Share2 className="h-5 w-5" />
                   </Button>

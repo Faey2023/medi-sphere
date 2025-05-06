@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Heart, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import './featured.css';
@@ -48,6 +50,31 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
 
   const result = calculateTotalPrice({ price, discount });
 
+  const handleShare = async ({
+    title,
+    text,
+    url,
+  }: {
+    title: string;
+    text: string;
+    url: string;
+  }) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+      } catch (err) {
+        console.error('Share failed:', err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        toast('Link copied to clipboard!');
+      } catch (err) {
+        toast.error('Failed to copy link.');
+      }
+    }
+  };
+
   return (
     <>
       <div className="group max-w-[377px]">
@@ -74,7 +101,16 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
             <button className="text-md max-h-fit w-fit cursor-pointer rounded-[4px] bg-white p-[6px] text-black shadow-md">
               <Heart />
             </button>
-            <button className="text-md max-h-fit w-fit cursor-pointer rounded-[4px] bg-white p-[6px] text-black shadow-md">
+            <button
+              onClick={() =>
+                handleShare({
+                  title: name,
+                  text: `Check out this medicine: ${name}`,
+                  url: `{shop/${_id}`,
+                })
+              }
+              className="text-md max-h-fit w-fit cursor-pointer rounded-[4px] bg-white p-[6px] text-black shadow-md"
+            >
               <Share2 />
             </button>
           </div>
