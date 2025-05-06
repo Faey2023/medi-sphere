@@ -58,7 +58,7 @@ export default function SearchBar() {
         />
         <Button
           onClick={handleSearch}
-          className="absolute top-0 right-0 h-full rounded-l-none rounded-r-full bg-blue-900 hover:bg-blue-700"
+          className="absolute top-0 right-0 h-full rounded-l-none rounded-r-full bg-cyan-900 hover:bg-cyan-700"
         >
           <Search className="h-5 w-5" />
           <span className="sr-only">Search</span>

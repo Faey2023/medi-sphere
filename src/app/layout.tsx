@@ -13,7 +13,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  title: 'MediSphere',
+  title: 'Medi Sphere',
   description: 'Your trusted online medicine shop',
   icons: {
     icon: '/icon.png',
