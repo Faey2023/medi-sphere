@@ -81,7 +81,7 @@ const ManageOrdersPage = ({
                           download={`prescription-${index + 1}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mt-2 block text-blue-600 hover:underline"
+                          className="mt-2 block text-cyan-600 hover:underline"
                         >
                           View Prescription
                         </Link>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import logo from '@/assets/medi-logo.png';
 import { MenuIcon, ShoppingBag, X } from 'lucide-react';
 import Image from 'next/image';
@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import SearchBar from '../Search/SearchBar';
+import UserDropdown from './UserDropdown';
 
 const MobileNav = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -41,11 +42,7 @@ const MobileNav = () => {
           </Link>
         </div>
 
-        <div className="flex gap-3">
-          <button className="block text-xl lg:hidden" onClick={toggleMenu}>
-            <MenuIcon />
-          </button>
-          <div className="h-6 w-px self-center bg-gray-400" />
+        <div className="flex items-center gap-3">
           <Link href="/cart">
             <div className="relative items-center gap-3">
               <ShoppingBag />
@@ -56,6 +53,12 @@ const MobileNav = () => {
               )}
             </div>
           </Link>
+          <div className="h-6 w-px self-center bg-gray-400" />
+          <UserDropdown />
+          <div className="h-6 w-px self-center bg-gray-400" />{' '}
+          <button className="block text-xl lg:hidden" onClick={toggleMenu}>
+            <MenuIcon />
+          </button>
         </div>
       </div>
       {/* links */}
@@ -88,27 +91,22 @@ const MobileNav = () => {
             </li>
             <li>
               <Link href="/about">About</Link>
-            </li>{' '}
-            <li>
-              {session?.user?.role === 'admin' && (
-                <Link href="/admin">Admin Dashboard</Link>
-              )}
             </li>
-            <li>
-              <Link href="/cart">Cart ({totalQuantity})</Link>
-            </li>
-            <li>
-              {session ? (
-                <button
-                  onClick={() => signOut()}
-                  className="rounded bg-red-600 px-5 text-white"
-                >
-                  Logout
-                </button>
-              ) : (
-                <Link href="/login">Login</Link>
-              )}
-            </li>
+            {session?.user?.role === 'user' && (
+              <>
+                <li>
+                  <Link href="/userDashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link href="/userDashboard/orders">Orders</Link>
+                </li>
+              </>
+            )}
+            {session?.user?.role === 'admin' && (
+              <li>
+                <Link href="/admin">Dashboard</Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

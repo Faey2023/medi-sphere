@@ -64,7 +64,7 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
               />
               {/* sale label */}
               {discount > 0 ? (
-                <div className="absolute top-4 left-5 rounded-md bg-blue-600 px-2.5 py-1 text-white">
+                <div className="absolute top-4 left-5 rounded-md bg-cyan-600 px-2.5 py-1 text-white">
                   Sale
                 </div>
               ) : (
@@ -92,12 +92,12 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
                 {discount ? (
                   <div className="flex flex-row-reverse items-center gap-2">
                     <del className="text-gray-500">${price}</del>
-                    <p className="text-[22px] font-bold text-blue-600">
+                    <p className="text-[22px] font-bold text-cyan-600">
                       ${result.discountedPrice.toFixed(2)}
                     </p>
                   </div>
                 ) : (
-                  <p className="text-[22px] font-bold text-blue-600">
+                  <p className="text-[22px] font-bold text-cyan-600">
                     ${price}
                   </p>
                 )}
@@ -107,7 +107,7 @@ const FeaturedCard = ({ product }: FeaturedCardProps) => {
             <div className="w-[38%] opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
               <button
                 onClick={handleAddToCart}
-                className="w-full cursor-pointer rounded-xl bg-blue-600 py-3 text-white transition-all duration-200 ease-linear hover:bg-blue-900"
+                className="w-full cursor-pointer rounded-xl bg-cyan-600 py-3 text-white transition-all duration-200 ease-linear hover:bg-cyan-900"
               >
                 Add To Cart
               </button>

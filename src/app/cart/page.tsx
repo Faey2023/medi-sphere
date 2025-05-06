@@ -148,7 +148,7 @@ const CartPage = () => {
         <div className="mb-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-800"
+            className="inline-flex items-center gap-2 text-sm font-medium text-cyan-600 hover:text-cyan-800"
           >
             <Undo className="h-4 w-4" />
             Back to Shop
@@ -166,7 +166,7 @@ const CartPage = () => {
             </p>
             <Link
               href="/"
-              className="flex items-center gap-2 text-base font-bold text-blue-600 transition-colors duration-300 hover:text-blue-800"
+              className="flex items-center gap-2 text-base font-bold text-cyan-600 transition-colors duration-300 hover:text-cyan-800"
             >
               <Undo size={20} />
               Back to Shop

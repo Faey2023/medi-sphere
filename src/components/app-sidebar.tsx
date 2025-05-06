@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import {
   Sidebar,
@@ -11,20 +13,29 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-
+import logo from '@/assets/medi-logo.png';
 import {
   BriefcaseMedical,
+  Heart,
   Home,
   LayoutDashboard,
   Pill,
   Stethoscope,
+  UserRoundPen,
 } from 'lucide-react';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
-const items = [
+const adminItems = [
   {
-    title: 'Dashboard',
+    title: 'Overview',
     url: '/admin/',
     icon: LayoutDashboard,
+  },
+  {
+    title: 'Profile',
+    url: '/admin/profile',
+    icon: UserRoundPen,
   },
   {
     title: 'Manage Medicines',
@@ -48,7 +59,37 @@ const items = [
   },
 ];
 
+const userItems = [
+  {
+    title: 'Overview',
+    url: '/userDashboard/',
+    icon: LayoutDashboard,
+  },
+  {
+    title: 'Profile',
+    url: '/userDashboard/profile',
+    icon: UserRoundPen,
+  },
+  {
+    title: 'Wishlist',
+    url: '/userDashboard/wishlist',
+    icon: Heart,
+  },
+  {
+    title: 'Orders',
+    url: '/userDashboard/orders',
+    icon: Stethoscope,
+  },
+
+  {
+    title: 'Goto Home',
+    url: '/',
+    icon: Home,
+  },
+];
+
 export function AppSidebar() {
+  const { data: session } = useSession();
   return (
     <Sidebar className="h-screen">
       <SidebarHeader>
@@ -58,25 +99,47 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Management</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <Link href={item.url} passHref>
-                    <SidebarMenuButton asChild>
-                      <div className="flex items-center gap-2">
-                        <item.icon size={18} />
-                        <span>{item.title}</span>
-                      </div>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            {session?.user?.role === 'admin' && (
+              <SidebarMenu>
+                {adminItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <Link href={item.url} passHref>
+                      <SidebarMenuButton asChild>
+                        <div className="flex items-center gap-2">
+                          <item.icon size={18} />
+                          <span>{item.title}</span>
+                        </div>
+                      </SidebarMenuButton>
+                    </Link>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            )}
+          </SidebarGroupContent>
+          <SidebarGroupContent>
+            {session?.user?.role === 'user' && (
+              <SidebarMenu>
+                {userItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <Link href={item.url} passHref>
+                      <SidebarMenuButton asChild>
+                        <div className="flex items-center gap-2">
+                          <item.icon size={18} />
+                          <span>{item.title}</span>
+                        </div>
+                      </SidebarMenuButton>
+                    </Link>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            )}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="p-4 text-sm">© Habibur Rahman</div>
+        <Link href="/">
+          <Image height={300} width={300} src={logo} alt="Logo" />
+        </Link>
       </SidebarFooter>
     </Sidebar>
   );

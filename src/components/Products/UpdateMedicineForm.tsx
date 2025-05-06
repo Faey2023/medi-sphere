@@ -515,7 +515,7 @@ const UpdateMedicineForm = () => {
       <div className="flex justify-center pt-4">
         <Button
           type="submit"
-          className="w-full bg-blue-600 py-2 font-medium text-white hover:bg-blue-700 md:w-64"
+          className="w-full bg-cyan-600 py-2 font-medium text-white hover:bg-cyan-700 md:w-64"
           disabled={isUpdating}
         >
           {isUpdating ? (

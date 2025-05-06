@@ -186,7 +186,7 @@ export default function AllMedicines() {
         <div className="w-full md:w-3/4 lg:w-4/5">
           <div className="mb-4">
             {search && (
-              <div className="mb-2 rounded bg-blue-50 p-2 text-sm">
+              <div className="mb-2 rounded bg-cyan-50 p-2 text-sm">
                 <p>
                   Search results for: <strong>&quot;{search}&quot;</strong>
                 </p>
@@ -255,7 +255,7 @@ export default function AllMedicines() {
           {/* loading more indicator */}
           {isLoadingMore && (
             <div className="mt-6 flex justify-center">
-              <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-200 border-t-blue-900"></div>
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-cyan-200 border-t-cyan-900"></div>
             </div>
           )}
 

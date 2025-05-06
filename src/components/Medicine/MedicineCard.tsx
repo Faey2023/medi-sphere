@@ -52,7 +52,7 @@ export default function MedicineCard({ medicine }: Props) {
           height={100}
         />
         {discount > 0 ? (
-          <div className="absolute top-0 left-0 rounded-md bg-blue-600 px-2.5 py-1 text-white">
+          <div className="absolute top-0 left-0 rounded-md bg-cyan-600 px-2.5 py-1 text-white">
             Sale
           </div>
         ) : (
@@ -69,13 +69,13 @@ export default function MedicineCard({ medicine }: Props) {
       {/* <p className="text-lg font-bold text-green-600">${price.toFixed(2)}</p> */}
       {discount ? (
         <div className="flex items-center gap-2">
-          <p className="text-[22px] font-bold text-blue-600">
+          <p className="text-[22px] font-bold text-cyan-600">
             ${result.discountedPrice.toFixed(2)}
           </p>{' '}
           <del className="text-gray-500">${price.toFixed(2)}</del>
         </div>
       ) : (
-        <p className="text-[22px] font-bold text-blue-600">
+        <p className="text-[22px] font-bold text-cyan-600">
           ${price.toFixed(2)}
         </p>
       )}

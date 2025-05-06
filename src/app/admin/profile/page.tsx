@@ -54,7 +54,7 @@ export default function ProfilePage() {
       alert('User ID could not be found.');
       return;
     }
-    router.push(`/profile/${user._id}/edit`);
+    router.push(`/admin/profile/${user._id}/edit`);
   };
 
   if (loading)
@@ -100,13 +100,7 @@ export default function ProfilePage() {
           <Button onClick={handleUpdateProfile} className="w-full">
             {user?._id ? 'Update Profile' : 'Cannot Update'}
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => router.push('/')}
-            className="mt-2 w-full"
-          >
-            Go to Home
-          </Button>
+         
         </CardContent>
       </Card>
     </div>

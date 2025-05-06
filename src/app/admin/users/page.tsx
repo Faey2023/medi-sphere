@@ -44,7 +44,7 @@ const ManageUsers = () => {
                 </TableCell>
                 <TableCell>
                   <Link href={`/admin/orders/${user.email}`}>
-                    <button className="cursor-pointer text-blue-600 hover:underline">
+                    <button className="cursor-pointer text-cyan-600 hover:underline">
                       View Orders
                     </button>
                   </Link>

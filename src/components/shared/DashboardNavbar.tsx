@@ -23,8 +23,8 @@ const DashNavbar = () => {
           href={href}
           className={
             pathname === href
-              ? 'font-bold text-blue-600'
-              : 'text-gray-800 hover:text-blue-500'
+              ? 'font-bold text-cyan-600'
+              : 'text-gray-800 hover:text-cyan-500'
           }
         >
           {label}

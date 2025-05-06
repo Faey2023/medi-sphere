@@ -2,8 +2,8 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 const roleBasedRoutes = {
-  user: ['/orders', '/orders/add', '/profile'],
-  admin: ['/admin', '/profile'],
+  user: ['/orders', '/orders/add'],
+  admin: ['/admin'],
 };
 
 export default async function middleware(req: NextRequest) {

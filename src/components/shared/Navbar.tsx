@@ -1,14 +1,15 @@
 'use client';
 
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import logo from '@/assets/medi-logo.png';
-import { ArrowRight, ShoppingBag, User } from 'lucide-react';
+import { ArrowRight, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import SearchBar from '../Search/SearchBar';
 import { useState, useEffect } from 'react';
+import UserDropdown from './UserDropdown';
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -20,7 +21,6 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
-        // Adjust the scroll value to trigger sticky behavior
         setIsSticky(true);
       } else {
         setIsSticky(false);
@@ -29,7 +29,6 @@ const Navbar = () => {
 
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup on unmount
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -69,24 +68,10 @@ const Navbar = () => {
           <SearchBar />
         </div>
 
-        <div className="flex gap-5">
-          {session ? (
-            <button
-              onClick={() => signOut()}
-              className="flex cursor-pointer items-center gap-2 hover:text-cyan-800"
-            >
-              <User />
-              LogOut
-            </button>
-          ) : (
-            <Link href="/login">
-              <button className="flex cursor-pointer items-center gap-2 hover:text-cyan-800">
-                <User />
-                LogIn
-              </button>
-            </Link>
-          )}
-          <div className="h-6 w-px self-center bg-gray-400" />
+        <div className="flex items-center gap-5">
+          <UserDropdown />
+
+          <div className="h-10 w-px self-center bg-gray-400" />
 
           <Link href="/cart">
             <div className="relative flex items-center gap-3">
@@ -121,13 +106,21 @@ const Navbar = () => {
           <li>
             <Link href="/contact">Contact</Link>
           </li>
-          <li>
-            {session?.user?.role === 'admin' ? (
-              <Link href="/admin">Admin Dashboard</Link>
-            ) : (
-              <Link href="/orders">Orders</Link>
-            )}
-          </li>
+          {session?.user?.role === 'user' && (
+            <>
+              <li>
+                <Link href="/userDashboard">Dashboard</Link>
+              </li>
+              <li>
+                <Link href="/userDashboard/orders">Orders</Link>
+              </li>
+            </>
+          )}
+          {session?.user?.role === 'admin' && (
+            <li>
+              <Link href="/admin">Dashboard</Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

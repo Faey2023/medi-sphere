@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import logo from '@/assets/logo-white.png';
+import logo from '@/assets/medi-logo-white.png';
 import Image from 'next/image';
 import { Facebook, Linkedin, Twitter } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-blue-900 text-white">
+    <footer className="bg-cyan-900 text-white">
       <div className="mx-auto mt-10 w-full px-8 lg:px-20">
         <div className="grid grid-cols-2 gap-[40px] px-4 py-6 md:grid-cols-4 lg:py-8">
           <div className="col-span-2 md:col-span-1">
@@ -58,7 +58,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <p className="bg-blue-950 px-4 py-6 text-center text-sm">
+      <p className="bg-cyan-950 px-4 py-6 text-center text-sm">
         © Copyright 2025 by Medi Sphere. All right reserved.
       </p>
     </footer>
