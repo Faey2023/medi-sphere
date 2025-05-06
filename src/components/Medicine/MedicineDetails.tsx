@@ -17,28 +17,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 import Link from 'next/link';
 // import { useParams } from "next/navigation"
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { IMedicine } from '@/types';
-import {
-  useGetAllMedicineQuery,
-  useGetSingleMedicineQuery,
-} from '@/redux/api/productApi';
+import { useGetSingleMedicineQuery } from '@/redux/api/productApi';
 import Image from 'next/image';
 import DefaultLayout from '../DefaultLayout/DefaultLayout';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/redux/features/cart/cartSlice';
 import { toast } from 'react-toastify';
+import Featured from '../Home/Featured/Featured';
 
 export default function MedicineDetails({ id }: { id: string }) {
   //   const { id } = useParams<{ id: string }>()
   const { data, isLoading, error } = useGetSingleMedicineQuery(id as string);
-  const { data: medicines } = useGetAllMedicineQuery(undefined, {
-    pollingInterval: 30000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-  });
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
 
@@ -101,6 +93,27 @@ export default function MedicineDetails({ id }: { id: string }) {
 
   const medicine: IMedicine = data.data;
   // console.log('hi this is data from details page ', medicine);
+
+  const calculateTotalPrice = ({
+    price,
+    discount,
+  }: {
+    price: number;
+    discount: number;
+  }) => {
+    const discountedAmount = price * (discount / 100);
+
+    const discountedPrice = price - discountedAmount;
+
+    return {
+      discountedPrice: discountedPrice,
+    };
+  };
+
+  const result = calculateTotalPrice({
+    price: medicine.price,
+    discount: medicine.discount,
+  });
 
   const handleAddToCart = () => {
     dispatch(addToCart(medicine));
@@ -230,9 +243,21 @@ export default function MedicineDetails({ id }: { id: string }) {
               </div>
 
               <div className="mt-4">
-                <p className="text-primary text-3xl font-bold">
-                  ${medicine.price?.toFixed(2) || medicine.price}
-                </p>
+                {medicine.discount ? (
+                  <div className="flex items-center gap-2">
+                    <del className="text-gray-500">
+                      ${medicine.price?.toFixed(2)}
+                    </del>
+                    <p className="text-[22px] font-bold text-cyan-600">
+                      ${result.discountedPrice.toFixed(2)}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-[22px] font-bold text-cyan-600">
+                    ${medicine.price?.toFixed(2)}
+                  </p>
+                )}
+
                 <p className="text-muted-foreground text-sm">
                   Free shipping on orders over $100
                 </p>
@@ -306,6 +331,7 @@ export default function MedicineDetails({ id }: { id: string }) {
                 <Button
                   className="flex-1 cursor-pointer"
                   onClick={handleAddToCart}
+                  variant="cyan"
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Add to Cart
@@ -453,51 +479,7 @@ export default function MedicineDetails({ id }: { id: string }) {
           </Tabs>
         </div>
 
-        {/* Related Products */}
-        <div className="mt-16">
-          <h2 className="mb-6 text-2xl font-bold">You Might Also Like</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {medicines?.data?.data?.length > 0
-              ? medicines?.data?.data
-                  // showing half of the product
-                  .filter((item: IMedicine) => item._id !== medicine._id)
-                  .slice(0, 4)
-                  .map((relatedMedicine: IMedicine, i: number) => (
-                    <div key={i}>
-                      <Link href={`/shop/${relatedMedicine?._id}`}>
-                        <Card className="overflow-hidden">
-                          <div className="aspect-square overflow-hidden">
-                            <Image
-                              width={100}
-                              height={100}
-                              src={
-                                relatedMedicine.imageUrl ||
-                                '/placeholder.svg?height=200&width=200'
-                              }
-                              alt={relatedMedicine.name || 'Related Medicine'}
-                              className="h-full w-full object-cover transition-transform hover:scale-105"
-                            />
-                          </div>
-                          <CardContent className="p-4">
-                            <h3 className="font-medium">
-                              {relatedMedicine.name}
-                            </h3>
-                            <p className="text-muted-foreground text-sm">
-                              {relatedMedicine.supplier}
-                            </p>
-                            <p className="mt-2 font-bold">
-                              $
-                              {relatedMedicine.price?.toFixed(2) ||
-                                relatedMedicine.price}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    </div>
-                  ))
-              : ''}
-          </div>
-        </div>
+        <Featured />
       </div>
     </DefaultLayout>
   );

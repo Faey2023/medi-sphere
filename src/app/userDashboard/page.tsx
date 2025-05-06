@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import {  useGetOrdersByEmailQuery } from '@/redux/features/orders/orderApi';
+import { useGetOrdersByEmailQuery } from '@/redux/features/orders/orderApi';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart3, PackageCheck, ClipboardList } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -10,9 +10,8 @@ import { useSession } from 'next-auth/react';
 import { skipToken } from '@reduxjs/toolkit/query';
 
 export default function AdminDashboard() {
-
-   const { data: session } = useSession();
-    const email = session?.user?.email;
+  const { data: session } = useSession();
+  const email = session?.user?.email;
 
   const { data: order = [], isLoading } = useGetOrdersByEmailQuery(
     email ? { email } : skipToken

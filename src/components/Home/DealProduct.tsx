@@ -47,7 +47,7 @@ const DealProduct = () => {
       });
 
   return (
-    <div className="my-14 px-6 md:px-12">
+    <div className="px-6 md:px-12">
       <h2 className="mb-8 text-3xl font-bold">Deal of the Day</h2>
 
       <div className="flex flex-col gap-8 md:flex-row">

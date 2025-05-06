@@ -38,7 +38,7 @@ const Orders = () => {
             <TableRow>
               <TableHead>Order ID</TableHead>
               <TableHead>Email</TableHead>
-           
+
               <TableHead>Delivery Method</TableHead>
               <TableHead>Ordered Date</TableHead>
               <TableHead>Products</TableHead>
@@ -51,7 +51,7 @@ const Orders = () => {
               <TableRow key={order._id}>
                 <TableCell className="font-medium">{order?._id}</TableCell>
                 <TableCell>{order?.user?.email}</TableCell>
-        
+
                 <TableCell className="capitalize">
                   {order.deliveryType}
                 </TableCell>

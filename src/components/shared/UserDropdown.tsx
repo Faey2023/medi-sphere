@@ -12,9 +12,9 @@ const UserDropdown = () => {
   return (
     <>
       {session ? (
-        <button
+        <div
           onClick={() => setUserMenuOpen(!isUserMenuOpen)}
-          className="relative flex cursor-pointer items-center gap-2 rounded-full border-2 border-black p-1 lg:p-2 hover:border-cyan-800 hover:text-cyan-800"
+          className="relative flex cursor-pointer items-center gap-2 rounded-full border-2 border-black p-1 hover:border-cyan-800 hover:text-cyan-800 lg:p-2"
         >
           <User />
 
@@ -23,7 +23,8 @@ const UserDropdown = () => {
               <p className="mb-1 font-semibold">{session?.user?.name}</p>
               {session?.user?.role === 'admin' && (
                 <>
-                <Link href="/admin/profile">Profile</Link></>
+                  <Link href="/admin/profile">Profile</Link>
+                </>
               )}
               {session?.user?.role === 'user' && (
                 <Link href="/user/profile">Profile</Link>
@@ -37,7 +38,7 @@ const UserDropdown = () => {
               </button>
             </div>
           )}
-        </button>
+        </div>
       ) : (
         <Link href="/login">
           <button className="flex cursor-pointer items-center gap-2 hover:text-cyan-800">

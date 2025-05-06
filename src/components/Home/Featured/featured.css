@@ -3,7 +3,7 @@
   height: 2rem;
   z-index: 99999;
 
-  background-color: #1e40af;
+  background-color: #155e75;
   color: white;
   border-radius: 9999px;
   transition:
@@ -15,7 +15,7 @@
   width: 2rem;
   height: 2rem;
   z-index: 99999;
-  background-color: #1e40af;
+  background-color: #155e75;
   border-radius: 9999px;
   transition:
     background-color 0.3s,
@@ -42,7 +42,7 @@
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  background-color: #3b82f6;
+  background-color: #06b6d4;
 }
 
 .swiper-button-next:hover.swiper-button-next:after {

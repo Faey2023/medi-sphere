@@ -3,24 +3,21 @@
 import { motion } from 'framer-motion';
 
 const Newsletter = () => {
-
   return (
     <motion.section
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="my-10 w-full bg-cyan-900 text-cyan-50 py-10 px-6 text-center"
+      className="w-full bg-cyan-900 px-6 py-10 text-center text-cyan-50"
     >
-      <h2 className="text-2xl font-bold  sm:text-3xl">
+      <h2 className="text-2xl font-bold sm:text-3xl">
         Subscribe to Our Newsletter
       </h2>
       <p className="mt-2">
         Get updates on latest medicines, offers, and health tips.
       </p>
 
-      <form
-        className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row"
-      >
+      <form className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <input
           type="email"
           required

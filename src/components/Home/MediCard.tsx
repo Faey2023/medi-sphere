@@ -22,7 +22,7 @@ const MediCard = () => {
   ];
 
   return (
-    <div className="my-5 flex flex-col items-center justify-center gap-3 lg:flex-row">
+    <div className="flex flex-col items-center justify-center gap-3 lg:flex-row">
       {cardData.map((card, index) => (
         <Link href="/shop" key={index} className="group">
           <div className="relative h-[250px] w-[350px] cursor-pointer overflow-hidden rounded transition-transform duration-300 hover:scale-105 lg:w-[400px]">

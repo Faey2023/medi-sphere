@@ -68,7 +68,7 @@ const testimonials = [
 const Testimonial = () => {
   return (
     <div>
-      <h2 className="mx-12 mt-16 mb-4 text-3xl font-bold">Featured Feedback</h2>
+      <h2 className="mx-12 text-3xl font-bold">Featured Feedback</h2>
 
       <div className="relative mx-auto max-w-5xl py-9">
         <Swiper

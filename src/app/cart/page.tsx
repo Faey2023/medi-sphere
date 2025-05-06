@@ -30,7 +30,8 @@ const CartPage = () => {
   );
   const [createOrder, { isLoading, isError, error }] = useCreateOrderMutation();
   const calculateDiscountedPrice = (price: number, discount: number) =>
-    price - discount;
+    price - price * (discount / 100);
+
   const handleQuantityChange = (id: string, delta: number) => {
     const currentItem = cart.find((item) => item._id === id);
     if (!currentItem) return;

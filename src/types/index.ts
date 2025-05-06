@@ -4,6 +4,7 @@ export type MedicineType =
   | 'Injection'
   | 'Capsule'
   | 'Ointment'
+  | 'Moisturizer'
   | 'Drops';
 
 export type MedicineCategory =

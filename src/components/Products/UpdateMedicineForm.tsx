@@ -365,6 +365,7 @@ const UpdateMedicineForm = () => {
               <SelectItem value="Injection">Injection</SelectItem>
               <SelectItem value="Capsule">Capsule</SelectItem>
               <SelectItem value="Ointment">Ointment</SelectItem>
+              <SelectItem value="Moisturizer">Moisturizer</SelectItem>
               <SelectItem value="Drops">Drops</SelectItem>
             </SelectContent>
           </Select>

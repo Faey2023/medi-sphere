@@ -100,7 +100,6 @@ export default function ProfilePage() {
           <Button onClick={handleUpdateProfile} className="w-full">
             {user?._id ? 'Update Profile' : 'Cannot Update'}
           </Button>
-         
         </CardContent>
       </Card>
     </div>

@@ -52,7 +52,7 @@ export default function MedicineCard({ medicine }: Props) {
           height={100}
         />
         {discount > 0 ? (
-          <div className="absolute top-0 left-0 rounded-md bg-cyan-600 px-2.5 py-1 text-white">
+          <div className="absolute top-0 left-2 rounded-md bg-cyan-600 px-2.5 py-1 text-white">
             Sale
           </div>
         ) : (
@@ -66,7 +66,6 @@ export default function MedicineCard({ medicine }: Props) {
         {type} — {quantity} units
       </p>
 
-      {/* <p className="text-lg font-bold text-green-600">${price.toFixed(2)}</p> */}
       {discount ? (
         <div className="flex items-center gap-2">
           <p className="text-[22px] font-bold text-cyan-600">
@@ -85,7 +84,9 @@ export default function MedicineCard({ medicine }: Props) {
       )}
 
       <Link href={`/shop/${_id}`}>
-        <Button className="mt-3 w-full cursor-pointer">View Details</Button>
+        <Button variant={'cyan'} className="mt-3 w-full cursor-pointer">
+          View Details
+        </Button>
       </Link>
     </div>
   );

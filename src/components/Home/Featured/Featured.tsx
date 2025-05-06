@@ -42,7 +42,7 @@ const Featured = () => {
   }, []);
 
   return (
-    <div className="my-14 px-12">
+    <div className="my-10">
       <div className="flex justify-between">
         <div>
           <h2 className="text-3xl font-bold">Featured Products</h2>
@@ -56,7 +56,7 @@ const Featured = () => {
         spaceBetween={30}
         navigation={true}
         modules={[Grid, Navigation]}
-        className="mySwiper my-10"
+        className="mySwiper"
       >
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4">
           {medicineData?.map((product: IMedicine) => (

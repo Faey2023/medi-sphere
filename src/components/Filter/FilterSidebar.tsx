@@ -7,7 +7,6 @@ import './filter.css';
 import { Checkbox } from '../ui/checkbox';
 import { Separator } from '../ui/separator';
 import { useGetAllMedicineQuery } from '@/redux/api/productApi';
-import { ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { resetFilters, setFilters } from '@/redux/features/productSlice';
@@ -159,6 +158,7 @@ export default function FilterSidebar() {
     'Injection',
     'Capsule',
     'Ointment',
+    'Moisturizer',
     'Drops',
   ];
 
@@ -236,9 +236,6 @@ export default function FilterSidebar() {
                   htmlFor={`category-${i}`}
                   className="flex cursor-pointer items-center gap-1 text-sm font-medium"
                 >
-                  <span>
-                    <ChevronRight className="text-[2px]" />
-                  </span>{' '}
                   {category}
                 </label>
               </div>
@@ -264,9 +261,6 @@ export default function FilterSidebar() {
                   htmlFor={`type-${i}`}
                   className="flex cursor-pointer items-center gap-1 text-sm font-medium"
                 >
-                  <span>
-                    <ChevronRight className="text-[2px]" />
-                  </span>{' '}
                   {type}
                 </label>
               </div>

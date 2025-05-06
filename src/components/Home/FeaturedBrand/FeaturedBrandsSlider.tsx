@@ -43,7 +43,7 @@ const FeaturedBrandsSlider = () => {
   }, []);
 
   return (
-    <section className="mx-12 my-12">
+    <section className="mx-12">
       <h2 className="mb-10 text-3xl font-bold">Featured Brands</h2>
       <Swiper
         modules={[Navigation, Autoplay]}

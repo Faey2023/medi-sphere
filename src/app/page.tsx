@@ -11,16 +11,17 @@ const Home = () => {
   return (
     <DefaultLayout>
       <HeroSlider />
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto mt-5 max-w-7xl space-y-5">
         <MediCard />
         <FeaturedBrandsSlider />
-
-        <Featured />
+        <div className="px-12">
+          <Featured />
+        </div>
         <DealProduct />
 
         <Testimonial />
 
-        <Newsletter/>
+        <Newsletter />
       </div>
     </DefaultLayout>
   );

@@ -33,7 +33,7 @@ const slides = [
 
 const HeroSlider = () => {
   return (
-    <div className="relative min-h-[500px] w-full overflow-hidden pb-12">
+    <div className="relative min-h-[500px] w-full overflow-hidden">
       <Swiper
         direction="horizontal"
         slidesPerView={1}
